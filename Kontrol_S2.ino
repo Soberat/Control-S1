@@ -8,8 +8,7 @@ using namespace MIDI_Notes;
 
 //TODO try and add displays
 //TODO add missing pots and buttons
-//TODO add color schemes?
-//YODO 5 led pot rings
+
 
 /* !!!
  * Traktor outputs midi for Numark on channels 1 and 2. To avoid conflict, don't use CC range [32-77] or simply switch Kontrol output to any channel higher than 2.
@@ -22,26 +21,31 @@ CRGB colorRed = CRGB(255, 0, 0);
 CRGB colorGreen = CRGB(0, 255, 0);
 CRGB colorYellow = CRGB(255, 255, 0);
 CRGB colorOrange = CRGB(255, 128, 0);
+CRGB colorBlue = CRGB(0, 96, 255);
 CRGB colorOff = CRGB(0, 0, 0);
 
-CRGB vuColors[8] = {colorGreen, colorGreen, colorGreen, colorGreen, colorGreen, colorYellow, colorYellow, colorRed};
+//CRGB vuColors[8] = {colorGreen, colorGreen, colorGreen, colorGreen, colorGreen, colorYellow, colorYellow, colorRed};
+CRGB vuColors[8] = {colorBlue, colorBlue, colorBlue, colorBlue, colorBlue, colorOrange, colorOrange, colorOrange};
 
 TrackDataHandler deckA(0x02, 0xB0);
 TrackDataHandler deckB(0x22, 0xB1);
 
 //Track end warnings don't have to be synchronized between decks, so we need 2 separate timers
 //This value is arbitarily chosen to match Traktor's flashing interval
-Timer<millis> timerA = 790;
-Timer<millis> timerB = 790;
+Timer<millis> timerEndA = 790;
+Timer<millis> timerEndB = 790;
 
-Timer<millis> timerPot = 3000;
+Timer<millis> timerPotMaster = 3000;
+Timer<millis> timerPotMonitor = 3000;
 
 Timer<millis> second = 1000;
+
 //Variables containing information if Track End Warning is active for a deck
 bool trackEndA = false;
 bool trackEndB = false;
 
-bool potRingActive = false;
+bool potRingMasterActive = false;
+bool potRingMonitorActive = false;
 
 // Custom callback to handle incoming note events and control the LEDs
 class NoteCCFastLEDCallbackRGB : public SimpleNoteCCValueCallback {
@@ -89,21 +93,21 @@ class NoteCCFastLEDCallbackRGB : public SimpleNoteCCValueCallback {
 
                 if (value == 63) break; //default value is 63, which means so phase shift
 
-                else if (value > 0  && value < 16) for (int i = 0; i <= 3; i++) ledcolors[i] = colorOrange;
+                else if (value >= 0  && value < 15) for (int i = 0; i <= 3; i++) ledcolors[i] = colorOrange;
 
-                else if (value >= 16 && value < 32) for (int i = 1; i <= 3; i++) ledcolors[i] = colorOrange;
+                else if (value >= 15 && value < 31) for (int i = 1; i <= 3; i++) ledcolors[i] = colorOrange;
 
-                else if (value >= 32 && value < 48) for (int i = 2; i <= 3; i++) ledcolors[i] = colorOrange;
+                else if (value >= 31 && value < 47) for (int i = 2; i <= 3; i++) ledcolors[i] = colorOrange;
 
-                else if (value >= 48 && value < 63) ledcolors[3] = colorOrange;
+                else if (value >= 47 && value < 63) ledcolors[3] = colorOrange;
 
-                else if (value >  63 && value < 80) ledcolors[4] = colorOrange;
+                else if (value >  63 && value <= 79) ledcolors[4] = colorOrange;
 
-                else if (value >= 80 && value < 96) for (int i = 4; i <= 5; i++) ledcolors[i] = colorOrange;
+                else if (value > 79 && value <= 95) for (int i = 4; i <= 5; i++) ledcolors[i] = colorOrange;
 
-                else if (value >= 96 && value < 114) for (int i = 4; i <= 6; i++) ledcolors[i] = colorOrange;
+                else if (value > 95 && value <= 111) for (int i = 4; i <= 6; i++) ledcolors[i] = colorOrange;
 
-                else if (value >= 114) for (int i = 4; i <= 7; i++) ledcolors[i] = colorOrange;
+                else if (value > 111) for (int i = 4; i <= 7; i++) ledcolors[i] = colorOrange;
                
                 break;
                
@@ -129,7 +133,7 @@ class NoteCCFastLEDCallbackRGB : public SimpleNoteCCValueCallback {
                 //Case 4 and 6 are responsible for alternating TrackEnd LEDs. Since NoteOn for the warning is received only once, this just tells an external function (trackEndLEDS()) to take care of it in the program loop
                 if (value == 1) {
                   trackEndB = true;
-                  timerB.begin();
+                  timerEndB.begin();
                 }
                 else trackEndB = false;
                 break;
@@ -140,7 +144,7 @@ class NoteCCFastLEDCallbackRGB : public SimpleNoteCCValueCallback {
             case 6:
                 if (value == 1) {
                   trackEndA = true;
-                  timerA.begin();
+                  timerEndA.begin();
                 }
                 else trackEndA = false;
                 break;
@@ -151,38 +155,39 @@ class NoteCCFastLEDCallbackRGB : public SimpleNoteCCValueCallback {
                     ledcolors[35-i] = colorOff;
                 }
             break;
-            case 8:
+            case 8:   //code for a 5-led potentiometer ring. Indexes are for a 16-led ring.
                 if (value >= 16) {
-                    ledcolors[50] = CRGB(0, 96, 255);
-                    timerPot.beginNextPeriod();
-                    potRingActive = true;
+                    ledcolors[50] = colorBlue;
+                    timerPotMaster.beginNextPeriod();
+                    potRingMasterActive = true;
                 } else {
                     ledcolors[50] = colorOff;
                 }
 
                 if (value >= 36)   {
-                    ledcolors[46] = CRGB(0, 96, 255);
+                    ledcolors[46] = colorBlue;
                 } else {
                     ledcolors[46] = colorOff;
                 }
 
                 if (value >= 63)   {
-                    ledcolors[43] = CRGB(0, 96, 255);
+                    ledcolors[43] = colorBlue;
                 } else {
                     ledcolors[43] = colorOff;
                 }
 
                 if (value >= 90)   {
-                    ledcolors[40] = CRGB(0, 96, 255);
+                    ledcolors[40] = colorBlue;
                 } else {
                     ledcolors[40] = colorOff;
                 }
 
                 if (value >= 110)   {
-                    ledcolors[37] = CRGB(0, 96, 255);
+                    ledcolors[37] = colorBlue;
                 } else {
                     ledcolors[37] = colorOff;
-                }       
+                }
+                break;       
        }  
     }
  
@@ -257,28 +262,37 @@ void setup() {
 
 void loop() {
     Control_Surface.loop();
-    if (timerPot && potRingActive) {
-        for (int i = 0; i <= 15; i++) leds[36 + i] = colorOff;
-        potRingActive = false;
-    }
     trackEndLEDS();
+    potRingLEDS();
+    
     if (second) {
-    //    Serial << dec << deckA.getTime().seconds << endl;
         Serial << dec << "Deck A: Title: " << deckA.getTitle() << "  " << "BPM: " << deckA.getBPM() << "  " << "Time: " << (deckA.getTime().minutes < 10 ? "0" : "") << deckA.getTime().minutes << ":" << (deckA.getTime().seconds < 10 ? "0" : "") << deckA.getTime().seconds << "  " << "Tempo d: " << deckA.getTempo() << endl;
-    //    Serial << dec << "Deck B: Title: " << (deckB.titleDiscovered ? deckB.title : "unknown") << "  " << "BPM: " << (deckB.bpmOverflows*128 + deckB.bpmRaw)/10.0 << "  " << "Time: " << (deckB.minutes < 10 ? "0" : "") << deckB.minutes << ":" << (deckB.seconds < 10 ? "0" : "") << deckB.seconds << "  " << "Tempo d: " << deckB.tempoSign*(deckB.tempoOverflows*128 + deckB.tempoSign*deckB.tempoRaw)/10.0 << endl;
+        //Serial << dec << "Deck B: Title: " << deckB.getTitle() << "  " << "BPM: " << deckB.getBPM() << "  " << "Time: " << (deckB.getTime().minutes < 10 ? "0" : "") << deckB.getTime().minutes << ":" << (deckB.getTime().seconds < 10 ? "0" : "") << deckB.getTime().seconds << "  " << "Tempo d: " << deckB.getTempo() << endl;
     }
     FastLED.show();
 }
 
+void potRingLEDS() {
+    if (timerPotMaster && potRingMasterActive) {
+        for (int i = 0; i <= 15; i++) leds[36 + i] = colorOff;
+        potRingMasterActive = false;
+    }
+    /*
+    if (timerPotMonitor && potRingMonitorActive) {
+        for (int i = 0; i <= 15; i++) leds[36 + i] = colorOff;
+        potRingMonitorActive = false;
+    }
+    */
+}
 void trackEndLEDS() {
-    if (trackEndB && timerB) {
+    if (trackEndB && timerEndB) {
         if (leds[25] == colorOff) leds[25] = colorRed;
         else leds[25] = colorOff;
     } else if (!trackEndB) {  //ensure switching off after NoteOff event
         leds[25] = colorOff;
     }
 
-    if (trackEndA && timerA) {
+    if (trackEndA && timerEndA) {
         if (leds[27] == colorOff) leds[27] = colorRed;
         else leds[27] = colorOff;
     } else if (!trackEndA) {
