@@ -1,7 +1,7 @@
 #include <Control_Surface.h>
 
 //TODO add proper debug messages
-//TODO try to handle various spearators (6 or 3)
+//TODO try to predict that traktor isnt on due to lack of MIDI messages
 
 class TrackDataHandler {
     private:
@@ -17,7 +17,8 @@ class TrackDataHandler {
         int titleIndex = 0;
         bool titleIncoming = false;
         bool titleDiscovered = false;
-        char title[128] = {}; 
+        bool newLoaded = false;
+        String title = "";
 
         int bpmRaw = 0;
         int bpmOverflows = 0;
@@ -114,16 +115,18 @@ class TrackDataHandler {
                 //at this point we are 99% sure we have the full title, so we wipe last 5 bytes from the string as they are spaces or dashes
                 //we also reset all related variables since we dont need them until a new track is loaded
                 if (spaceCounter == 3) {
-                    memset(title+(titleIndex-2)*sizeof(char), 0, 2);
+
+                    Serial << dec << "Discovered title: " << title << endl;
+                    spaceCounter = 0;
+                    title.trim();
+                    if (title.startsWith("- ")) title.remove(0, 2);                  
                     titleIncoming = false;
                     titleDiscovered = true;
-                    titleIndex = 0;
-                    spaceCounter = 0;
                     Serial << dec << "Title: " << title << endl;
+                    title.replace(" - ", "\n");                    
                     return true; //handling of this message is done
                 }
-                title[titleIndex] = se.data[20];
-                titleIndex++;
+                title += char(se.data[20]);
                 return true;
             }
             //se.data[20] == 0x2D
@@ -135,6 +138,7 @@ class TrackDataHandler {
             //reset spaceCounter to count spaces for the end of the title
             if (spaceCounter == 3) {
                 titleIncoming = true;
+                newLoaded = false;
                 spaceCounter = 0;
             }
     
@@ -149,12 +153,27 @@ class TrackDataHandler {
             titleIncoming = false;
             titleDiscovered = false;
             titleIndex = 0;
-            memset(title, 0, sizeof(title));
+            title = "";
+            newLoaded = true;
             Serial << "Deck notified" << endl;
         }
 
         Time getTime() {
             return time;
+        }
+
+        String getTimeString() {
+            String r = "";
+            if (time.minutes < 10) r += "0";
+            r += time.minutes;
+            r += ":";
+            if (time.seconds < 10) r += "0";
+            r += time.seconds;
+            r += ":";
+            if (time.milliseconds < 100) r += "0";
+            if (time.milliseconds < 10)  r += "0";
+            r += time.milliseconds;
+            return r;
         }
 
         double getBPM() {
@@ -164,10 +183,12 @@ class TrackDataHandler {
         double getTempo() {
             return tempoSign*(tempoOverflows*128 + tempoSign*tempoRaw)/10.0;
         }
-
-        char* getTitle() {
+        
+        String getTitle() {
             if (titleIncoming) return "Fetching title...";
             if (titleDiscovered) return title;
+            if (newLoaded) return "New track loaded...";
+            return "";
             //add more options?
         }
         
