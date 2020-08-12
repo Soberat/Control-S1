@@ -25,54 +25,54 @@
 #define VOLUMEMASTER_UB 15830
 
 class Mapping {
-	public:
-		static analog_t crossfader(analog_t raw) {
-			raw = constrain(raw, XFADER_LB, XFADER_UB);
-			raw = map(raw, XFADER_LB, XFADER_UB, 0, 16384);
-			
-			return raw;
-		}
-		
-		static analog_t volumeA(analog_t raw) {
-			raw = constrain(raw, VOLUMEA_LB, VOLUMEA_UB);
-			raw = map(raw, VOLUMEA_LB, VOLUMEA_UB, 0, 16384);
-			
-			return raw;
-		}
-		
-		static analog_t volumeB(analog_t raw) {
-			raw = constrain(raw, VOLUMEB_LB, VOLUMEB_UB);
-			raw = map(raw, VOLUMEB_LB, VOLUMEB_UB, 0, 16384);
-			
-			return raw;
-		}
-		
-		static analog_t gainA(analog_t raw) {
-			raw = constrain(raw, GAINA_LB, GAINA_UB);
-			raw = map(raw, GAINA_LB, GAINA_UB, 0, 16384);
-			
-			return raw;
-		}
-		
-		static analog_t gainB(analog_t raw) {
-			raw = constrain(raw, GAINB_LB, GAINB_UB);
-			raw = map(raw, GAINB_LB, GAINB_UB, 0, 16384);
-			
-			return raw;
-		}
-		
-		static analog_t volumeMaster(analog_t raw) {
-			raw = constrain(raw, VOLUMEMASTER_LB, VOLUMEMASTER_UB);
-			raw = map(raw, VOLUMEMASTER_LB, VOLUMEMASTER_UB, 0, 16384);
-			
-			return raw;
-		}
-		
-		//parameters?
-		static analog_t step(analog_t raw) {
-			raw = constrain(raw, 1000, 15384);
-			raw = map(raw, 1000, 15384, 0, 16384);
-			
-			return 512*floor(raw/512);
-		}
+    public:
+        static analog_t crossfader(analog_t raw) {
+            raw = constrain(raw, XFADER_LB, XFADER_UB);
+            raw = map(raw, XFADER_LB, XFADER_UB, 0, 16384);
+
+            return raw;
+        }
+
+    static analog_t volumeA(analog_t raw) {
+        raw = constrain(raw, VOLUMEA_LB, VOLUMEA_UB);
+        raw = map(raw, VOLUMEA_LB, VOLUMEA_UB, 0, 16384);
+
+        return raw;
+    }
+
+    static analog_t volumeB(analog_t raw) {
+        raw = constrain(raw, VOLUMEB_LB, VOLUMEB_UB);
+        raw = map(raw, VOLUMEB_LB, VOLUMEB_UB, 0, 16384);
+
+        return raw;
+    }
+
+    static analog_t gainA(analog_t raw) {
+        raw = constrain(raw, GAINA_LB, GAINA_UB);
+        raw = map(raw, GAINA_LB, GAINA_UB, 0, 16384);
+
+        return raw;
+    }
+
+    static analog_t gainB(analog_t raw) {
+        raw = constrain(raw, GAINB_LB, GAINB_UB);
+        raw = map(raw, GAINB_LB, GAINB_UB, 0, 16384);
+
+        return raw;
+    }
+
+    static analog_t volumeMaster(analog_t raw) {
+        raw = constrain(raw, VOLUMEMASTER_LB, VOLUMEMASTER_UB);
+        raw = map(raw, VOLUMEMASTER_LB, VOLUMEMASTER_UB, 0, 16384);
+
+        return raw;
+    }
+
+    //parameters?
+    static analog_t step(analog_t raw) {
+        raw = constrain(raw, 1000, 15384);
+        raw = map(raw, 1000, 15384, 0, 16384);
+
+        return 512 * floor(raw / 512);
+    }
 };
