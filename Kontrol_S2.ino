@@ -18,7 +18,12 @@ constexpr uint8_t ledCallbacks = 8;
  * Deck inputs:
  * 2x15 muxed down to 2x5 - Gain, High, Mid, Low, Filter, Cue Enable, Volume, selector 1234, play, cue, load, shift
  * 6 - crossfader, volume master, browser, master volume, monitor volume, cruise mode
+ * 1 - WS2812
+ * 5x2 - encoders
+ * 2 - I2C
  */
+
+ //TODO check if the library works fine using same pins
 
 
 //todo debug why doesnt connect after reprogramming
@@ -102,17 +107,12 @@ Adafruit_SSD1306 display(128, 64, &Wire, 4);
 
 USBMIDI_Interface midi;
 CD74HC4067 mux = {A6, {12, 11, 10, 9}};
+CD74HC4067 mux2 = {A13, {12, 11, 10, 9}};
 
-//create a color class?
-CRGB colorRed = CRGB(255, 0, 0);
-CRGB colorGreen = CRGB(0, 255, 0);
-CRGB colorYellow = CRGB(255, 255, 0);
-CRGB colorOrange = CRGB(255, 128, 0);
-CRGB colorBlue = CRGB(0, 96, 255);
 CRGB colorOff = CRGB(0, 0, 0);
 
-CRGB vuColors[8] = {colorGreen, colorGreen, colorGreen, colorGreen, colorGreen, colorYellow, colorYellow, colorRed};
-//CRGB vuColors[8] = {colorBlue, colorBlue, colorBlue, colorBlue, colorBlue, colorOrange, colorOrange, colorOrange};
+//CRGB vuColors[8] = {CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Yellow, CRGB::Yellow, CRGB::Red};
+CRGB vuColors[8] = {CRGB::DarkBlue, CRGB::DarkBlue, CRGB::DarkBlue, CRGB::DarkBlue, CRGB::DarkBlue, CRGB::Orange, CRGB::Orange, CRGB::Orange};
 
 TrackDataHandler deckA(0x02, 0xB0);
 TrackDataHandler deckB(0x22, 0xB1);
@@ -121,11 +121,20 @@ TrackDataHandler deckB(0x22, 0xB1);
 //This value is arbitarily chosen to match Traktor's flashing interval
 Timer<millis> timerEndA = 790;
 Timer<millis> timerEndB = 790;
+
+Timer<millis> timerClipA = 2000;
+Timer<millis> timerClipB = 2000;
+Timer<millis> timerClipMaster = 2000;
+
 Timer<millis> second = 1000;
 
 //Variables containing information if Track End Warning is active for a deck
 bool trackEndA = false;
 bool trackEndB = false;
+
+bool deckAClipped = false;
+bool deckbClipped = false;
+bool masterClipped = false;
 
 // Custom callback to handle incoming note events and control the LEDs
 class NoteCCFastLEDCallbackRGB : public SimpleNoteCCValueCallback {
@@ -155,7 +164,7 @@ class NoteCCFastLEDCallbackRGB : public SimpleNoteCCValueCallback {
             int value = input.getValue(index);
               switch (index) {
                   case 0:
-                      if (value == 1) ledcolors[0] = colorGreen;
+                      if (value == 1) ledcolors[0] = CRGB::Green;
                       else ledcolors[0] = colorOff;
                       break;
                   case 1:
@@ -178,14 +187,14 @@ class NoteCCFastLEDCallbackRGB : public SimpleNoteCCValueCallback {
                       //Since midi values are 0-127 the code is quite ugly, but it works ;)                  
                       for (int i = 0; i <= 7; i++) ledcolors[i+10] = colorOff;
                       if (value == 63 || value == 0) break; //default value is 63, which means so phase shift. 0 is the default when the device starts without MIDI input, so we ignore it as well
-                      else if (value >= 0  && value < 15) for (int i = 0; i <= 3; i++) ledcolors[i+10] = colorOrange;
-                      else if (value >= 15 && value < 31) for (int i = 1; i <= 3; i++) ledcolors[i+10] = colorOrange;
-                      else if (value >= 31 && value < 47) for (int i = 2; i <= 3; i++) ledcolors[i+10] = colorOrange;
-                      else if (value >= 47 && value < 63) ledcolors[13] = colorOrange;
-                      else if (value >  63 && value <= 79) ledcolors[14] = colorOrange;
-                      else if (value > 79 && value <= 95) for (int i = 4; i <= 5; i++) ledcolors[i+10] = colorOrange;
-                      else if (value > 95 && value <= 111) for (int i = 4; i <= 6; i++) ledcolors[i+10] = colorOrange;
-                      else if (value > 111) for (int i = 4; i <= 7; i++) ledcolors[i+10] = colorOrange;
+                      else if (value >= 0  && value < 15) for (int i = 0; i <= 3; i++) ledcolors[i+10] = CRGB::Orange;
+                      else if (value >= 15 && value < 31) for (int i = 1; i <= 3; i++) ledcolors[i+10] = CRGB::Orange;
+                      else if (value >= 31 && value < 47) for (int i = 2; i <= 3; i++) ledcolors[i+10] = CRGB::Orange;
+                      else if (value >= 47 && value < 63) ledcolors[13] = CRGB::Orange;
+                      else if (value >  63 && value <= 79) ledcolors[14] = CRGB::Orange;
+                      else if (value > 79 && value <= 95) for (int i = 4; i <= 5; i++) ledcolors[i+10] = CRGB::Orange;
+                      else if (value > 95 && value <= 111) for (int i = 4; i <= 6; i++) ledcolors[i+10] = CRGB::Orange;
+                      else if (value > 111) for (int i = 4; i <= 7; i++) ledcolors[i+10] = CRGB::Orange;
                       break;
                   case 4 :
                       for (int i = 0; i <= 7; i++) if (value > 16*i) {
@@ -202,7 +211,7 @@ class NoteCCFastLEDCallbackRGB : public SimpleNoteCCValueCallback {
                       }
                       break;
                   case 6:
-                      if (value == 1) ledcolors[34] = colorGreen;
+                      if (value == 1) ledcolors[34] = CRGB::Green;
                       else ledcolors[34] = colorOff;
                       break;
                   case 7:
@@ -212,9 +221,80 @@ class NoteCCFastLEDCallbackRGB : public SimpleNoteCCValueCallback {
                       }
                       else trackEndB = false;
                       break;
-              }        
-        }
- 
+
+                  /*
+                  case 10: //hotcue 1
+                      //TODO add different colors for different cue types
+                      if (bankA.getSelection() == 0) {
+                          if (value == 127) ledcolors[X] = CRGB::Orange;
+                          else ledcolors[X] = colorOff;
+                      }
+                      break;
+                  case 11: //hotcue 2
+                      if (bankA.getSelection() == 0) {
+                          if (value == 127) ledcolors[X+1] = CRGB::Orange;
+                          else ledcolors[X+1] = colorOff;
+                      }
+                      break;
+                  case 12: //hotcue 3
+                      if (bankA.getSelection() == 1) {
+                          if (value == 127) ledcolors[X] = CRGB::Orange;
+                          else ledcolors[X] = colorOff;
+                      }
+                      break;
+                  case 13: //hotcue 4
+                      if (bankA.getSelection() == 1) {
+                          if (value == 127) ledcolors[X+1] = CRGB::Orange;
+                          else ledcolors[X+1] = colorOff;
+                      }
+                      break;
+                  case 14: //hotcue 5
+                      if (bankA.getSelection() == 2) {
+                          if (value == 127) ledcolors[X] = CRGB::Orange;
+                          else ledcolors[X] = colorOff;
+                      }
+                  case 15: //hotcue 6
+                      if (bankA.getSelection() == 2) {
+                          if (value == 127) ledcolors[X+1] = CRGB::Orange;
+                          else ledcolors[X+1] = colorOff;
+                      }
+                      break;
+                  case 16: //hotcue 7
+                      if (bankA.getSelection() == 3) {
+                          if (value == 127) ledcolors[X] = CRGB::Orange;
+                          else ledcolors[X] = colorOff;
+                      }
+                  case 17: //hotcue 8
+                      if (bankA.getSelection() == 3) {
+                          if (value == 127) ledcolors[X+1] = CRGB::Orange;
+                          else ledcolors[X+1] = colorOff;
+                      }
+                      break;
+                  case 18: //sync on
+                      if (bankA.getSelection() == 4) {
+                          if (value == 127) ledcolors[X] = CRGB::DarkBlue;
+                          else ledcolors[X] = colorOff;
+                      }
+                      break;
+                  case 19: //is master
+                      if (bankA.getSelection() == 4) {
+                          if (value == 127) ledcolors[X+1] = CRGB::DarkBlue;
+                          else ledcolors[X+1] = colorOff;
+                      }
+                      break;
+                  case 20: //loop in
+                      if (bankA.getSelection() == 5) {
+                          if (value == 127) ledcolors[X] = CRGB::Green;
+                          else ledcolors[X] = colorOff;
+                      }
+                  case 21: //loop out
+                      if (bankA.getSelection() == 5) {
+                          if (value == 127) ledcolors[X+1] = CRGB::Green;
+                          else ledcolors[X+1] = colorOff;
+
+                  */
+              }
+        }        
     private:
         // Pointer to array of FastLED color values for the LEDs
         CRGB *ledcolors;
@@ -246,86 +326,86 @@ Bank<7> bankB(4); // 1 encoder, 2 pushbuttons, 1 encoder button, total range of 
 EncoderSelector<7> selectorA = {bankA, {pin1, pin2}, 4, Wrap::Clamp};
 EncoderSelector<7> selectorB = {bankB, {pin1, pin2}, 4, Wrap::Clamp};
 
-//this assumes that CC 33-62 are free, but there might be a conflict. worth checking out
+//CC range [0-55] is reserved for the function selectors and buttons
+//   
+
 Bankable::CCButton button1A = {
     {bankA, BankType::CHANGE_ADDRESS},
      pin,
-    {33, CHANNEL_1}};
+    {0, CHANNEL_1}};
     
 Bankable::CCButton button2A = {
     {bankA, BankType::CHANGE_ADDRESS},
      pin,
-    {34, CHANNEL_1}};
+    {1, CHANNEL_1}};
 
 Bankable::CCButton buttonEncA = {
     {bankA, BankType::CHANGE_ADDRESS},
      pin,
-    {35, CHANNEL_1}};
+    {2, CHANNEL_1}};
 
 Bankable::CCRotaryEncoder encoderA= {
     {bankB, BankType::CHANGE_ADDRESS},
     {pin1, pin2},
-    {36, CHANNEL_1}};
+    {3, CHANNEL_1}};
     
 //this definitely interferes with current mappings.    
 Bankable::CCButton button1B = {
     {bankB, BankType::CHANGE_ADDRESS},
      pin,
-    {33, CHANNEL_1}};
+    {28, CHANNEL_1}};
     
 Bankable::CCButton button2B = {
     {bankB, BankType::CHANGE_ADDRESS},
      pin,
-    {34, CHANNEL_1}};
+    {29, CHANNEL_1}};
 
 Bankable::CCButton buttonEncB = {
     {bankB, BankType::CHANGE_ADDRESS},
      pin,
-    {35, CHANNEL_1}};
+    {30, CHANNEL_1}};
 
 Bankable::CCRotaryEncoder = encoderB {
     {bankB, BankType::CHANGE_ADDRESS},
     {pin1, pin2},
-    {36, CHANNEL_1}};    
+    {31, CHANNEL_1}};    
 */
 
 
-CCPotentiometer potVolumeA = {mux.pin(13), {7, CHANNEL_1}}; 
-CCPotentiometer potGainA   = {A9, {10, CHANNEL_1}};
-//CCPotentiometer potLowA    = {mux.pin(13), {11, CHANNEL_1}}; 
-//CCPotentiometer potMidA    = {mux.pin(13), {12, CHANNEL_1}}; 
-//CCPotentiometer potHighA   = {mux.pin(13), {13, CHANNEL_1}}; 
-//CCPotentiometer potFilterA = {mux.pin(13), {14, CHANNEL_1}}; 
+CCPotentiometer potVolumeA = {mux.pin(13), {56, CHANNEL_1}}; 
+CCPotentiometer potGainA   = {A9, {57, CHANNEL_1}};
+//CCPotentiometer potLowA    = {mux.pin(13), {58, CHANNEL_1}}; 
+//CCPotentiometer potMidA    = {mux.pin(13), {59, CHANNEL_1}}; 
+//CCPotentiometer potHighA   = {mux.pin(13), {60, CHANNEL_1}}; 
+//CCPotentiometer potFilterA = {mux.pin(13), {61, CHANNEL_1}}; 
 
+CCButton buttonPlayA = {mux.pin(15),{62, CHANNEL_1}};
+CCButton buttonCueA = {mux.pin(14),{63, CHANNEL_1}};
+CCButton buttonLoadA = {mux.pin(11),{64, CHANNEL_1}};
+//CCButton buttonMonitorA = {mux.pin(27), {65, CHANNEL_1}}; 
+CCButton buttonModifier1A = {1, {66, CHANNEL_1}}; //shift left side
 
-CCPotentiometer potVolumeB = {mux.pin(2), {1, CHANNEL_1}};
-CCPotentiometer potGainB   = {A1, {16, CHANNEL_1}};
-//CCPotentiometer potLowB    = {mux.pin(13), {17, CHANNEL_1}}; 
-//CCPotentiometer potMidB    = {mux.pin(13), {18, CHANNEL_1}}; 
-//CCPotentiometer potHighB   = {mux.pin(13), {19, CHANNEL_1}}; 
-//CCPotentiometer potFilterB = {mux.pin(13), {20, CHANNEL_1}}; 
+CCPotentiometer potVolumeB = {mux.pin(2), {67, CHANNEL_1}};
+CCPotentiometer potGainB   = {A1, {68, CHANNEL_1}};
+//CCPotentiometer potLowB    = {mux.pin(13), {69, CHANNEL_1}}; 
+//CCPotentiometer potMidB    = {mux.pin(13), {70, CHANNEL_1}}; 
+//CCPotentiometer potHighB   = {mux.pin(13), {71, CHANNEL_1}}; 
+//CCPotentiometer potFilterB = {mux.pin(13), {72, CHANNEL_1}}; 
 
-CCPotentiometer potXfader  = {mux.pin(3), {0, CHANNEL_1}};
-CCPotentiometer potVolumeMaster  = {A0, {8, CHANNEL_1}};
-//CCPotentiometer potVolumeMonitor ={mux.pin(13), {23, CHANNEL_1}}; 
+CCButton buttonPlayB = {mux.pin(1),{73, CHANNEL_1}};
+CCButton buttonCueB  = {mux.pin(0),{74, CHANNEL_1}};
+CCButton buttonLoadB = {mux.pin(4),{75, CHANNEL_1}};
+//CCButton buttonMonitorB = {mux.pin(13), {76, CHANNEL_1}}; 
+CCButton buttonModifier1B = {4, {77, CHANNEL_1}}; //shift right side
 
-CCButton buttonPlayA = {mux.pin(15),{3, CHANNEL_1}};
-CCButton buttonCueA = {mux.pin(14),{4, CHANNEL_1}};
-CCButton buttonLoadA = {mux.pin(11),{26, CHANNEL_1}};
-//CCButton buttonMonitorA = {mux.pin(27), {20, CHANNEL_1}}; 
+CCPotentiometer potXfader  = {mux.pin(3), {78, CHANNEL_1}};
+CCPotentiometer potVolumeMaster  = {A0, {79, CHANNEL_1}};
+//CCPotentiometer potVolumeMonitor ={mux.pin(13), {80, CHANNEL_1}}; 
 
-CCButton buttonPlayB = {mux.pin(1),{5, CHANNEL_1}};
-CCButton buttonCueB  = {mux.pin(0),{6, CHANNEL_1}};
-CCButton buttonLoadB = {mux.pin(4),{30, CHANNEL_1}};
-//CCButton buttonMonitorB = {mux.pin(13), {31, CHANNEL_1}}; 
+CCButton buttonModifier5 = {mux.pin(12), {81, CHANNEL_1}}; //browser encoder pushbutton, used only for browser navigation.
+//CCButton buttonCruise = {mux.pin(11), {82, CHANNEL_1}};
 
-
-CCButton buttonModifier1A = {1, {78, CHANNEL_1}}; //shift left side
-CCButton buttonModifier1B = {4, {78, CHANNEL_1}}; //shift right side
-CCButton buttonModifier5 = {mux.pin(12), {79, CHANNEL_1}}; //browser encoder pushbutton, used only for browser navigation. use load as forward/back when in tree!
-//CCButton buttonCruise = {mux.pin(11), {80, CHANNEL_1}};
-
-CCRotaryEncoder encoderBrowser = {{2, 3}, {81, CHANNEL_1}};
+CCRotaryEncoder encoderBrowser = {{2, 3}, {83, CHANNEL_1}};
 
 void setup() {
     potVolumeA.map(Mapping::volumeA);
@@ -352,13 +432,14 @@ void setup() {
     //display.setFont(&Roboto_Mono_10);
     delay(2000); // Pause for 2 seconds
     display.setTextColor(SSD1306_WHITE);    
-    // Clear the buffer
-    display.clearDisplay();
 }
 
 void loop() {
     Control_Surface.loop();
     trackEndLEDS();
+
+    
+    
     
     display.clearDisplay();
     display.setCursor(0,0);
@@ -383,14 +464,14 @@ void loop() {
 
 void trackEndLEDS() {
     if (trackEndB && timerEndB) {
-        if (leds[35] == colorOff) leds[35] = colorRed;
+        if (leds[35] == colorOff) leds[35] = CRGB::Red;
         else leds[35] = colorOff;
     } else if (!trackEndB) {  //ensure switching off after NoteOff event
         leds[35] = colorOff;
     }
 
     if (trackEndA && timerEndA) {
-        if (leds[1] == colorOff) leds[1] = colorRed;
+        if (leds[1] == colorOff) leds[1] = CRGB::Red;
         else leds[1] = colorOff;
     } else if (!trackEndA) {
         leds[1] = colorOff;
