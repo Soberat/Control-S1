@@ -99,11 +99,12 @@ const unsigned char PROGMEM logoTraktor[] = {
  * Traktor outputs midi for Numark on channels 1 and 2. To avoid conflict, don't use CC range [32-77] or simply switch Kontrol output to any channel higher than 2.
  * I'm outputting Numark on different virtual cables so I don't have any conflicts, although it might be a bit overdone.
  */
-Adafruit_SSD1306 display(128, 64, &Wire, 4);
+Adafruit_SSD1306 displayA(128, 64, &Wire, 4);
+Adafruit_SSD1306 displayB(128, 64, &Wire, 4);
 
 USBMIDI_Interface midi;
-CD74HC4067 mux = {A6, {12, 11, 10, 9}};
-CD74HC4067 mux2 = {A13, {12, 11, 10, 9}};
+CD74HC4067 mux = {A6, {10, 9, 8, 7}};
+//CD74HC4067 mux2 = {A13, {12, 11, 10, 9}};
 
 CRGB colorOff = CRGB(0, 0, 0);
 
@@ -176,8 +177,8 @@ Bankable::CCRotaryEncoder encoderA= {
     {bankA, BankType::CHANGE_ADDRESS},
     {7,8},
     {3, CHANNEL_1}};
-    
-/*
+ /*
+
 Bankable::CCButton button1B = {
     {bankB, BankType::CHANGE_ADDRESS},
      pin,
@@ -342,7 +343,7 @@ Array<CRGB, numleds> leds = {};
 CustomNoteValueLED<ledCallbacks> midiled = {ledpin, leds.data};
 
 CCPotentiometer potVolumeA = {mux.pin(13), {56, CHANNEL_1}}; 
-CCPotentiometer potGainA   = {A9, {57, CHANNEL_1}};
+CCPotentiometer potGainA   = {A2, {57, CHANNEL_1}};
 //CCPotentiometer potLowA    = {mux.pin(13), {58, CHANNEL_1}}; 
 //CCPotentiometer potMidA    = {mux.pin(13), {59, CHANNEL_1}}; 
 //CCPotentiometer potHighA   = {mux.pin(13), {60, CHANNEL_1}}; 
@@ -355,7 +356,7 @@ CCButton buttonLoadA = {mux.pin(11),{64, CHANNEL_1}};
 CCButton buttonModifier1A = {1, {66, CHANNEL_1}}; //shift left side
 
 CCPotentiometer potVolumeB = {mux.pin(2), {67, CHANNEL_1}};
-CCPotentiometer potGainB   = {A1, {68, CHANNEL_1}};
+CCPotentiometer potGainB   = {A0, {68, CHANNEL_1}};
 //CCPotentiometer potLowB    = {mux.pin(13), {69, CHANNEL_1}}; 
 //CCPotentiometer potMidB    = {mux.pin(13), {70, CHANNEL_1}}; 
 //CCPotentiometer potHighB   = {mux.pin(13), {71, CHANNEL_1}}; 
@@ -365,68 +366,66 @@ CCButton buttonPlayB = {mux.pin(1),{73, CHANNEL_1}};
 CCButton buttonCueB  = {mux.pin(0),{74, CHANNEL_1}};
 CCButton buttonLoadB = {mux.pin(4),{75, CHANNEL_1}};
 //CCButton buttonMonitorB = {mux.pin(13), {76, CHANNEL_1}}; 
-//CCButton buttonModifier1B = {4, {77, CHANNEL_1}}; //shift right side
+CCButton buttonModifier1B = {11, {66, CHANNEL_1}}; //shift right side
 
 CCPotentiometer potXfader  = {mux.pin(3), {78, CHANNEL_1}};
-CCPotentiometer potVolumeMaster  = {A0, {79, CHANNEL_1}};
+CCPotentiometer potVolumeMaster  = {A1, {79, CHANNEL_1}};
 //CCPotentiometer potVolumeMonitor ={mux.pin(13), {80, CHANNEL_1}}; 
 
 CCButton buttonModifier5 = {mux.pin(12), {81, CHANNEL_1}}; //browser encoder pushbutton, used only for browser navigation.
 //CCButton buttonCruise = {mux.pin(11), {82, CHANNEL_1}};
 
-CCRotaryEncoder encoderBrowser = {{2, 3}, {83, CHANNEL_1}};
+CCRotaryEncoder encoderBrowser = {{5, 6}, {83, CHANNEL_1}};
 
-void setup() {
-    potVolumeA.map(Mapping::volumeA);
-    potVolumeB.map(Mapping::volumeB);
-    potVolumeMaster.map(Mapping::volumeMaster);
-    potXfader.map(Mapping::crossfader);
-    potGainA.map(Mapping::gainA);
-    potGainB.map(Mapping::gainB);
-    
-    FastLED.addLeds<NEOPIXEL, ledpin>(leds.data, numleds);
-    FastLED.setCorrection(TypicalPixelString);
-    FastLED.setBrightness(32);
-    Control_Surface.setMIDIInputCallbacks(channelMessageCallback, sysExMessageCallback, nullptr);
-    Control_Surface.begin();
-    second.begin();
-    
-    // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
-    if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) Serial.println(F("SSD1306 allocation failed"));
-    
-    // Show initial display buffer contents on the screen --
-    display.clearDisplay();
-    display.drawBitmap(0, 0, logoTraktor, 128, 64, WHITE);
-    display.display();
-    delay(2000); // Pause for 2 seconds
-    display.setTextColor(SSD1306_WHITE);    
+
+//Function that changes the channel of TCA9548A I2C multiplexer
+void channel(uint8_t bus) {
+    Wire.beginTransmission(0x70);
+    Wire.write(1 << bus);
+    Wire.endTransmission();
 }
 
-void loop() {
-    Control_Surface.loop();
-    trackEndLEDS();
-    selectorLEDS();
-    
-    display.clearDisplay();
-    display.setCursor(0,0);
-    display.println("Deck A");
 
-    display.setCursor(72, 0);
-    display.println(deckA.getTimeString());
-
-    display.drawLine(0, 9, 127, 9, SSD1306_WHITE);
-
-    display.setCursor(0, 12);
-    display.println(deckA.getTitle());
-    display.display();
-
+bool sysExMessageCallback(SysExMessage se) {
+    //making sure the data is coming from Traktor and that length corresponds to title data message length (6 ascii + 16 id)
+    if (se.data[0] == 0xF0 && se.data[se.length-1] == 0xF7 && se.length == 22) {
+        if (se.CN == 1) return deckA.receive(se);
+        else if (se.CN == 2) return deckB.receive(se);
+    } else {        
+        return false; //indicate that the message should be handled by the library.
     }
-        
-    if (second) {
-        Serial << dec << "Deck A: Title: " << deckA.getTitle().replace("\n", " - ") << "  " << "BPM: " << deckA.getBPM() << "  " << "Time: " << (deckA.getTime().minutes < 10 ? "0" : "") << deckA.getTime().minutes << ":" << (deckA.getTime().seconds < 10 ? "0" : "") << deckA.getTime().seconds << "  " << "Tempo d: " << deckA.getTempo() << endl;
-        Serial << dec << "Deck B: Title: " << deckB.getTitle().replace("\n", " - ") << "  " << "BPM: " << deckB.getBPM() << "  " << "Time: " << (deckB.getTime().minutes < 10 ? "0" : "") << deckB.getTime().minutes << ":" << (deckB.getTime().seconds < 10 ? "0" : "") << deckB.getTime().seconds << "  " << "Tempo d: " << deckB.getTempo() << endl;
+    return false;
+}
+
+bool channelMessageCallback(ChannelMessage cm) {
+    if (cm.data1 >= 32 && cm.data1 <= 77) {
+        if (cm.CN == 1) {
+            deckA.receive(cm);
+            return true;
+        } 
+        else if (cm.CN == 2) {
+            deckB.receive(cm);
+            return true;
+        }
     }
-    FastLED.show();
+    return false;
+}
+
+
+void trackEndLEDS() {
+    if (trackEndB && timerEndB) {
+        if (leds[35] == colorOff) leds[35] = CRGB::Red;
+        else leds[35] = colorOff;
+    } else if (!trackEndB) {  //ensure switching off after NoteOff event
+        leds[35] = colorOff;
+    }
+
+    if (trackEndA && timerEndA) {
+        if (leds[1] == colorOff) leds[1] = CRGB::Red;
+        else leds[1] = colorOff;
+    } else if (!trackEndA) {
+        leds[1] = colorOff;
+    }
 }
 
 void selectorLEDS() {
@@ -448,8 +447,8 @@ void selectorLEDS() {
             leds[37] = deckASelectorLEDS[7];
             break;
         case 4:
-            leds[36] = deckASync[0];
-            leds[37] = deckASync[1];
+            leds[36] = deckASelectorLEDS[8];
+            leds[37] = deckASelectorLEDS[9];
             break;
         case 5:
             leds[36] = CRGB::Lime;
@@ -494,44 +493,92 @@ void selectorLEDS() {
     */
 }
 
+void setup() {
+    potVolumeA.map(Mapping::volumeA);
+    potVolumeB.map(Mapping::volumeB);
+    potVolumeMaster.map(Mapping::volumeMaster);
+    potXfader.map(Mapping::crossfader);
+    potGainA.map(Mapping::gainA);
+    potGainB.map(Mapping::gainB);
+    
+    FastLED.addLeds<NEOPIXEL, ledpin>(leds.data, numleds);
+    FastLED.setCorrection(TypicalPixelString);
+    FastLED.setBrightness(32);
+    Control_Surface.setMIDIInputCallbacks(channelMessageCallback, sysExMessageCallback, nullptr);
+    Control_Surface.begin();
+    second.begin();
 
-void trackEndLEDS() {
-    if (trackEndB && timerEndB) {
-        if (leds[35] == colorOff) leds[35] = CRGB::Red;
-        else leds[35] = colorOff;
-    } else if (!trackEndB) {  //ensure switching off after NoteOff event
-        leds[35] = colorOff;
-    }
+    //Neccesary for I2C multiplexer to work correctly
+    Wire.begin();
+        
+    channel(0);
+    // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+    if(!displayA.begin(SSD1306_SWITCHCAPVCC, 0x3C)) Serial.println(F("SSD1306 allocation failed"));
 
-    if (trackEndA && timerEndA) {
-        if (leds[1] == colorOff) leds[1] = CRGB::Red;
-        else leds[1] = colorOff;
-    } else if (!trackEndA) {
-        leds[1] = colorOff;
-    }
+    channel(7);
+    displayB.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+
+    channel(0);
+    // Show initial display buffer contents on the screen --
+    displayA.clearDisplay();
+    displayA.drawBitmap(0, 0, logoTraktor, 128, 64, WHITE);
+    displayA.display();
+
+    channel(7);
+    // Show initial display buffer contents on the screen --
+    displayB.clearDisplay();
+    displayB.drawBitmap(0, 0, logoTraktor, 128, 64, WHITE);
+    displayB.display();
+    
+    delay(2000); // Pause for 2 seconds
+    displayA.setTextColor(SSD1306_WHITE);    
+    displayB.setTextColor(SSD1306_WHITE);
+
+    channel(0);
 }
 
-bool sysExMessageCallback(SysExMessage se) {
-    //making sure the data is coming from Traktor and that length corresponds to title data message length (6 ascii + 16 id)
-    if (se.data[0] == 0xF0 && se.data[se.length-1] == 0xF7 && se.length == 22) {
-        if (se.CN == 1) return deckA.receive(se);
-        else if (se.CN == 2) return deckB.receive(se);
-    } else {        
-        return false; //indicate that the message should be handled by the library.
+void loop() {
+    long time = millis();
+    Control_Surface.loop();
+    trackEndLEDS();
+    selectorLEDS();
+    
+    if (deckA.newTimeAvailable() || deckA.newTitleAvailable()) {
+        channel(0);
+        displayA.clearDisplay();
+        displayA.setCursor(0,0);
+        displayA.println("Deck A");
+    
+        displayA.setCursor(72, 0);
+        displayA.println(deckA.getShortTimeString());
+    
+        displayA.drawLine(0, 9, 127, 9, SSD1306_WHITE);
+    
+        displayA.setCursor(0, 12);
+        displayA.println(deckA.getTitle());
+        displayA.display();
     }
-    return false;
-}
 
-bool channelMessageCallback(ChannelMessage cm) {
-    if (cm.data1 >= 32 && cm.data1 <= 77) {
-        if (cm.CN == 1) {
-            deckA.receive(cm);
-            return true;
-        } 
-        else if (cm.CN == 2) {
-            deckB.receive(cm);
-            return true;
-        }
+    if (deckB.newTimeAvailable() || deckB.newTitleAvailable()) {
+        channel(7);
+        displayB.clearDisplay();
+        displayB.setCursor(0,0);
+        displayB.println("Deck B");
+    
+        displayB.setCursor(72, 0);
+        displayB.println(deckB.getShortTimeString());
+    
+        displayB.drawLine(0, 9, 127, 9, SSD1306_WHITE);
+    
+        displayB.setCursor(0, 12);
+        displayB.println(deckB.getTitle());
+        displayB.display();
     }
-    return false;
+    
+    if (second) {
+        Serial << dec << "Deck A: Title: " << deckA.getTitle().replace("\n", " - ") << "  " << "BPM: " << deckA.getBPM() << "  " << "Time: " << (deckA.getTime().minutes < 10 ? "0" : "") << deckA.getTime().minutes << ":" << (deckA.getTime().seconds < 10 ? "0" : "") << deckA.getTime().seconds << "  " << "Tempo d: " << deckA.getTempo() << endl;
+        Serial << dec << "Deck B: Title: " << deckB.getTitle().replace("\n", " - ") << "  " << "BPM: " << deckB.getBPM() << "  " << "Time: " << (deckB.getTime().minutes < 10 ? "0" : "") << deckB.getTime().minutes << ":" << (deckB.getTime().seconds < 10 ? "0" : "") << deckB.getTime().seconds << "  " << "Tempo d: " << deckB.getTempo() << endl;
+    }
+    FastLED.show();
+    Serial << (millis() - time) << endl;
 }

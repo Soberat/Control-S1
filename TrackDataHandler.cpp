@@ -18,6 +18,9 @@ class TrackDataHandler {
                 int milliseconds = 0;  
         } time;
 
+        String lastTime;
+        String lastTitle;
+
         int spaceCounter = 0;
         int titleIndex = 0;
         bool titleIncoming = false;
@@ -173,6 +176,24 @@ class TrackDataHandler {
             return time;
         }
 
+        bool newTimeAvailable() {
+            if (lastTime == getShortTimeString()) {
+                return false;
+            } else {
+                lastTime = getShortTimeString();
+                return true;
+            }
+        }
+
+        bool newTitleAvailable() {
+            if (lastTitle == title) {
+                return false;
+            } else {
+                lastTitle = title;
+                return true;
+            }
+        }
+
         //function that returns the song timer as constant width string
         String getTimeString() {
             String r = "";
@@ -185,6 +206,17 @@ class TrackDataHandler {
             if (time.milliseconds < 100) r += "0";
             if (time.milliseconds < 10)  r += "0";
             r += time.milliseconds;
+            return r;
+        }
+
+        //version of the above only with minutes and seconds
+        String getShortTimeString() {
+            String r = "";
+            if (time.minutes < 10) r += "0";
+            r += time.minutes;
+            r += ":";
+            if (time.seconds < 10) r += "0";
+            r += time.seconds;
             return r;
         }
 
