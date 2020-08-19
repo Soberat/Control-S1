@@ -21,6 +21,8 @@ class TrackDataHandler {
         String lastTime;
         String lastTitle;
 
+        double lastBPM;
+
         int spaceCounter = 0;
         int titleIndex = 0;
         bool titleIncoming = false;
@@ -193,6 +195,16 @@ class TrackDataHandler {
                 return true;
             }
         }
+
+        bool newBPMAvailable() {
+            if (lastBPM == getBPM()) {
+                return false;
+            } else {
+                lastBPM = getBPM();
+                return true;
+            }
+        }
+
 
         //function that returns the song timer as constant width string
         String getTimeString() {

@@ -513,19 +513,14 @@ void setup() {
         
     channel(0);
     // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
-    if(!displayA.begin(SSD1306_SWITCHCAPVCC, 0x3C)) Serial.println(F("SSD1306 allocation failed"));
-
-    channel(7);
-    displayB.begin(SSD1306_SWITCHCAPVCC, 0x3C);
-
-    channel(0);
+    if(!displayA.begin(SSD1306_SWITCHCAPVCC, 0x3C)) Serial.println(F("SSD1306 deck A allocation failed"));
     // Show initial display buffer contents on the screen --
     displayA.clearDisplay();
     displayA.drawBitmap(0, 0, logoTraktor, 128, 64, WHITE);
     displayA.display();
 
     channel(7);
-    // Show initial display buffer contents on the screen --
+    if(!displayB.begin(SSD1306_SWITCHCAPVCC, 0x3C)) Serial.println(F("SSD1306 deck B allocation failed"));
     displayB.clearDisplay();
     displayB.drawBitmap(0, 0, logoTraktor, 128, 64, WHITE);
     displayB.display();
@@ -533,23 +528,23 @@ void setup() {
     delay(2000); // Pause for 2 seconds
     displayA.setTextColor(SSD1306_WHITE);    
     displayB.setTextColor(SSD1306_WHITE);
-
-    channel(0);
 }
 
-void loop() {
-    long time = millis();
-    Control_Surface.loop();
-    trackEndLEDS();
-    selectorLEDS();
-    
-    if (deckA.newTimeAvailable() || deckA.newTitleAvailable()) {
+//function that handles
+void displays() {
+    //Since drawing a single screen takes around 30 milliseconds we draw it again only after we know new information is available via newTimeAvailable, newTitleAvailable and newBPMAvailable functions
+    //It's fine with 1 display, but the lag is definitely noticable in comparison to no display
+    //With 2 displays the delay is unacceptable
+    if (deckA.newTimeAvailable() || deckA.newTitleAvailable() || deckA.newBPMAvailable()) {
         channel(0);
         displayA.clearDisplay();
         displayA.setCursor(0,0);
         displayA.println("Deck A");
-    
-        displayA.setCursor(72, 0);
+
+        displayA.setCursor(48, 0);
+        displayA.print(deckA.getBPM());
+        
+        displayA.setCursor(96, 0);
         displayA.println(deckA.getShortTimeString());
     
         displayA.drawLine(0, 9, 127, 9, SSD1306_WHITE);
@@ -559,13 +554,16 @@ void loop() {
         displayA.display();
     }
 
-    if (deckB.newTimeAvailable() || deckB.newTitleAvailable()) {
+    if (deckB.newTimeAvailable() || deckB.newTitleAvailable() || deckB.newBPMAvailable()) {
         channel(7);
         displayB.clearDisplay();
         displayB.setCursor(0,0);
         displayB.println("Deck B");
+
+        displayB.setCursor(48, 0);
+        displayB.print(deckB.getBPM());
     
-        displayB.setCursor(72, 0);
+        displayB.setCursor(96, 0);
         displayB.println(deckB.getShortTimeString());
     
         displayB.drawLine(0, 9, 127, 9, SSD1306_WHITE);
@@ -574,11 +572,17 @@ void loop() {
         displayB.println(deckB.getTitle());
         displayB.display();
     }
+}
+
+void loop() {
+    Control_Surface.loop();
+    trackEndLEDS();
+    selectorLEDS();
+    displays();    
     
     if (second) {
         Serial << dec << "Deck A: Title: " << deckA.getTitle().replace("\n", " - ") << "  " << "BPM: " << deckA.getBPM() << "  " << "Time: " << (deckA.getTime().minutes < 10 ? "0" : "") << deckA.getTime().minutes << ":" << (deckA.getTime().seconds < 10 ? "0" : "") << deckA.getTime().seconds << "  " << "Tempo d: " << deckA.getTempo() << endl;
         Serial << dec << "Deck B: Title: " << deckB.getTitle().replace("\n", " - ") << "  " << "BPM: " << deckB.getBPM() << "  " << "Time: " << (deckB.getTime().minutes < 10 ? "0" : "") << deckB.getTime().minutes << ":" << (deckB.getTime().seconds < 10 ? "0" : "") << deckB.getTime().seconds << "  " << "Tempo d: " << deckB.getTempo() << endl;
     }
     FastLED.show();
-    Serial << (millis() - time) << endl;
 }
