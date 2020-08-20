@@ -150,7 +150,7 @@ bool deckAClipped = false;
 bool deckbClipped = false;
 bool masterClipped = false;
 
-
+/*
 Bank<7> bankA(4); // 4 cue selectors, looper, beatjump, sync 
 //Bank<7> bankB(4); // 1 encoder, 2 pushbuttons, 1 encoder button, total range of 28 CCs x2
 
@@ -177,7 +177,6 @@ Bankable::CCRotaryEncoder encoderA= {
     {bankA, BankType::CHANGE_ADDRESS},
     {7,8},
     {3, CHANNEL_1}};
- /*
 
 Bankable::CCButton button1B = {
     {bankB, BankType::CHANGE_ADDRESS},
@@ -427,7 +426,7 @@ void trackEndLEDS() {
         leds[1] = colorOff;
     }
 }
-
+/*
 void selectorLEDS() {
     switch (bankA.getSelection()) {
         case 0:
@@ -459,7 +458,7 @@ void selectorLEDS() {
             leds[37] = CRGB::Magenta;
             break;
     }
-    /*
+    
     switch (bankB.getSelection()) {
         case 0:
             leds[X] = deckASelectorLEDS[0];
@@ -490,9 +489,9 @@ void selectorLEDS() {
             leds[X+1] = CRGB::Magenta;
             break;
     }
-    */
+    
 }
-
+*/
 void setup() {
     potVolumeA.map(Mapping::volumeA);
     potVolumeB.map(Mapping::volumeB);
@@ -577,7 +576,7 @@ void displays() {
 void loop() {
     Control_Surface.loop();
     trackEndLEDS();
-    selectorLEDS();
+    //selectorLEDS();
     displays();    
     
     if (second) {
