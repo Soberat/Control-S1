@@ -103,7 +103,7 @@ Adafruit_SSD1306 displayA(128, 64, &Wire, 4);
 Adafruit_SSD1306 displayB(128, 64, &Wire, 4);
 
 USBMIDI_Interface midi;
-CD74HC4067 mux = {A6, {10, 9, 8, 7}};
+CD74HC4067 mux = {A6, {7, 6, 5, 4}};
 //CD74HC4067 mux2 = {A13, {12, 11, 10, 9}};
 
 CRGB colorOff = CRGB(0, 0, 0);
@@ -374,7 +374,7 @@ CCPotentiometer potVolumeMaster  = {A1, {79, CHANNEL_1}};
 CCButton buttonModifier5 = {mux.pin(12), {81, CHANNEL_1}}; //browser encoder pushbutton, used only for browser navigation.
 //CCButton buttonCruise = {mux.pin(11), {82, CHANNEL_1}};
 
-CCRotaryEncoder encoderBrowser = {{5, 6}, {83, CHANNEL_1}};
+CCRotaryEncoder encoderBrowser = {{2, 3}, {83, CHANNEL_1}};
 
 
 //Function that changes the channel of TCA9548A I2C multiplexer
