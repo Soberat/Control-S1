@@ -57,7 +57,7 @@ class TrackDataHandler {
                 						this->notify();
                 						break;
               					default:
-                						Serial << hex << cm.header << ' ' << cm.data1 << ' ' << cm.data2 << dec << "\t\t(" <<  MCU::getMCUNameFromNoteNumber(cm.data1)  << ")" << endl;
+                						if (Serial) Serial << hex << cm.header << ' ' << cm.data1 << ' ' << cm.data2 << dec << "\t\t(" <<  MCU::getMCUNameFromNoteNumber(cm.data1)  << ")" << endl;
                 						break;
             				}
             				break;
@@ -137,7 +137,7 @@ class TrackDataHandler {
                     if (title.startsWith("- ")) title.remove(0, 2);                  
                     titleIncoming = false;
                     titleDiscovered = true;
-                    Serial << dec << "Title: " << title << endl;
+                    if (Serial) Serial << dec << "Title: " << title << endl;
                     title.replace(" - ", "\n"); 
                     return true; //handling of this message is done
                 }
@@ -169,7 +169,7 @@ class TrackDataHandler {
             titleIndex = 0;
             title = "";
             newLoaded = true;
-            Serial << "Deck " << String(cmId & 0x0F) << " notified" << endl;
+            if (Serial) Serial << "Deck " << String(cmId & 0x0F) << " notified" << endl;
         }
 
 
