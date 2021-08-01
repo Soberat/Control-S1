@@ -1,18 +1,17 @@
 #include <FastLED.h>
+#include <Wire.h>
+#include <SerialFlash.h>
 #include <Encoder.h>
-#include <Control_Surface.h>
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_GFX.h>
+#include <Control_Surface.h>
 #include "Mapping.cpp"
 #include "TrackDataHandler.cpp"
 
-// The data pin with the strip connected.
-constexpr uint8_t ledpin = 0;
-// Total number of leds connected to FastLED
-constexpr uint8_t numleds = 44;
-// How many CCs are sent to control LEDs
-constexpr uint8_t ledCallbacks = 20;
-
+//#define AUDIO
+#ifdef AUDIO
+#include <Audio.h>
+#endif
 
 /*
  * Deck inputs:
@@ -21,13 +20,22 @@ constexpr uint8_t ledCallbacks = 20;
  * 1 - WS2812
  * 5x2 - encoders
  * 2 - I2C
+ * 3 - I2S
  */
 
-//TODO check if the library works fine using same pins
-//todo debug why doesnt connect after reprogramming
-//todo turn off displays and lights if no input detected for some time or some other condition
+//When using audio in Traktor use Shared Mode instead of Exclusive. Otherwise it's gonna glitch at every buffer size for some reason (after some time at least)
+ 
+//todo turn off displays and lights if no input detected for some time or some other condition - this should be done in this file since it knows when a message is received
+//todo add text scrolling using startScrollRight(page1, page2)
 
-using namespace MIDI_Notes;
+
+// The data pin with the strip connected.
+constexpr uint8_t ledpin = 10;
+// Total number of leds connected to FastLED
+constexpr uint8_t numleds = 50;
+// How many CCs are sent to control LEDs
+constexpr uint8_t ledCallbacks = 20;
+
 
 const unsigned char PROGMEM logoTraktor[] = {
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
@@ -102,34 +110,25 @@ const unsigned char PROGMEM logoTraktor[] = {
 Adafruit_SSD1306 displayA(128, 64, &Wire, 4);
 Adafruit_SSD1306 displayB(128, 64, &Wire, 4);
 
-USBMIDI_Interface midi;
-CD74HC4067 mux = {A6, {7, 6, 5, 4}};
-//CD74HC4067 mux2 = {A13, {12, 11, 10, 9}};
+TrackDataHandler deckA(0x02, 0xB0);
+TrackDataHandler deckB(0x22, 0xB1);
+
+#ifdef AUDIO
+//Teensy Audio objects and connections
+AudioInputUSB            usb1;
+AudioOutputI2S           i2s1;
+AudioConnection          patchCord1(usb1, 0, i2s1, 0);
+AudioConnection          patchCord2(usb1, 1, i2s1, 1);
+#endif
 
 CRGB colorOff = CRGB(0, 0, 0);
 
 CRGB vuColors[8] = {CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Yellow, CRGB::Yellow, CRGB::Red};
 //CRGB vuColors[8] = {CRGB::DarkBlue, CRGB::DarkBlue, CRGB::DarkBlue, CRGB::DarkBlue, CRGB::DarkBlue, CRGB::DarkOrange, CRGB::DarkOrange, CRGB::DarkOrange};
 
-
 //Array storing LED information about 8 hotcues, sync/master status and loop status
 CRGB deckASelectorLEDS[12] = {colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff};
 //CRGB deckBSelectorLEDS[12] = {colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff};
-
-CRGB cueType(int num) {
-    if (num == 0)  return colorOff;           //No cue type
-    if (num == 1)  return CRGB::DodgerBlue;   //Cue
-    if (num == 2)  return CRGB::DarkOrange;   //Fade In
-    if (num == 3)  return CRGB::DarkOrange;   //Fade Out
-    if (num == 4)  return CRGB::Gold;         //Load
-    if (num == 5)  return CRGB::DarkGray;     //Grid
-    if (num == 6)  return CRGB::Green;        //Loop
-
-    return CRGB::Azure;
-}
-
-TrackDataHandler deckA(0x02, 0xB0);
-TrackDataHandler deckB(0x22, 0xB1);
 
 //Track end warnings don't have to be synchronized between decks, so we need 2 separate timers
 //This value is arbitarily chosen to match Traktor's flashing interval
@@ -141,6 +140,9 @@ Timer<millis> timerClipB = 2000;
 Timer<millis> timerClipMaster = 2000;
 
 Timer<millis> second = 1000;
+
+Timer<millis> data = 5000;
+bool isIdle = false;
 
 //Variables containing information if Track End Warning is active for a deck
 bool trackEndA = false;
@@ -388,11 +390,11 @@ void channel(uint8_t bus) {
 bool sysExMessageCallback(SysExMessage se) {
     //making sure the data is coming from Traktor and that length corresponds to title data message length (6 ascii + 16 id)
     if (se.data[0] == 0xF0 && se.data[se.length-1] == 0xF7 && se.length == 22) {
-        if (se.CN == 1) return deckA.receive(se);
-        else if (se.CN == 2) return deckB.receive(se);
-    } else {        
-        return false; //indicate that the message should be handled by the library.
+        if (se.CN == 1) deckA.receive(se);
+        else if (se.CN == 2) deckB.receive(se);
     }
+    data.beginNextPeriod(); //reset incoming data timer
+    isIdle = false;
     return false;
 }
 
@@ -400,13 +402,13 @@ bool channelMessageCallback(ChannelMessage cm) {
     if (cm.data1 >= 32 && cm.data1 <= 77) {
         if (cm.CN == 1) {
             deckA.receive(cm);
-            return true;
         } 
         else if (cm.CN == 2) {
             deckB.receive(cm);
-            return true;
         }
     }
+    data.beginNextPeriod(); //reset incoming data timer
+    isIdle = false;
     return false;
 }
 
@@ -426,7 +428,7 @@ void trackEndLEDS() {
         leds[1] = colorOff;
     }
 }
-/*
+
 void selectorLEDS() {
     switch (bankA.getSelection()) {
         case 0:
@@ -491,7 +493,7 @@ void selectorLEDS() {
     }
     
 }
-*/
+
 void setup() {
     potVolumeA.map(Mapping::volumeA);
     potVolumeB.map(Mapping::volumeB);
@@ -573,15 +575,51 @@ void displays() {
     }
 }
 
+void setup() {
+  
+    #ifdef AUDIO
+    AudioMemory(8);
+    #endif
+    
+    Control_Surface.setMIDIInputCallbacks(channelMessageCallback, sysExMessageCallback, nullptr);
+    Control_Surface.begin();
+
+    FastLED.addLeds<NEOPIXEL, ledpin>(leds.data, numleds);
+    FastLED.setCorrection(TypicalPixelString);
+    FastLED.setBrightness(32);
+
+    //Neccesary for I2C multiplexer to work correctly
+    Wire.begin();
+        
+    channel(0);
+    // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+    if(!displayA.begin(SSD1306_SWITCHCAPVCC, 0x3C)) Serial.println(F("SSD1306 deck A allocation failed"));
+    displayA.clearDisplay();
+    displayA.drawBitmap(0, 0, logoTraktor, 128, 64, WHITE);
+    displayA.display();
+
+    channel(7);
+    if(!displayB.begin(SSD1306_SWITCHCAPVCC, 0x3C)) Serial.println(F("SSD1306 deck B allocation failed"));
+    displayB.clearDisplay();
+    displayB.drawBitmap(0, 0, logoTraktor, 128, 64, WHITE);
+    displayB.display();
+    
+    delay(2000); // Pause for 2 seconds
+    displayA.setTextColor(SSD1306_WHITE);    
+    displayB.setTextColor(SSD1306_WHITE);
+
+    second.beginNextPeriod();
+    data.beginNextPeriod();
+}
+
 void loop() {
     Control_Surface.loop();
     trackEndLEDS();
-    //selectorLEDS();
-    displays();    
+    selectorLEDS();
+    displays();
+    //Print debug data every second to make it more readable in a serial monitor 
+    if (second) Serial << deckA.debug() << deckB.debug();
     
-    if (second) {
-        Serial << dec << "Deck A: Title: " << deckA.getTitle().replace("\n", " - ") << "  " << "BPM: " << deckA.getBPM() << "  " << "Time: " << (deckA.getTime().minutes < 10 ? "0" : "") << deckA.getTime().minutes << ":" << (deckA.getTime().seconds < 10 ? "0" : "") << deckA.getTime().seconds << "  " << "Tempo d: " << deckA.getTempo() << endl;
-        Serial << dec << "Deck B: Title: " << deckB.getTitle().replace("\n", " - ") << "  " << "BPM: " << deckB.getBPM() << "  " << "Time: " << (deckB.getTime().minutes < 10 ? "0" : "") << deckB.getTime().minutes << ":" << (deckB.getTime().seconds < 10 ? "0" : "") << deckB.getTime().seconds << "  " << "Tempo d: " << deckB.getTempo() << endl;
-    }
+    
     FastLED.show();
 }

@@ -1,11 +1,12 @@
 #include <Control_Surface.h>
 
-//TODO add proper debug messages
-//TODO try to predict that traktor isnt on due to lack of MIDI messages
-
 /*
  * This class handles data from Traktor's MIDI output option - Numark Mixdeck
- * More information regarding this protocol is available on another repository, Numark-Mixdeck-Debug 
+ * We have debugged a large part of the protocol, however in this file we are only handling data we are interested in, that is:
+ *  - BPM (beats per minute),
+ *  - Title and artists,
+ *  - Song timer,
+ *  - Tempo
  */
 
 
@@ -121,13 +122,13 @@ class TrackDataHandler {
              *  It could be more efficient by collecting characters from the start and then matching 2 parts together, but this is safe and isn't really slow. It depends on the title length and how lucky you are (Traktor starts sending the title from a random index).
              *  Title is given as a combination of artist and track name, as in "%artists - %name", so you are able to extract them if you need it.
              */
+		
             //if the title is already discovered, we don't need to do anything with the message, so we mark it as handled.
             if (titleDiscovered) return true;
 
             if (titleIncoming) {
-                Serial << char(se.data[20]) << endl;
                 //count spaces in lookout for ending
-                if (se.data[20] == 0x20 ) spaceCounter++;
+                if (se.data[20] == 0x20) spaceCounter++;
                 else spaceCounter = 0;
     
     
@@ -137,18 +138,18 @@ class TrackDataHandler {
                     if (title.startsWith("- ")) title.remove(0, 2);                  
                     titleIncoming = false;
                     titleDiscovered = true;
-                    if (Serial) Serial << dec << "Title: " << title << endl;
                     title.replace(" - ", "\n"); 
                     return true; //handling of this message is done
                 }
                 title += char(se.data[20]);
                 return true;
             }
-            //listen for incoming sequences of 6 spaces on the last data byte of SysEx message
+			
+            //Listen for incoming sequences of 3/6 spaces on the last data byte of SysEx message
             if (se.data[20] == 0x20) spaceCounter++;
             else spaceCounter = 0;
     
-            //if 3 consecutive spaces are found, next packet will have the first letter on the last data byte
+            //if 3 consecutive spaces are found, next packet will have the first letter on the last data byte OR there will be 3 more filler characters that we will handle later.
             //reset spaceCounter to count spaces for the end of the title
             if (spaceCounter == 3) {
                 titleIncoming = true;
@@ -169,9 +170,8 @@ class TrackDataHandler {
             titleIndex = 0;
             title = "";
             newLoaded = true;
-            if (Serial) Serial << "Deck " << String(cmId & 0x0F) << " notified" << endl;
+            Serial << "Deck " << String(cmId & 0x0F) << " notified" << endl;
         }
-
 
         //if you want individual values or parse the time differently, it is available as a Time object through this getter.
         Time getTime() {
@@ -204,8 +204,7 @@ class TrackDataHandler {
                 return true;
             }
         }
-
-
+        
         //function that returns the song timer as constant width string
         String getTimeString() {
             String r = "";
@@ -232,13 +231,6 @@ class TrackDataHandler {
             return r;
         }
 
-
-        //Very similar to tempo calculations, just without the sign
-        double getBPM() {
-            return (bpmOverflows*128 + bpmRaw)/10.0;
-        }
-
-
         /*
          * To give an accurate value using midi messages Traktor sends the following:
          * tempoSign - is the track slower than default or faster
@@ -247,20 +239,29 @@ class TrackDataHandler {
          * 
          * So the final formula is 128*overflows + raw, which we divide by 10 to get the percentage
          * 
-         * It is not exactly correct, sometimes it's a bit off. Should be debugged
+         * It is not exactly correct, sometimes it's 0.1 bpm off. Should be debugged.
          * 
          * Traktor sends a couple more messages regarding tempo. I have them described in a separate repository, Numark-Mixdeck-Debug
          */
         double getTempo() {
             return tempoSign*(tempoOverflows*128 + tempoSign*tempoRaw)/10.0;
         }
+
+        //Very similar to tempo calculations, just without the sign
+        double getBPM() {
+            return (bpmOverflows*128 + bpmRaw)/10.0;
+        }
         
+		//An instance always knows what is happening with the title, so this function returns either the title or information about it.
         String getTitle() {
-            if (titleIncoming) return "Fetching title...";
-            if (titleDiscovered) return title;
+            //if (titleDiscovered) return "Fetching title...";
+            if (titleIncoming || titleDiscovered) return title;
             if (newLoaded) return "New track loaded...";
             return "";
-            //add more options?
+        }
+        
+        String debug() {
+            return String("Deck ").concat(cmId).concat(": Title: ").concat(getTitle().replace("\n", " - ")).concat("  BPM: ").concat(getBPM()).concat("  Time: ").concat(getShortTimeString()).concat("  Tempo d: ").concat(getTempo()).concat("\n");
         }
         
 };
