@@ -15,7 +15,7 @@
 
 /*
  * Deck inputs:
- * 2x15 muxed down to 2x5 - Gain, High, Mid, Low, Filter, Cue Enable, Volume, selector 1234, play, cue, load, shift
+ * 2x15 muxed down to 4 + 2 - Gain, High, Mid, Low, Filter, Cue Enable, Volume, selector 1234, play, cue, load, shift
  * 6 - crossfader, volume master, browser, master volume, monitor volume, cruise mode
  * 1 - WS2812
  * 5x2 - encoders
@@ -128,7 +128,7 @@ CRGB vuColors[8] = {CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Gr
 
 //Array storing LED information about 8 hotcues, sync/master status and loop status
 CRGB deckASelectorLEDS[12] = {colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff};
-//CRGB deckBSelectorLEDS[12] = {colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff};
+CRGB deckBSelectorLEDS[12] = {colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff};
 
 //Track end warnings don't have to be synchronized between decks, so we need 2 separate timers
 //This value is arbitarily chosen to match Traktor's flashing interval
@@ -141,9 +141,6 @@ Timer<millis> timerClipMaster = 2000;
 
 Timer<millis> second = 1000;
 
-Timer<millis> data = 5000;
-bool isIdle = false;
-
 //Variables containing information if Track End Warning is active for a deck
 bool trackEndA = false;
 bool trackEndB = false;
@@ -152,54 +149,69 @@ bool deckAClipped = false;
 bool deckbClipped = false;
 bool masterClipped = false;
 
-/*
-Bank<7> bankA(4); // 4 cue selectors, looper, beatjump, sync 
-//Bank<7> bankB(4); // 1 encoder, 2 pushbuttons, 1 encoder button, total range of 28 CCs x2
+CD74HC4067 mux = {A7, {A2, A3, A1, A0}};
+CD74HC4067 mux2 = {A6, {A2, A3, A1, A0}};
 
-EncoderSelector<7> selectorA = {bankA, {5, 6}, 4, Wrap::Clamp};
-//EncoderSelector<7> selectorB = {bankB, {pin1, pin2}, 4, Wrap::Clamp};
+
+Bank<7> bankA(4); // 4 cue selectors, looper, beatjump, sync 
+Bank<7> bankB(4); // 1 encoder, 2 pushbuttons, 1 encoder button, total range of 28 CCs x2
+
+EncoderSelector<7> selectorA = {bankA, {0, 1}, 4, Wrap::Clamp};
+EncoderSelector<7> selectorB = {bankB, {11, 12}, 4, Wrap::Clamp};
 
 //CC range [0-55] is reserved for the function selectors and buttons
 Bankable::CCButton button1A = {
     {bankA, BankType::CHANGE_ADDRESS},
-     mux.pin(8),
+     mux.pin(10),
     {0, CHANNEL_1}};
     
 Bankable::CCButton button2A = {
     {bankA, BankType::CHANGE_ADDRESS},
-     mux.pin(7),
+     mux.pin(9),
     {1, CHANNEL_1}};
 
 Bankable::CCButton buttonEncA = {
     {bankA, BankType::CHANGE_ADDRESS},
-     4,
+     mux.pin(0),
     {2, CHANNEL_1}};
 
 Bankable::CCRotaryEncoder encoderA= {
     {bankA, BankType::CHANGE_ADDRESS},
-    {7,8},
+    {2,3},
     {3, CHANNEL_1}};
 
 Bankable::CCButton button1B = {
     {bankB, BankType::CHANGE_ADDRESS},
-     pin,
+     mux2.pin(9),
     {28, CHANNEL_1}};
     
 Bankable::CCButton button2B = {
     {bankB, BankType::CHANGE_ADDRESS},
-     pin,
+     mux2.pin(10),
     {29, CHANNEL_1}};
 
 Bankable::CCButton buttonEncB = {
     {bankB, BankType::CHANGE_ADDRESS},
-     pin,
+     mux2.pin(13),
     {30, CHANNEL_1}};
 
-Bankable::CCRotaryEncoder = encoderB {
+Bankable::CCRotaryEncoder encoderB = {
     {bankB, BankType::CHANGE_ADDRESS},
-    {pin1, pin2},
+    {6, 7},
     {31, CHANNEL_1}};    
-*/
+
+// Return a color based on the type of the cue
+CRGB cueType(int num) {
+    if (num == 0)  return colorOff;           //No cue type
+    if (num == 1)  return CRGB::DodgerBlue;   //Cue
+    if (num == 2)  return CRGB::DarkOrange;   //Fade In
+    if (num == 3)  return CRGB::DarkOrange;   //Fade Out
+    if (num == 4)  return CRGB::Gold;         //Load
+    if (num == 5)  return CRGB::DarkGray;     //Grid
+    if (num == 6)  return CRGB::Green;        //Loop
+
+    return CRGB::Azure;
+}
 
 // Custom callback to handle incoming note events and control the LEDs
 class NoteCCFastLEDCallbackRGB : public SimpleNoteCCValueCallback {
@@ -215,7 +227,7 @@ class NoteCCFastLEDCallbackRGB : public SimpleNoteCCValueCallback {
          * This function has the job of controlling WS2812 Neopixels
          * In this case we are using multiple Neopixels connected in series to reduce pin usage on the uC
          * They are connected as :
-         * State A -> TrackEnd A -> Volume A-> Phase -> Volume B-> Volume Master -> State B-> TrackEnd B
+         * Selector A -> Status A -> Volume A -> Cue Enable A -> Cue Enable B -> Volume B -> Phase Shift -> Status B -> Selector B -> Master Out -> Cruise -> Master 'ring'
          *  0    ->     1    ->       2       ->    3    ->     4      ->    5    ->      6     ->    7
          * Declaration of CustomNoteValueLED below defines a range of notes starting at a given note to be received and handled by the class.
          * Velocity of the Nth note is stored as index-1 in the input variable
@@ -228,58 +240,57 @@ class NoteCCFastLEDCallbackRGB : public SimpleNoteCCValueCallback {
         void update(const INoteCCValue &input, uint8_t index) override {
             int value = input.getValue(index);
               switch (index) {
-                  case 0:
-                      if (value == 1) ledcolors[0] = CRGB::Green;
-                      else ledcolors[0] = colorOff;
+                  case 0: // Status deck A
+                      if (value == 1) ledcolors[2] = CRGB::Green;
+                      else ledcolors[2] = colorOff;
                       break;
-                  case 1:
-                      //Case 1 and 7 are responsible for alternating TrackEnd LEDs. Since NoteOn for the warning is received only once, this just tells an external function (trackEndLEDS()) to take care of it in the program loop
+                  case 1: // Track End A
                       if (value == 1) {
                         trackEndA = true;
                         timerEndA.begin();
                       }
                       else trackEndA = false;
                       break;
-                  case 2 :  //this strip is vertically inverted relative to others, so the code is a bit different
-                      for (int i = 7; i >= 0; i--) if (value > 16*i) {
-                          ledcolors[9-i] = vuColors[i];
+                  case 2:  // Volume deck A
+                      for (int i = 0; i <= 7; i++) if (value > 16*i) {
+                          ledcolors[4+i] = vuColors[i];
                       } else {
-                          ledcolors[9-i] = colorOff;
+                          ledcolors[4+i] = colorOff;
                       }
                       break;
-                  case 3 :
+                  case 3: // Phase shift indicator
                       //This is responsible for displaying the phase the same way Traktor does, as in center is no phase shift.
                       //Since midi values are 0-127 the code is quite ugly, but it works ;)                  
-                      for (int i = 0; i <= 7; i++) ledcolors[i+10] = colorOff;
+                      for (int i = 0; i <= 7; i++) ledcolors[22+i] = colorOff;
                       if (value == 63 || value == 0) break; //default value is 63, which means so phase shift. 0 is the default when the device starts without MIDI input, so we ignore it as well
-                      else if (value >= 0  && value < 15) for (int i = 0; i <= 3; i++) ledcolors[i+10] = CRGB::Orange;
-                      else if (value >= 15 && value < 31) for (int i = 1; i <= 3; i++) ledcolors[i+10] = CRGB::Orange;
-                      else if (value >= 31 && value < 47) for (int i = 2; i <= 3; i++) ledcolors[i+10] = CRGB::Orange;
-                      else if (value >= 47 && value < 63) ledcolors[13] = CRGB::Orange;
-                      else if (value > 63 && value <= 79) ledcolors[14] = CRGB::Orange;
-                      else if (value > 79 && value <= 95) for (int i = 4; i <= 5; i++) ledcolors[i+10] = CRGB::Orange;
-                      else if (value > 95 && value <= 111) for (int i = 4; i <= 6; i++) ledcolors[i+10] = CRGB::Orange;
-                      else if (value > 111) for (int i = 4; i <= 7; i++) ledcolors[i+10] = CRGB::Orange;
+                      else if (value >= 0  && value < 15) for (int i = 0; i <= 3; i++) ledcolors[22+i] = CRGB::Orange;
+                      else if (value >= 15 && value < 31) for (int i = 1; i <= 3; i++) ledcolors[22+i] = CRGB::Orange;
+                      else if (value >= 31 && value < 47) for (int i = 2; i <= 3; i++) ledcolors[22+i] = CRGB::Orange;
+                      else if (value >= 47 && value < 63) ledcolors[25] = CRGB::Orange;
+                      else if (value > 63 && value <= 79) ledcolors[26] = CRGB::Orange;
+                      else if (value > 79 && value <= 95) for (int i = 4; i <= 5; i++) ledcolors[22+i] = CRGB::Orange;
+                      else if (value > 95 && value <= 111) for (int i = 4; i <= 6; i++) ledcolors[22+i] = CRGB::Orange;
+                      else if (value > 111) for (int i = 4; i <= 7; i++) ledcolors[22+i] = CRGB::Orange;
                       break;
-                  case 4 :
-                      for (int i = 0; i <= 7; i++) if (value > 16*i) {
-                          ledcolors[18+i] = vuColors[i];
+                  case 4: // Volume B
+                      for (int i = 7; i >= 0; i--) if (value > 16*i) {
+                          ledcolors[21-i] = vuColors[i];
                       } else {
-                          ledcolors[18+i] = colorOff;
+                          ledcolors[21-i] = colorOff;
                       }
                       break;
-                  case 5 :
-                      for (int i = 0; i <= 7; i++) if (value > 16*i) {
-                          ledcolors[26+i] = vuColors[i];
+                  case 5: // Master out 
+                      for (int i = 7; i >= 0; i--) if (value > 16*i) {
+                          ledcolors[41-i] = vuColors[i];
                       } else {
-                          ledcolors[26+i] = colorOff;
+                          ledcolors[41-i] = colorOff;
                       }
                       break;
-                  case 6:
-                      if (value == 1) ledcolors[34] = CRGB::Green;
-                      else ledcolors[34] = colorOff;
+                  case 6: // Status deck B
+                      if (value == 1) ledcolors[30] = CRGB::Green;
+                      else ledcolors[30] = colorOff;
                       break;
-                  case 7:
+                  case 7: // Track End B
                       if (value == 1) {
                         trackEndB = true;
                         timerEndB.begin();
@@ -327,6 +338,65 @@ class NoteCCFastLEDCallbackRGB : public SimpleNoteCCValueCallback {
                       if (value > 0) deckASelectorLEDS[11] = CRGB::Green;
                       else deckASelectorLEDS[11] = colorOff;
                       break;
+                  case 20: // Cue Enable A
+                      if (value > 0) ledcolors[12] = CRGB::Orange;
+                      else ledcolors[12] = colorOff;
+                      break;
+                  case 21: // Cue Enable B
+                      if (value > 0) ledcolors[13] = CRGB::Orange;
+                      else ledcolors[13] = colorOff;
+                      break;
+                  case 22: //hotcue 1
+                      deckBSelectorLEDS[0] = cueType(value);
+                      break;
+                  case 23: //hotcue 2
+                      deckBSelectorLEDS[1] = cueType(value);
+                      break;
+                  case 24: //hotcue 3
+                      deckBSelectorLEDS[2] = cueType(value);
+                      break;
+                  case 25: //hotcue 4
+                      deckBSelectorLEDS[3] = cueType(value);
+                      break;
+                  case 26: //hotcue 5
+                      deckBSelectorLEDS[4] = cueType(value);
+                      break;
+                  case 27: //hotcue 6
+                      deckBSelectorLEDS[5] = cueType(value);
+                      break;
+                  case 28: //hotcue 7
+                      deckBSelectorLEDS[6] = cueType(value);
+                      break;
+                  case 29: //hotcue 8
+                      deckBSelectorLEDS[7] = cueType(value);
+                      break;
+                  case 30: //sync on
+                      if (value > 0) deckBSelectorLEDS[8] = CRGB::Blue;
+                      else deckBSelectorLEDS[8] = colorOff;
+                      break;
+                  case 31: //is master
+                      if (value > 0) deckBSelectorLEDS[9] = CRGB::Blue;
+                      else deckBSelectorLEDS[9] = colorOff;
+                      break;
+                  case 32: //loop in
+                      if (value > 0) deckBSelectorLEDS[10] = CRGB::Green;
+                      else deckBSelectorLEDS[10] = colorOff;
+                      break;
+                  case 33: //loop out
+                      if (value > 0) deckBSelectorLEDS[11] = CRGB::Green;
+                      else deckBSelectorLEDS[11] = colorOff;
+                      break;
+                  case 34: // cruise
+                      if (value > 0) ledcolors[42] = CRGB::Blue;
+                      else ledcolors[42] = colorOff;
+                      break;
+                  case 35: // Master level
+                      for (int i = 0; i <= 6; i++) if (value > 21*i) {
+                          ledcolors[43+i] = CRGB::Blue;
+                      } else {
+                          ledcolors[43+i] = colorOff;
+                      }
+                      break;
               }
         }        
     private:
@@ -343,38 +413,37 @@ Array<CRGB, numleds> leds = {};
 
 CustomNoteValueLED<ledCallbacks> midiled = {ledpin, leds.data};
 
-CCPotentiometer potVolumeA = {mux.pin(13), {56, CHANNEL_1}}; 
-CCPotentiometer potGainA   = {A2, {57, CHANNEL_1}};
-//CCPotentiometer potLowA    = {mux.pin(13), {58, CHANNEL_1}}; 
-//CCPotentiometer potMidA    = {mux.pin(13), {59, CHANNEL_1}}; 
-//CCPotentiometer potHighA   = {mux.pin(13), {60, CHANNEL_1}}; 
-//CCPotentiometer potFilterA = {mux.pin(13), {61, CHANNEL_1}}; 
+CCPotentiometer potVolumeA = {mux.pin(8), {56, CHANNEL_1}}; 
+CCPotentiometer potGainA   = {mux.pin(15), {57, CHANNEL_1}};
+CCPotentiometer potHighA   = {mux.pin(14), {58, CHANNEL_1}}; 
+CCPotentiometer potMidA    = {mux.pin(13), {59, CHANNEL_1}}; 
+CCPotentiometer potLowA    = {mux.pin(12), {60, CHANNEL_1}}; 
+CCPotentiometer potFilterA = {mux.pin(11), {61, CHANNEL_1}}; 
 
-CCButton buttonPlayA = {mux.pin(15),{62, CHANNEL_1}};
-CCButton buttonCueA = {mux.pin(14),{63, CHANNEL_1}};
-CCButton buttonLoadA = {mux.pin(11),{64, CHANNEL_1}};
-//CCButton buttonMonitorA = {mux.pin(27), {65, CHANNEL_1}}; 
-CCButton buttonModifier1A = {1, {66, CHANNEL_1}}; //shift left side
+CCButton buttonPlayA = {mux.pin(1),{62, CHANNEL_1}};
+CCButton buttonCueA = {mux.pin(2),{63, CHANNEL_1}};
+CCButton buttonLoadA = {mux.pin(3),{64, CHANNEL_1}};
+CCButton buttonCueEnableA = {mux.pin(7), {65, CHANNEL_1}}; 
 
-CCPotentiometer potVolumeB = {mux.pin(2), {67, CHANNEL_1}};
-CCPotentiometer potGainB   = {A0, {68, CHANNEL_1}};
-//CCPotentiometer potLowB    = {mux.pin(13), {69, CHANNEL_1}}; 
-//CCPotentiometer potMidB    = {mux.pin(13), {70, CHANNEL_1}}; 
-//CCPotentiometer potHighB   = {mux.pin(13), {71, CHANNEL_1}}; 
-//CCPotentiometer potFilterB = {mux.pin(13), {72, CHANNEL_1}}; 
+CCPotentiometer potVolumeB = {mux2.pin(8), {67, CHANNEL_1}};
+CCPotentiometer potGainB   = {mux2.pin(2), {68, CHANNEL_1}};
+CCPotentiometer potHighB   = {mux2.pin(3), {69, CHANNEL_1}}; 
+CCPotentiometer potMidB    = {mux2.pin(4), {70, CHANNEL_1}}; 
+CCPotentiometer potLowB    = {mux2.pin(5), {71, CHANNEL_1}}; 
+CCPotentiometer potFilterB = {mux2.pin(6), {72, CHANNEL_1}}; 
 
-CCButton buttonPlayB = {mux.pin(1),{73, CHANNEL_1}};
-CCButton buttonCueB  = {mux.pin(0),{74, CHANNEL_1}};
-CCButton buttonLoadB = {mux.pin(4),{75, CHANNEL_1}};
-//CCButton buttonMonitorB = {mux.pin(13), {76, CHANNEL_1}}; 
-CCButton buttonModifier1B = {11, {66, CHANNEL_1}}; //shift right side
+CCButton buttonPlayB = {mux2.pin(11),{73, CHANNEL_1}};
+CCButton buttonCueB  = {mux2.pin(12),{74, CHANNEL_1}};
+CCButton buttonLoadB = {mux2.pin(15),{75, CHANNEL_1}};
+CCButton buttonCueEnableB = {mux2.pin(14), {76, CHANNEL_1}}; 
 
-CCPotentiometer potXfader  = {mux.pin(3), {78, CHANNEL_1}};
-CCPotentiometer potVolumeMaster  = {A1, {79, CHANNEL_1}};
-//CCPotentiometer potVolumeMonitor ={mux.pin(13), {80, CHANNEL_1}}; 
+CCPotentiometer potXfader  = {mux.pin(4), {78, CHANNEL_1}};
+CCPotentiometer potVolumeMaster  = {mux2.pin(1), {79, CHANNEL_1}};
+CCPotentiometer potVolumeMonitor ={mux2.pin(0), {80, CHANNEL_1}}; 
 
+CCButton buttonModifier1 = {mux.pin(5), {66, CHANNEL_1}}; //shift 
 CCButton buttonModifier5 = {mux.pin(12), {81, CHANNEL_1}}; //browser encoder pushbutton, used only for browser navigation.
-//CCButton buttonCruise = {mux.pin(11), {82, CHANNEL_1}};
+CCButton buttonCruise = {13, {82, CHANNEL_1}};
 
 CCRotaryEncoder encoderBrowser = {{2, 3}, {83, CHANNEL_1}};
 
@@ -393,8 +462,6 @@ bool sysExMessageCallback(SysExMessage se) {
         if (se.CN == 1) deckA.receive(se);
         else if (se.CN == 2) deckB.receive(se);
     }
-    data.beginNextPeriod(); //reset incoming data timer
-    isIdle = false;
     return false;
 }
 
@@ -407,128 +474,89 @@ bool channelMessageCallback(ChannelMessage cm) {
             deckB.receive(cm);
         }
     }
-    data.beginNextPeriod(); //reset incoming data timer
-    isIdle = false;
     return false;
 }
 
 
 void trackEndLEDS() {
-    if (trackEndB && timerEndB) {
-        if (leds[35] == colorOff) leds[35] = CRGB::Red;
-        else leds[35] = colorOff;
-    } else if (!trackEndB) {  //ensure switching off after NoteOff event
-        leds[35] = colorOff;
-    }
-
     if (trackEndA && timerEndA) {
-        if (leds[1] == colorOff) leds[1] = CRGB::Red;
-        else leds[1] = colorOff;
+        if (leds[3] == colorOff) leds[3] = CRGB::Red;
+        else leds[3] = colorOff;
     } else if (!trackEndA) {
-        leds[1] = colorOff;
+        leds[3] = colorOff;
     }
+    
+    if (trackEndB && timerEndB) {
+        if (leds[31] == colorOff) leds[31] = CRGB::Red;
+        else leds[31] = colorOff;
+    } else if (!trackEndB) {  //ensure switching off after NoteOff event
+        leds[31] = colorOff;
+    }    
 }
 
 void selectorLEDS() {
     switch (bankA.getSelection()) {
         case 0:
-            leds[36] = deckASelectorLEDS[0];
-            leds[37] = deckASelectorLEDS[1];
+            leds[0] = deckASelectorLEDS[0];
+            leds[1] = deckASelectorLEDS[1];
             break;
         case 1:
-            leds[36] = deckASelectorLEDS[2];
-            leds[37] = deckASelectorLEDS[3];
+            leds[0] = deckASelectorLEDS[2];
+            leds[1] = deckASelectorLEDS[3];
             break;
         case 2:
-            leds[36] = deckASelectorLEDS[4];
-            leds[37] = deckASelectorLEDS[5];
+            leds[0] = deckASelectorLEDS[4];
+            leds[1] = deckASelectorLEDS[5];
             break;
         case 3:
-            leds[36] = deckASelectorLEDS[6];
-            leds[37] = deckASelectorLEDS[7];
+            leds[0] = deckASelectorLEDS[6];
+            leds[1] = deckASelectorLEDS[7];
             break;
         case 4:
-            leds[36] = deckASelectorLEDS[8];
-            leds[37] = deckASelectorLEDS[9];
+            leds[0] = deckASelectorLEDS[8];
+            leds[1] = deckASelectorLEDS[9];
             break;
         case 5:
-            leds[36] = CRGB::Lime;
-            leds[37] = CRGB::Lime;
+            leds[0] = CRGB::Lime;
+            leds[1] = CRGB::Lime;
             break;
         case 6:
-            leds[36] = CRGB::Magenta;
-            leds[37] = CRGB::Magenta;
+            leds[0] = CRGB::Magenta;
+            leds[1] = CRGB::Magenta;
             break;
     }
     
     switch (bankB.getSelection()) {
         case 0:
-            leds[X] = deckASelectorLEDS[0];
-            leds[X+1] = deckASelectorLEDS[1];
+            leds[32] = deckBSelectorLEDS[0];
+            leds[33] = deckBSelectorLEDS[1];
             break;
         case 1:
-            leds[X] = deckASelectorLEDS[2];
-            leds[X+1] = deckASelectorLEDS[3];
+            leds[32] = deckBSelectorLEDS[2];
+            leds[33] = deckBSelectorLEDS[3];
             break;
         case 2:
-            leds[X] = deckASelectorLEDS[4];
-            leds[X+1] = deckASelectorLEDS[5];
+            leds[32] = deckBSelectorLEDS[4];
+            leds[33] = deckBSelectorLEDS[5];
             break;
         case 3:
-            leds[X] = deckBCues[6];
-            leds[X+1] = deckBCues[7];
+            leds[32] = deckBSelectorLEDS[6];
+            leds[33] = deckBSelectorLEDS[7];
             break;
         case 4:
-            leds[X] = deckBSync[0];
-            leds[X+1] = deckBSync[1];
+            leds[32] = deckBSelectorLEDS[8];
+            leds[33] = deckBSelectorLEDS[9];
             break;
         case 5:
-            leds[X] = CRGB::Lime;
-            leds[X+1] = CRGB::Lime;
+            leds[32] = CRGB::Lime;
+            leds[33] = CRGB::Lime;
             break;
         case 6:
-            leds[X] = CRGB::Magenta;
-            leds[X+1] = CRGB::Magenta;
+            leds[32] = CRGB::Magenta;
+            leds[33] = CRGB::Magenta;
             break;
     }
     
-}
-
-void setup() {
-    potVolumeA.map(Mapping::volumeA);
-    potVolumeB.map(Mapping::volumeB);
-    potVolumeMaster.map(Mapping::volumeMaster);
-    potXfader.map(Mapping::crossfader);
-    potGainA.map(Mapping::gainA);
-    potGainB.map(Mapping::gainB);
-    
-    FastLED.addLeds<NEOPIXEL, ledpin>(leds.data, numleds);
-    FastLED.setCorrection(TypicalPixelString);
-    FastLED.setBrightness(32);
-    Control_Surface.setMIDIInputCallbacks(channelMessageCallback, sysExMessageCallback, nullptr);
-    Control_Surface.begin();
-    second.begin();
-
-    //Neccesary for I2C multiplexer to work correctly
-    Wire.begin();
-        
-    channel(0);
-    // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
-    if(!displayA.begin(SSD1306_SWITCHCAPVCC, 0x3C)) Serial.println(F("SSD1306 deck A allocation failed"));
-    // Show initial display buffer contents on the screen --
-    displayA.clearDisplay();
-    displayA.drawBitmap(0, 0, logoTraktor, 128, 64, WHITE);
-    displayA.display();
-
-    channel(7);
-    if(!displayB.begin(SSD1306_SWITCHCAPVCC, 0x3C)) Serial.println(F("SSD1306 deck B allocation failed"));
-    displayB.clearDisplay();
-    displayB.drawBitmap(0, 0, logoTraktor, 128, 64, WHITE);
-    displayB.display();
-    
-    delay(2000); // Pause for 2 seconds
-    displayA.setTextColor(SSD1306_WHITE);    
-    displayB.setTextColor(SSD1306_WHITE);
 }
 
 //function that handles
@@ -536,6 +564,7 @@ void displays() {
     //Since drawing a single screen takes around 30 milliseconds we draw it again only after we know new information is available via newTimeAvailable, newTitleAvailable and newBPMAvailable functions
     //It's fine with 1 display, but the lag is definitely noticable in comparison to no display
     //With 2 displays the delay is unacceptable
+    // TODO: Display the current banks
     if (deckA.newTimeAvailable() || deckA.newTitleAvailable() || deckA.newBPMAvailable()) {
         channel(0);
         displayA.clearDisplay();
@@ -580,6 +609,13 @@ void setup() {
     #ifdef AUDIO
     AudioMemory(8);
     #endif
+
+    potVolumeA.map(Mapping::volumeA);
+    potVolumeB.map(Mapping::volumeB);
+    potVolumeMaster.map(Mapping::volumeMaster);
+    potXfader.map(Mapping::crossfader);
+    potGainA.map(Mapping::gainA);
+    potGainB.map(Mapping::gainB);
     
     Control_Surface.setMIDIInputCallbacks(channelMessageCallback, sysExMessageCallback, nullptr);
     Control_Surface.begin();
@@ -609,7 +645,6 @@ void setup() {
     displayB.setTextColor(SSD1306_WHITE);
 
     second.beginNextPeriod();
-    data.beginNextPeriod();
 }
 
 void loop() {
