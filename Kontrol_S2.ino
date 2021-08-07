@@ -132,8 +132,11 @@ bool deckbClipped = false;
 bool masterClipped = false;
 
 // Input components
+// Channel 01 - Deck A
+// Channel 02 - Deck B
+// Channel 03 - Global
 
-CD74HC4067 mux = {A7, {A2, A3, A1, A0}};
+CD74HC4067 mux  = {A7, {A2, A3, A1, A0}};
 CD74HC4067 mux2 = {A6, {A2, A3, A1, A0}};
 
 Bank<7> bankA(4); // 4 cue selectors, looper, beatjump, sync 
@@ -142,80 +145,80 @@ Bank<7> bankB(4); // 1 encoder, 2 pushbuttons, 1 encoder button, total range of 
 EncoderSelector<7> selectorA = {bankA, {0, 1}, 4, Wrap::Clamp};
 EncoderSelector<7> selectorB = {bankB, {11, 12}, 4, Wrap::Clamp};
 
-//CC range [0-55] is reserved for the function selectors and buttons
+//CC range [10-??] is reserved for the function selectors and buttons
 Bankable::CCButton button1A = {
     {bankA, BankType::CHANGE_ADDRESS},
      mux.pin(10),
-    {0, CHANNEL_1}};
+    {10, CHANNEL_1}};
     
 Bankable::CCButton button2A = {
     {bankA, BankType::CHANGE_ADDRESS},
      mux.pin(9),
-    {1, CHANNEL_1}};
+    {11, CHANNEL_1}};
 
 Bankable::CCButton buttonEncA = {
     {bankA, BankType::CHANGE_ADDRESS},
      mux.pin(0),
-    {2, CHANNEL_1}};
+    {12, CHANNEL_1}};
 
 Bankable::CCRotaryEncoder encoderA= {
     {bankA, BankType::CHANGE_ADDRESS},
     {2,3},
-    {3, CHANNEL_1}};
+    {13, CHANNEL_1}};
 
 Bankable::CCButton button1B = {
     {bankB, BankType::CHANGE_ADDRESS},
      mux2.pin(9),
-    {4, CHANNEL_1}};
+    {10, CHANNEL_2}};
     
 Bankable::CCButton button2B = {
     {bankB, BankType::CHANGE_ADDRESS},
      mux2.pin(10),
-    {5, CHANNEL_1}};
+    {11, CHANNEL_2}};
 
 Bankable::CCButton buttonEncB = {
     {bankB, BankType::CHANGE_ADDRESS},
      mux2.pin(13),
-    {6, CHANNEL_1}};
+    {12, CHANNEL_2}};
 
 Bankable::CCRotaryEncoder encoderB = {
     {bankB, BankType::CHANGE_ADDRESS},
     {6, 7},
-    {7, CHANNEL_1}};    
+    {13, CHANNEL_2}};    
 
-CCPotentiometer potVolumeA = {mux.pin(8), {8, CHANNEL_1}}; 
-CCPotentiometer potGainA   = {mux.pin(15), {9, CHANNEL_1}};
-CCPotentiometer potHighA   = {mux.pin(14), {10, CHANNEL_1}}; 
-CCPotentiometer potMidA    = {mux.pin(13), {11, CHANNEL_1}}; 
-CCPotentiometer potLowA    = {mux.pin(12), {12, CHANNEL_1}}; 
-CCPotentiometer potFilterA = {mux.pin(11), {13, CHANNEL_1}}; 
+CCPotentiometer potVolumeA = {mux.pin(8), {0, CHANNEL_1}}; 
+CCPotentiometer potGainA   = {mux.pin(15), {1, CHANNEL_1}};
+CCPotentiometer potHighA   = {mux.pin(14), {2, CHANNEL_1}}; 
+CCPotentiometer potMidA    = {mux.pin(13), {3, CHANNEL_1}}; 
+CCPotentiometer potLowA    = {mux.pin(12), {4, CHANNEL_1}}; 
+CCPotentiometer potFilterA = {mux.pin(11), {5, CHANNEL_1}}; 
 
-CCButton buttonPlayA = {mux.pin(1),{14, CHANNEL_1}};
-CCButton buttonCueA = {mux.pin(2),{15, CHANNEL_1}};
-CCButton buttonLoadA = {mux.pin(3),{16, CHANNEL_1}};
-CCButton buttonCueEnableA = {mux.pin(7), {17, CHANNEL_1}}; 
+CCButton buttonPlayA = {mux.pin(1),{6, CHANNEL_1}};
+CCButton buttonCueA = {mux.pin(2),{7, CHANNEL_1}};
+CCButton buttonLoadA = {mux.pin(3),{8, CHANNEL_1}};
+CCButton buttonCueEnableA = {mux.pin(9), {9, CHANNEL_1}}; 
 
-CCPotentiometer potVolumeB = {mux2.pin(8), {18, CHANNEL_1}};
-CCPotentiometer potGainB   = {mux2.pin(2), {19, CHANNEL_1}};
-CCPotentiometer potHighB   = {mux2.pin(3), {20, CHANNEL_1}}; 
-CCPotentiometer potMidB    = {mux2.pin(4), {21, CHANNEL_1}}; 
-CCPotentiometer potLowB    = {mux2.pin(5), {22, CHANNEL_1}}; 
-CCPotentiometer potFilterB = {mux2.pin(6), {23, CHANNEL_1}}; 
+CCPotentiometer potVolumeB = {mux2.pin(8), {0, CHANNEL_2}};
+CCPotentiometer potGainB   = {mux2.pin(2), {1, CHANNEL_2}};
+CCPotentiometer potHighB   = {mux2.pin(3), {2, CHANNEL_2}}; 
+CCPotentiometer potMidB    = {mux2.pin(4), {3, CHANNEL_2}}; 
+CCPotentiometer potLowB    = {mux2.pin(5), {4, CHANNEL_2}}; 
+CCPotentiometer potFilterB = {mux2.pin(6), {5, CHANNEL_2}}; 
 
-CCButton buttonPlayB = {mux2.pin(11),{24, CHANNEL_1}};
-CCButton buttonCueB  = {mux2.pin(12),{25, CHANNEL_1}};
-CCButton buttonLoadB = {mux2.pin(15),{26, CHANNEL_1}};
-CCButton buttonCueEnableB = {mux2.pin(14), {27, CHANNEL_1}}; 
+CCButton buttonPlayB = {mux2.pin(11),{6, CHANNEL_2}};
+CCButton buttonCueB  = {mux2.pin(12),{7, CHANNEL_2}};
+CCButton buttonLoadB = {mux2.pin(15),{8, CHANNEL_2}};
+CCButton buttonCueEnableB = {mux2.pin(14), {9, CHANNEL_2}}; 
 
-CCPotentiometer potXfader  = {mux.pin(4), {28, CHANNEL_1}};
-CCPotentiometer potVolumeMaster  = {mux2.pin(1), {29, CHANNEL_1}};
-CCPotentiometer potVolumeMonitor ={mux2.pin(0), {30, CHANNEL_1}}; 
+CCPotentiometer potXfader  = {mux.pin(4), {0, CHANNEL_3}};
+CCPotentiometer potVolumeMonitor ={mux2.pin(0), {1, CHANNEL_3}}; 
+CCPotentiometer potVolumeMaster  = {mux2.pin(1), {2, CHANNEL_3}};
 
-CCButton buttonModifier1 = {mux.pin(5), {31, CHANNEL_1}}; //shift 
-CCButton buttonModifier2 = {mux.pin(12), {32, CHANNEL_1}}; //browser encoder pushbutton, used only for browser navigation.
-CCButton buttonCruise = {13, {33, CHANNEL_1}};
+CCButton buttonModifier1 = {mux.pin(5), {3, CHANNEL_3}}; //shift 
+CCButton buttonModifier2 = {mux.pin(12), {4, CHANNEL_3}}; //browser encoder pushbutton, used only for browser navigation.
+CCButton buttonCruise = {13, {5, CHANNEL_3}};
 
-CCRotaryEncoder encoderBrowser = {{2, 3}, {34, CHANNEL_1}};
+CCRotaryEncoder encoderBrowser = {{2, 3}, {6, CHANNEL_3}};
 
 // LED components
 
@@ -518,8 +521,8 @@ void selectorLEDS() {
             leds[1] = deckASelectorLEDS[9];
             break;
         case 5:
-            leds[0] = CRGB::Lime;
-            leds[1] = CRGB::Lime;
+            leds[0] = deckASelectorLEDS[10];
+            leds[1] = deckASelectorLEDS[11];
             break;
         case 6:
             leds[0] = CRGB::Magenta;
@@ -549,8 +552,8 @@ void selectorLEDS() {
             leds[33] = deckBSelectorLEDS[9];
             break;
         case 5:
-            leds[32] = CRGB::Lime;
-            leds[33] = CRGB::Lime;
+            leds[32] = deckBSelectorLEDS[10];
+            leds[33] = deckBSelectorLEDS[11];
             break;
         case 6:
             leds[32] = CRGB::Magenta;
