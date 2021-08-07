@@ -28,15 +28,6 @@
 //todo turn off displays and lights if no input detected for some time or some other condition - this should be done in this file since it knows when a message is received
 //todo add text scrolling using startScrollRight(page1, page2)
 
-
-// The data pin with the strip connected.
-constexpr uint8_t ledpin = 10;
-// Total number of leds connected to FastLED
-constexpr uint8_t numleds = 50;
-// How many CCs are sent to control LEDs
-constexpr uint8_t ledCallbacks = 20;
-
-
 const unsigned char PROGMEM logoTraktor[] = {
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
       0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
@@ -121,15 +112,6 @@ AudioConnection          patchCord1(usb1, 0, i2s1, 0);
 AudioConnection          patchCord2(usb1, 1, i2s1, 1);
 #endif
 
-CRGB colorOff = CRGB(0, 0, 0);
-
-CRGB vuColors[8] = {CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Yellow, CRGB::Yellow, CRGB::Red};
-//CRGB vuColors[8] = {CRGB::DarkBlue, CRGB::DarkBlue, CRGB::DarkBlue, CRGB::DarkBlue, CRGB::DarkBlue, CRGB::DarkOrange, CRGB::DarkOrange, CRGB::DarkOrange};
-
-//Array storing LED information about 8 hotcues, sync/master status and loop status
-CRGB deckASelectorLEDS[12] = {colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff};
-CRGB deckBSelectorLEDS[12] = {colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff};
-
 //Track end warnings don't have to be synchronized between decks, so we need 2 separate timers
 //This value is arbitarily chosen to match Traktor's flashing interval
 Timer<millis> timerEndA = 790;
@@ -149,9 +131,10 @@ bool deckAClipped = false;
 bool deckbClipped = false;
 bool masterClipped = false;
 
+// Input components
+
 CD74HC4067 mux = {A7, {A2, A3, A1, A0}};
 CD74HC4067 mux2 = {A6, {A2, A3, A1, A0}};
-
 
 Bank<7> bankA(4); // 4 cue selectors, looper, beatjump, sync 
 Bank<7> bankB(4); // 1 encoder, 2 pushbuttons, 1 encoder button, total range of 28 CCs x2
@@ -183,22 +166,75 @@ Bankable::CCRotaryEncoder encoderA= {
 Bankable::CCButton button1B = {
     {bankB, BankType::CHANGE_ADDRESS},
      mux2.pin(9),
-    {28, CHANNEL_1}};
+    {4, CHANNEL_1}};
     
 Bankable::CCButton button2B = {
     {bankB, BankType::CHANGE_ADDRESS},
      mux2.pin(10),
-    {29, CHANNEL_1}};
+    {5, CHANNEL_1}};
 
 Bankable::CCButton buttonEncB = {
     {bankB, BankType::CHANGE_ADDRESS},
      mux2.pin(13),
-    {30, CHANNEL_1}};
+    {6, CHANNEL_1}};
 
 Bankable::CCRotaryEncoder encoderB = {
     {bankB, BankType::CHANGE_ADDRESS},
     {6, 7},
-    {31, CHANNEL_1}};    
+    {7, CHANNEL_1}};    
+
+CCPotentiometer potVolumeA = {mux.pin(8), {8, CHANNEL_1}}; 
+CCPotentiometer potGainA   = {mux.pin(15), {9, CHANNEL_1}};
+CCPotentiometer potHighA   = {mux.pin(14), {10, CHANNEL_1}}; 
+CCPotentiometer potMidA    = {mux.pin(13), {11, CHANNEL_1}}; 
+CCPotentiometer potLowA    = {mux.pin(12), {12, CHANNEL_1}}; 
+CCPotentiometer potFilterA = {mux.pin(11), {13, CHANNEL_1}}; 
+
+CCButton buttonPlayA = {mux.pin(1),{14, CHANNEL_1}};
+CCButton buttonCueA = {mux.pin(2),{15, CHANNEL_1}};
+CCButton buttonLoadA = {mux.pin(3),{16, CHANNEL_1}};
+CCButton buttonCueEnableA = {mux.pin(7), {17, CHANNEL_1}}; 
+
+CCPotentiometer potVolumeB = {mux2.pin(8), {18, CHANNEL_1}};
+CCPotentiometer potGainB   = {mux2.pin(2), {19, CHANNEL_1}};
+CCPotentiometer potHighB   = {mux2.pin(3), {20, CHANNEL_1}}; 
+CCPotentiometer potMidB    = {mux2.pin(4), {21, CHANNEL_1}}; 
+CCPotentiometer potLowB    = {mux2.pin(5), {22, CHANNEL_1}}; 
+CCPotentiometer potFilterB = {mux2.pin(6), {23, CHANNEL_1}}; 
+
+CCButton buttonPlayB = {mux2.pin(11),{24, CHANNEL_1}};
+CCButton buttonCueB  = {mux2.pin(12),{25, CHANNEL_1}};
+CCButton buttonLoadB = {mux2.pin(15),{26, CHANNEL_1}};
+CCButton buttonCueEnableB = {mux2.pin(14), {27, CHANNEL_1}}; 
+
+CCPotentiometer potXfader  = {mux.pin(4), {28, CHANNEL_1}};
+CCPotentiometer potVolumeMaster  = {mux2.pin(1), {29, CHANNEL_1}};
+CCPotentiometer potVolumeMonitor ={mux2.pin(0), {30, CHANNEL_1}}; 
+
+CCButton buttonModifier1 = {mux.pin(5), {31, CHANNEL_1}}; //shift 
+CCButton buttonModifier2 = {mux.pin(12), {32, CHANNEL_1}}; //browser encoder pushbutton, used only for browser navigation.
+CCButton buttonCruise = {13, {33, CHANNEL_1}};
+
+CCRotaryEncoder encoderBrowser = {{2, 3}, {34, CHANNEL_1}};
+
+// LED components
+
+CRGB colorOff = CRGB(0, 0, 0);
+
+CRGB vuColors[8] = {CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Yellow, CRGB::Yellow, CRGB::Red};
+//CRGB vuColors[8] = {CRGB::DarkBlue, CRGB::DarkBlue, CRGB::DarkBlue, CRGB::DarkBlue, CRGB::DarkBlue, CRGB::DarkOrange, CRGB::DarkOrange, CRGB::DarkOrange};
+
+//Array storing LED information about 8 hotcues, sync/master status and loop status
+CRGB deckASelectorLEDS[12] = {colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff};
+CRGB deckBSelectorLEDS[12] = {colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff};
+
+
+// The data pin with the strip connected.
+constexpr uint8_t ledpin = 10;
+// Total number of leds connected to FastLED
+constexpr uint8_t numleds = 50;
+// How many CCs are sent to control LEDs
+constexpr uint8_t ledCallbacks = 20;
 
 // Return a color based on the type of the cue
 CRGB cueType(int num) {
@@ -214,14 +250,19 @@ CRGB cueType(int num) {
 }
 
 // Custom callback to handle incoming note events and control the LEDs
-class NoteCCFastLEDCallbackRGB : public SimpleNoteCCValueCallback {
+template <uint8_t RangeLen>
+class CustomNoteLED : public MatchingMIDIInputElement<MIDIMessageType::NOTE_ON,
+                                                    TwoByteRangeMIDIMatcher> {
     public:
-        NoteCCFastLEDCallbackRGB(CRGB *ledcolors) : ledcolors(ledcolors) {}
+        CustomNoteLED(CRGB *ledcolors, MIDIAddress address) 
+          : MatchingMIDIInputElement<MIDIMessageType::NOTE_ON,
+                                     TwoByteRangeMIDIMatcher>({address, RangeLen}),
+          ledcolors(ledcolors) {}
             
         //TODO clipped + decay
             
         // Called once upon initialization.
-        void begin(const INoteCCValue &input) override { updateAll(input); }
+        void begin() override {}
     
         /*
          * This function has the job of controlling WS2812 Neopixels
@@ -237,216 +278,176 @@ class NoteCCFastLEDCallbackRGB : public SimpleNoteCCValueCallback {
          * 
          * On Arduino Uno some notes may stay on even after a note signals to turn it off. No idea what's causing this, but the midi note is sent correctly.
          */
-        void update(const INoteCCValue &input, uint8_t index) override {
-            int value = input.getValue(index);
-              switch (index) {
-                  case 0: // Status deck A
-                      if (value == 1) ledcolors[2] = CRGB::Green;
-                      else ledcolors[2] = colorOff;
-                      break;
-                  case 1: // Track End A
-                      if (value == 1) {
-                        trackEndA = true;
-                        timerEndA.begin();
-                      }
-                      else trackEndA = false;
-                      break;
-                  case 2:  // Volume deck A
-                      for (int i = 0; i <= 7; i++) if (value > 16*i) {
-                          ledcolors[4+i] = vuColors[i];
-                      } else {
-                          ledcolors[4+i] = colorOff;
-                      }
-                      break;
-                  case 3: // Phase shift indicator
-                      //This is responsible for displaying the phase the same way Traktor does, as in center is no phase shift.
-                      //Since midi values are 0-127 the code is quite ugly, but it works ;)                  
-                      for (int i = 0; i <= 7; i++) ledcolors[22+i] = colorOff;
-                      if (value == 63 || value == 0) break; //default value is 63, which means so phase shift. 0 is the default when the device starts without MIDI input, so we ignore it as well
-                      else if (value >= 0  && value < 15) for (int i = 0; i <= 3; i++) ledcolors[22+i] = CRGB::Orange;
-                      else if (value >= 15 && value < 31) for (int i = 1; i <= 3; i++) ledcolors[22+i] = CRGB::Orange;
-                      else if (value >= 31 && value < 47) for (int i = 2; i <= 3; i++) ledcolors[22+i] = CRGB::Orange;
-                      else if (value >= 47 && value < 63) ledcolors[25] = CRGB::Orange;
-                      else if (value > 63 && value <= 79) ledcolors[26] = CRGB::Orange;
-                      else if (value > 79 && value <= 95) for (int i = 4; i <= 5; i++) ledcolors[22+i] = CRGB::Orange;
-                      else if (value > 95 && value <= 111) for (int i = 4; i <= 6; i++) ledcolors[22+i] = CRGB::Orange;
-                      else if (value > 111) for (int i = 4; i <= 7; i++) ledcolors[22+i] = CRGB::Orange;
-                      break;
-                  case 4: // Volume B
-                      for (int i = 7; i >= 0; i--) if (value > 16*i) {
-                          ledcolors[21-i] = vuColors[i];
-                      } else {
-                          ledcolors[21-i] = colorOff;
-                      }
-                      break;
-                  case 5: // Master out 
-                      for (int i = 7; i >= 0; i--) if (value > 16*i) {
-                          ledcolors[41-i] = vuColors[i];
-                      } else {
-                          ledcolors[41-i] = colorOff;
-                      }
-                      break;
-                  case 6: // Status deck B
-                      if (value == 1) ledcolors[30] = CRGB::Green;
-                      else ledcolors[30] = colorOff;
-                      break;
-                  case 7: // Track End B
-                      if (value == 1) {
-                        trackEndB = true;
-                        timerEndB.begin();
-                      }
-                      else trackEndB = false;
-                      break;
-
-                  case 8: //hotcue 1
-                      deckASelectorLEDS[0] = cueType(value);
-                      break;
-                  case 9: //hotcue 2
-                      deckASelectorLEDS[1] = cueType(value);
-                      break;
-                  case 10: //hotcue 3
-                      deckASelectorLEDS[2] = cueType(value);
-                      break;
-                  case 11: //hotcue 4
-                      deckASelectorLEDS[3] = cueType(value);
-                      break;
-                  case 12: //hotcue 5
-                      deckASelectorLEDS[4] = cueType(value);
-                      break;
-                  case 13: //hotcue 6
-                      deckASelectorLEDS[5] = cueType(value);
-                      break;
-                  case 14: //hotcue 7
-                      deckASelectorLEDS[6] = cueType(value);
-                      break;
-                  case 15: //hotcue 8
-                      deckASelectorLEDS[7] = cueType(value);
-                      break;
-                  case 16: //sync on
-                      if (value > 0) deckASelectorLEDS[8] = CRGB::Blue;
-                      else deckASelectorLEDS[8] = colorOff;
-                      break;
-                  case 17: //is master
-                      if (value > 0) deckASelectorLEDS[9] = CRGB::Blue;
-                      else deckASelectorLEDS[9] = colorOff;
-                      break;
-                  case 18: //loop in
-                      if (value > 0) deckASelectorLEDS[10] = CRGB::Green;
-                      else deckASelectorLEDS[10] = colorOff;
-                      break;
-                  case 19: //loop out
-                      if (value > 0) deckASelectorLEDS[11] = CRGB::Green;
-                      else deckASelectorLEDS[11] = colorOff;
-                      break;
-                  case 20: // Cue Enable A
-                      if (value > 0) ledcolors[12] = CRGB::Orange;
-                      else ledcolors[12] = colorOff;
-                      break;
-                  case 21: // Cue Enable B
-                      if (value > 0) ledcolors[13] = CRGB::Orange;
-                      else ledcolors[13] = colorOff;
-                      break;
-                  case 22: //hotcue 1
-                      deckBSelectorLEDS[0] = cueType(value);
-                      break;
-                  case 23: //hotcue 2
-                      deckBSelectorLEDS[1] = cueType(value);
-                      break;
-                  case 24: //hotcue 3
-                      deckBSelectorLEDS[2] = cueType(value);
-                      break;
-                  case 25: //hotcue 4
-                      deckBSelectorLEDS[3] = cueType(value);
-                      break;
-                  case 26: //hotcue 5
-                      deckBSelectorLEDS[4] = cueType(value);
-                      break;
-                  case 27: //hotcue 6
-                      deckBSelectorLEDS[5] = cueType(value);
-                      break;
-                  case 28: //hotcue 7
-                      deckBSelectorLEDS[6] = cueType(value);
-                      break;
-                  case 29: //hotcue 8
-                      deckBSelectorLEDS[7] = cueType(value);
-                      break;
-                  case 30: //sync on
-                      if (value > 0) deckBSelectorLEDS[8] = CRGB::Blue;
-                      else deckBSelectorLEDS[8] = colorOff;
-                      break;
-                  case 31: //is master
-                      if (value > 0) deckBSelectorLEDS[9] = CRGB::Blue;
-                      else deckBSelectorLEDS[9] = colorOff;
-                      break;
-                  case 32: //loop in
-                      if (value > 0) deckBSelectorLEDS[10] = CRGB::Green;
-                      else deckBSelectorLEDS[10] = colorOff;
-                      break;
-                  case 33: //loop out
-                      if (value > 0) deckBSelectorLEDS[11] = CRGB::Green;
-                      else deckBSelectorLEDS[11] = colorOff;
-                      break;
-                  case 34: // cruise
-                      if (value > 0) ledcolors[42] = CRGB::Blue;
-                      else ledcolors[42] = colorOff;
-                      break;
-                  case 35: // Master level
-                      for (int i = 0; i <= 6; i++) if (value > 21*i) {
-                          ledcolors[43+i] = CRGB::Blue;
-                      } else {
-                          ledcolors[43+i] = colorOff;
-                      }
-                      break;
-              }
-        }        
+        void handleUpdate(typename TwoByteRangeMIDIMatcher::Result match) override {
+            int value = match.value;
+            switch (match.index) {
+                case 0: // Hotcue 1 A
+                    deckASelectorLEDS[0] = cueType(value);
+                    break;
+                case 1: // Hotcue 1 B
+                    deckBSelectorLEDS[0] = cueType(value);
+                    break;
+                case 2: // Hotcue 2 A
+                    deckASelectorLEDS[1] = cueType(value);
+                    break;
+                case 3: // Hotcue 2 B
+                    deckBSelectorLEDS[1] = cueType(value);
+                    break;
+                case 4: // Hotcue 3 A
+                    deckASelectorLEDS[2] = cueType(value);
+                    break;
+                case 5: // Hotcue 3 B
+                    deckBSelectorLEDS[2] = cueType(value);
+                    break;
+                case 6: // Hotcue 4 A
+                    deckASelectorLEDS[3] = cueType(value);
+                    break;
+                case 7: // Hotcue 4 B
+                    deckBSelectorLEDS[3] = cueType(value);
+                    break;
+                case 8: // Hotcue 5 A
+                    deckASelectorLEDS[4] = cueType(value);
+                    break;
+                case 9: // Hotcue 5 B
+                    deckBSelectorLEDS[4] = cueType(value);
+                    break;
+                case 10: // Hotcue 6 A
+                    deckASelectorLEDS[5] = cueType(value);
+                    break;
+                case 11: // Hotcue 6 B
+                    deckBSelectorLEDS[5] = cueType(value);
+                    break;
+                case 12: // Hotcue 7 A
+                    deckASelectorLEDS[6] = cueType(value);
+                    break;
+                case 13: // Hotcue 7 B
+                    deckBSelectorLEDS[6] = cueType(value);
+                    break;
+                case 14: // Hotcue 8 A
+                    deckASelectorLEDS[7] = cueType(value);
+                    break;
+                case 15: // Hotcue 8 B
+                    deckBSelectorLEDS[7] = cueType(value);
+                    break;
+                case 16: // Sync on A
+                    if (value > 0) deckASelectorLEDS[8] = CRGB::Blue;
+                    else deckASelectorLEDS[8] = colorOff;
+                    break;
+                case 17: // Sync on B
+                    if (value > 0) deckBSelectorLEDS[8] = CRGB::Blue;
+                    else deckBSelectorLEDS[8] = colorOff;
+                    break;
+                case 18: // Is master A
+                    if (value > 0) deckASelectorLEDS[9] = CRGB::Blue;
+                    else deckASelectorLEDS[9] = colorOff;
+                    break;
+                case 19: // Is master A
+                    if (value > 0) deckBSelectorLEDS[9] = CRGB::Blue;
+                    else deckBSelectorLEDS[9] = colorOff;
+                    break;
+                case 20: // Loop in A
+                    if (value > 0) deckASelectorLEDS[10] = CRGB::Green;
+                    else deckASelectorLEDS[10] = colorOff;
+                    break;
+                case 21: // Loop in B
+                    if (value > 0) deckBSelectorLEDS[10] = CRGB::Green;
+                    else deckBSelectorLEDS[10] = colorOff;
+                    break;
+                case 22: // Loop out A
+                    if (value > 0) deckASelectorLEDS[11] = CRGB::Green;
+                    else deckASelectorLEDS[11] = colorOff;
+                    break;
+                case 23: // Loop out B
+                    if (value > 0) deckBSelectorLEDS[11] = CRGB::Green;
+                    else deckBSelectorLEDS[11] = colorOff;
+                    break;                    
+                case 24: // Status deck A
+                    if (value == 1) ledcolors[2] = CRGB::Green;
+                    else ledcolors[2] = colorOff;
+                    break;
+                case 25: // Status deck B
+                    if (value == 1) ledcolors[30] = CRGB::Green;
+                    else ledcolors[30] = colorOff;
+                    break;                 
+                case 26: // Track End A
+                    if (value == 1) {
+                      trackEndA = true;
+                      timerEndA.begin();
+                    }
+                    else trackEndA = false;
+                    break;
+                case 27: // Track End B
+                    if (value == 1) {
+                      trackEndB = true;
+                      timerEndB.begin();
+                    }
+                    else trackEndB = false;
+                    break;
+                case 28:  // Volume deck A
+                    for (int i = 0; i <= 7; i++) if (value > 16*i) {
+                        ledcolors[4+i] = vuColors[i];
+                    } else {
+                        ledcolors[4+i] = colorOff;
+                    }
+                    break;
+                case 29:  // Volume deck B
+                    for (int i = 7; i >= 0; i--) if (value > 16*i) {
+                        ledcolors[21-i] = vuColors[i];
+                    } else {
+                        ledcolors[21-i] = colorOff;
+                    }
+                    break;
+                case 30: // Cue Enable A
+                    if (value > 0) ledcolors[12] = CRGB::Orange;
+                    else ledcolors[12] = colorOff;
+                    break;
+                case 31: // Cue Enable B
+                    if (value > 0) ledcolors[13] = CRGB::Orange;
+                    else ledcolors[13] = colorOff;
+                    break;
+                case 32: // Phase shift indicator
+                    //This is responsible for displaying the phase the same way Traktor does, as in center is no phase shift.
+                    //Since midi values are 0-127 the code is quite ugly, but it works ;)                  
+                    for (int i = 0; i <= 7; i++) ledcolors[22+i] = colorOff;
+                    if (value == 63 || value == 0) break; //default value is 63, which means so phase shift. 0 is the default when the device starts without MIDI input, so we ignore it as well
+                    else if (value >= 0  && value < 15) for (int i = 0; i <= 3; i++) ledcolors[22+i] = CRGB::Orange;
+                    else if (value >= 15 && value < 31) for (int i = 1; i <= 3; i++) ledcolors[22+i] = CRGB::Orange;
+                    else if (value >= 31 && value < 47) for (int i = 2; i <= 3; i++) ledcolors[22+i] = CRGB::Orange;
+                    else if (value >= 47 && value < 63) ledcolors[25] = CRGB::Orange;
+                    else if (value > 63 && value <= 79) ledcolors[26] = CRGB::Orange;
+                    else if (value > 79 && value <= 95) for (int i = 4; i <= 5; i++) ledcolors[22+i] = CRGB::Orange;
+                    else if (value > 95 && value <= 111) for (int i = 4; i <= 6; i++) ledcolors[22+i] = CRGB::Orange;
+                    else if (value > 111) for (int i = 4; i <= 7; i++) ledcolors[22+i] = CRGB::Orange;
+                    break;
+                case 33: // Master out 
+                    for (int i = 7; i >= 0; i--) if (value > 16*i) {
+                        ledcolors[41-i] = vuColors[i];
+                    } else {
+                        ledcolors[41-i] = colorOff;
+                    }
+                    break;                
+                case 34: // Cruise mode status
+                    if (value > 0) ledcolors[42] = CRGB::Blue;
+                    else ledcolors[42] = colorOff;
+                    break;
+                case 35: // Master level (position of knob)
+                    for (int i = 0; i <= 6; i++) if (value > 21*i) {
+                        ledcolors[43+i] = CRGB::Blue;
+                    } else {
+                        ledcolors[43+i] = colorOff;
+                    }
+                    break;
+            }       
+        }
+               
     private:
         // Pointer to array of FastLED color values for the LEDs
         CRGB *ledcolors;
 };
  
-// Create a type alias for the MIDI Note Input Element that uses
-// the custom callback defined above.
-template <uint8_t RangeLen>
-using CustomNoteValueLED = GenericNoteCCRange<MIDIInputElementCC, RangeLen, NoteCCFastLEDCallbackRGB>;
-// Define the array of leds.
-Array<CRGB, numleds> leds = {};
-
-CustomNoteValueLED<ledCallbacks> midiled = {ledpin, leds.data};
-
-CCPotentiometer potVolumeA = {mux.pin(8), {56, CHANNEL_1}}; 
-CCPotentiometer potGainA   = {mux.pin(15), {57, CHANNEL_1}};
-CCPotentiometer potHighA   = {mux.pin(14), {58, CHANNEL_1}}; 
-CCPotentiometer potMidA    = {mux.pin(13), {59, CHANNEL_1}}; 
-CCPotentiometer potLowA    = {mux.pin(12), {60, CHANNEL_1}}; 
-CCPotentiometer potFilterA = {mux.pin(11), {61, CHANNEL_1}}; 
-
-CCButton buttonPlayA = {mux.pin(1),{62, CHANNEL_1}};
-CCButton buttonCueA = {mux.pin(2),{63, CHANNEL_1}};
-CCButton buttonLoadA = {mux.pin(3),{64, CHANNEL_1}};
-CCButton buttonCueEnableA = {mux.pin(7), {65, CHANNEL_1}}; 
-
-CCPotentiometer potVolumeB = {mux2.pin(8), {67, CHANNEL_1}};
-CCPotentiometer potGainB   = {mux2.pin(2), {68, CHANNEL_1}};
-CCPotentiometer potHighB   = {mux2.pin(3), {69, CHANNEL_1}}; 
-CCPotentiometer potMidB    = {mux2.pin(4), {70, CHANNEL_1}}; 
-CCPotentiometer potLowB    = {mux2.pin(5), {71, CHANNEL_1}}; 
-CCPotentiometer potFilterB = {mux2.pin(6), {72, CHANNEL_1}}; 
-
-CCButton buttonPlayB = {mux2.pin(11),{73, CHANNEL_1}};
-CCButton buttonCueB  = {mux2.pin(12),{74, CHANNEL_1}};
-CCButton buttonLoadB = {mux2.pin(15),{75, CHANNEL_1}};
-CCButton buttonCueEnableB = {mux2.pin(14), {76, CHANNEL_1}}; 
-
-CCPotentiometer potXfader  = {mux.pin(4), {78, CHANNEL_1}};
-CCPotentiometer potVolumeMaster  = {mux2.pin(1), {79, CHANNEL_1}};
-CCPotentiometer potVolumeMonitor ={mux2.pin(0), {80, CHANNEL_1}}; 
-
-CCButton buttonModifier1 = {mux.pin(5), {66, CHANNEL_1}}; //shift 
-CCButton buttonModifier5 = {mux.pin(12), {81, CHANNEL_1}}; //browser encoder pushbutton, used only for browser navigation.
-CCButton buttonCruise = {13, {82, CHANNEL_1}};
-
-CCRotaryEncoder encoderBrowser = {{2, 3}, {83, CHANNEL_1}};
-
+// Define the array of leds and the LED input element
+Array<CRGB, numleds> leds {};
+CustomNoteLED<numleds> midiled {leds.data, MIDI_Notes::C(-1)};
 
 //Function that changes the channel of TCA9548A I2C multiplexer
 void channel(uint8_t bus) {
@@ -459,18 +460,18 @@ void channel(uint8_t bus) {
 bool sysExMessageCallback(SysExMessage se) {
     //making sure the data is coming from Traktor and that length corresponds to title data message length (6 ascii + 16 id)
     if (se.data[0] == 0xF0 && se.data[se.length-1] == 0xF7 && se.length == 22) {
-        if (se.CN == 1) deckA.receive(se);
-        else if (se.CN == 2) deckB.receive(se);
+        if (se.getCable().getRaw() == 1) deckA.receive(se);
+        else if (se.getCable().getRaw() == 2) deckB.receive(se);
     }
     return false;
 }
 
 bool channelMessageCallback(ChannelMessage cm) {
     if (cm.data1 >= 32 && cm.data1 <= 77) {
-        if (cm.CN == 1) {
+        if (cm.getChannelCable().getRawCableNumber() == 1) {
             deckA.receive(cm);
         } 
-        else if (cm.CN == 2) {
+        else if (cm.getChannelCable().getRawCableNumber() == 2) {
             deckB.receive(cm);
         }
     }
@@ -617,7 +618,7 @@ void setup() {
     potGainA.map(Mapping::gainA);
     potGainB.map(Mapping::gainB);
     
-    Control_Surface.setMIDIInputCallbacks(channelMessageCallback, sysExMessageCallback, nullptr);
+    Control_Surface.setMIDIInputCallbacks(channelMessageCallback, sysExMessageCallback, nullptr, nullptr);
     Control_Surface.begin();
 
     FastLED.addLeds<NEOPIXEL, ledpin>(leds.data, numleds);
