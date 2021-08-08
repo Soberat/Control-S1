@@ -145,7 +145,7 @@ Bank<7> bankB(4); // 1 encoder, 2 pushbuttons, 1 encoder button, total range of 
 EncoderSelector<7> selectorA = {bankA, {0, 1}, 4, Wrap::Clamp};
 EncoderSelector<7> selectorB = {bankB, {11, 12}, 4, Wrap::Clamp};
 
-//CC range [10-??] is reserved for the function selectors and buttons
+//CC range [10-37] is reserved for the function selectors and buttons
 Bankable::CCButton button1A = {
     {bankA, BankType::CHANGE_ADDRESS},
      mux.pin(10),
