@@ -58,7 +58,7 @@ class TrackDataHandler {
                 						this->notify();
                 						break;
               					default:
-                						if (Serial) Serial << hex << cm.header << ' ' << cm.data1 << ' ' << cm.data2 << dec << "\t\t(" <<  MCU::getMCUNameFromNoteNumber(cm.data1)  << ")" << endl;
+                						// if (Serial) Serial << hex << cm.header << ' ' << cm.data1 << ' ' << cm.data2 << dec << "\t\t(" <<  MCU::getMCUNameFromNoteNumber(cm.data1)  << ")" << endl;
                 						break;
             				}
             				break;
@@ -170,7 +170,29 @@ class TrackDataHandler {
             titleIndex = 0;
             title = "";
             newLoaded = true;
-            Serial << "Deck " << String(cmId & 0x0F) << " notified" << endl;
+            //Serial << "Deck " << String(cmId & 0x0F) << " notified" << endl;
+        }
+
+        void clear() {
+            time.minutes = 0;
+            time.seconds = 0;
+            time.milliseconds = 0;
+    
+            spaceCounter = 0;
+            titleIndex = 0;
+            titleIncoming = false;
+            titleDiscovered = false;
+            newLoaded = false;
+            title = "";
+    
+            bpmRaw = 0;
+            bpmOverflows = 0;
+            
+            tempoSign = 1;
+            tempoRaw = 0.0;
+            tempoOverflows = 0;
+            
+            segment = 0;
         }
 
         //if you want individual values or parse the time differently, it is available as a Time object through this getter.
