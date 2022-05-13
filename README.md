@@ -1,7 +1,11 @@
 # Control-S1
-Cortex-M4-based DJ MIDI controller designed for Native Instrument's Traktor Pro.
-The origin and continuation of https://github.com/Soberat/MIDI-Controller
+Teensy-based DJ MIDI controller designed for Native Instrument's Traktor Pro.
 
+The origin and continuation of [MIDI-Controller](https://github.com/Soberat/MIDI-Controller)
+
+<img src="https://user-images.githubusercontent.com/15708186/168398971-150e122e-6587-4173-9c82-a0b6114ae510.png" width="700" height="350">
+
+image: [flaticon.com](flaticon.com)
 ## What is this?
 Control S1 is a project of mine that started out as a single "Play" button on a breadboard connected to an Arduino Uno. Over a very short period of time it evolved into a feature-loaded, truly unique DJ controller. It's unlikely to replace your main unit, but it will definitely take care of your needs for small-time parties and events.
 This video below shows a partially assembled board running [Pride2015](https://gist.github.com/kriegsman/964de772d64c502760e5) animation. Ain't it pretty? 
@@ -20,7 +24,7 @@ https://user-images.githubusercontent.com/15708186/168389876-82db2156-ce13-4308-
 - Portability without compromising functionality.
 
 ## Getting started
-You might want to start using this project on breadboards before printing the PCB - but if you'll be using everything I'am, then it's probably gonna work out of the box.
+You might want to start using this project on breadboards before printing the PCB - but if you'll be using everything I am, then it's probably gonna work out of the box.
 
 ### Compiling the project
 This section was getting long, so I moved it to another file, [compiling.md](https://github.com/Soberat/Control-S1/blob/master/compiling.md)
@@ -55,3 +59,12 @@ This is the only revision I printed, and obviously there were some issues, like:
 - Remove BP1 jumper - that was in anticipation that somehow 5050 and 4020 WS2812s would not be compatible with each other, but they are, so this bypass is redundant
 - Remove BP2 jumper - that I'm kinda torn on, because I've had boards where I had to bridge it to get the LEDs to work, but not on others. I think the best option is to shift the level.
 - Swap level shifer for a single IO from four.
+
+## License
+See [the LICENSE file](https://github.com/Soberat/Control-S1/blob/master/LICENSE) for how you can use this project yourself!
+
+## Support
+While I'm not actively working on this project anymore, I still support it. If you have found a bug, or have an idea, feel free to submit an issue, or even make the change yourself and create a pull request!
+
+## Disclaimer
+This product, its' components and author are not affiliated with Native Instruments in any way. "Traktor Pro", "Traktor Kontrol", "Traktor Pro Logo" are copyrighted property of Native Instruments, and usage of them direclty or through similarities is not meant as an infringement of the copyright.
