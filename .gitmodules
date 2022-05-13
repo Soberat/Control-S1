@@ -1,0 +1,33 @@
+[submodule "lib/Audio"]
+	path = lib/Audio
+	url = https://github.com/PaulStoffregen/Audio
+[submodule "lib/Encoder"]
+	path = lib/Encoder
+	url = https://github.com/PaulStoffregen/Encoder
+[submodule "lib/FastLED"]
+	path = lib/FastLED
+	url = https://github.com/FastLED/FastLED
+[submodule "lib/SdFat"]
+	path = lib/SdFat
+	url = https://github.com/PaulStoffregen/SdFat
+[submodule "lib/SerialFlash"]
+	path = lib/SerialFlash
+	url = https://github.com/PaulStoffregen/SerialFlash
+[submodule "lib/SPI"]
+	path = lib/SPI
+	url = https://github.com/PaulStoffregen/SPI
+[submodule "lib/Wire"]
+	path = lib/Wire
+	url = https://github.com/PaulStoffregen/Wire
+[submodule "lib/SD"]
+	path = lib/SD
+	url = https://github.com/arduino-libraries/SD
+[submodule "lib/Control-Surface"]
+	path = lib/Control-Surface
+	url = https://github.com/tttapa/Control-Surface
+[submodule "lib/Adafruit_SSD1306"]
+	path = lib/Adafruit_SSD1306
+	url = https://github.com/adafruit/Adafruit_SSD1306
+[submodule "cores"]
+	path = cores
+	url = https://github.com/PaulStoffregen/cores

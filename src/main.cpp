@@ -1,3 +1,4 @@
+#include "Arduino.h"
 #include <FastLED.h>
 #include <Wire.h>
 #include <SerialFlash.h>
@@ -5,11 +6,15 @@
 #include <Adafruit_SSD1306.h>
 #include <Adafruit_GFX.h>
 #include <Control_Surface.h>
-#include "TrackDataHandler.cpp"
+#include "TrackDataHandler.h"
 
-//#define AUDIO
-#ifdef AUDIO
+#ifdef USB_MIDI16_AUDIO_SERIAL
 #include <Audio.h>
+//Teensy Audio objects and connections
+AudioInputUSB            usb1;
+AudioOutputI2S           i2s1;
+AudioConnection          patchCord1(usb1, 0, i2s1, 0);
+AudioConnection          patchCord2(usb1, 1, i2s1, 1);
 #endif
 
 //TODO: Open correct advanced tab when changing banks
@@ -103,14 +108,6 @@ Adafruit_SSD1306 displayB(128, 64, &Wire, 4);
 
 TrackDataHandler deckA(0x02, 0xB0);
 TrackDataHandler deckB(0x22, 0xB1);
-
-#ifdef AUDIO
-//Teensy Audio objects and connections
-AudioInputUSB            usb1;
-AudioOutputI2S           i2s1;
-AudioConnection          patchCord1(usb1, 0, i2s1, 0);
-AudioConnection          patchCord2(usb1, 1, i2s1, 1);
-#endif
 
 //Track end warnings don't have to be synchronized between decks, so we need 2 separate timers
 //This value is arbitarily chosen to match Traktor's flashing interval
@@ -223,8 +220,6 @@ CCButton buttonCruise = {13, {5, CHANNEL_3}};
 CCRotaryEncoder encoderBrowser = {{4, 5}, {6, CHANNEL_3}};
 
 // LED components
-
-CRGB colorOff = CRGB(0, 0, 0);
 CRGB dimGreen = CRGB(0, 32, 0);
 CRGB dimBlue = CRGB(0, 0, 32);
 
@@ -232,9 +227,8 @@ CRGB vuColors[8] = {CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Green, CRGB::Gr
 //CRGB vuColors[8] = {CRGB::DarkBlue, CRGB::DarkBlue, CRGB::DarkBlue, CRGB::DarkBlue, CRGB::DarkBlue, CRGB::DarkOrange, CRGB::DarkOrange, CRGB::DarkOrange};
 
 //Array storing LED information about 8 hotcues, sync/master status and loop status
-CRGB deckASelectorLEDS[12] = {colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, dimBlue, dimBlue, dimGreen, dimGreen};
-CRGB deckBSelectorLEDS[12] = {colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, colorOff, dimBlue, dimBlue, dimGreen, dimGreen};
-
+CRGB deckASelectorLEDS[12] = {CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black, dimBlue, dimBlue, dimGreen, dimGreen};
+CRGB deckBSelectorLEDS[12] = {CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black, CRGB::Black, dimBlue, dimBlue, dimGreen, dimGreen};
 
 // The data pin with the strip connected.
 constexpr uint8_t ledpin = 10;
@@ -245,7 +239,7 @@ constexpr uint8_t ledCallbacks = 20;
 
 // Return a color based on the type of the cue
 CRGB cueType(int num) {
-    if (num == 0)  return CRGB(32, 32, 32);           //No cue type
+    if (num == 0)  return CRGB(32, 32, 32);   //No cue type
     if (num == 1)  return CRGB::DodgerBlue;   //Cue
     if (num == 2)  return CRGB::DarkOrange;   //Fade In
     if (num == 3)  return CRGB::DarkOrange;   //Fade Out
@@ -369,11 +363,11 @@ class CustomNoteLED : public MatchingMIDIInputElement<MIDIMessageType::NOTE_ON,
                     break;                    
                 case 24: // Status deck A
                     if (value > 0) ledcolors[2] = CRGB::Green;
-                    else ledcolors[2] = colorOff;
+                    else ledcolors[2] = CRGB::Black;
                     break;
                 case 25: // Status deck B
                     if (value > 0) ledcolors[30] = CRGB::Green;
-                    else ledcolors[30] = colorOff;
+                    else ledcolors[30] = CRGB::Black;
                     break;                 
                 case 26: // Track End A
                     if (value > 0) {
@@ -393,28 +387,28 @@ class CustomNoteLED : public MatchingMIDIInputElement<MIDIMessageType::NOTE_ON,
                     for (int i = 0; i <= 7; i++) if (value > 16*i) {
                         ledcolors[4+i] = vuColors[i];
                     } else {
-                        ledcolors[4+i] = colorOff;
+                        ledcolors[4+i] = CRGB::Black;
                     }
                     break;
                 case 29:  // Volume deck B
                     for (int i = 7; i >= 0; i--) if (value > 16*i) {
                         ledcolors[21-i] = vuColors[i];
                     } else {
-                        ledcolors[21-i] = colorOff;
+                        ledcolors[21-i] = CRGB::Black;
                     }
                     break;
                 case 30: // Cue Enable A
                     if (value > 0) ledcolors[12] = CRGB::Orange;
-                    else ledcolors[12] = colorOff;
+                    else ledcolors[12] = CRGB::Black;
                     break;
                 case 31: // Cue Enable B
                     if (value > 0) ledcolors[13] = CRGB::Orange;
-                    else ledcolors[13] = colorOff;
+                    else ledcolors[13] = CRGB::Black;
                     break;
                 case 32: // Phase shift indicator
                     //This is responsible for displaying the phase the same way Traktor does, as in center is no phase shift.
                     //Since midi values are 0-127 the code is quite ugly, but it works ;)                  
-                    for (int i = 0; i <= 7; i++) ledcolors[22+i] = colorOff;
+                    for (int i = 0; i <= 7; i++) ledcolors[22+i] = CRGB::Black;
                     if (value == 63 || value == 0) break; //default value is 63, which means so phase shift. 0 is the default when the device starts without MIDI input, so we ignore it as well
                     else if (value >= 0  && value < 15) for (int i = 0; i <= 3; i++) ledcolors[22+i] = CRGB::Orange;
                     else if (value >= 15 && value < 31) for (int i = 1; i <= 3; i++) ledcolors[22+i] = CRGB::Orange;
@@ -429,18 +423,18 @@ class CustomNoteLED : public MatchingMIDIInputElement<MIDIMessageType::NOTE_ON,
                     for (int i = 7; i >= 0; i--) if (value > 16*i) {
                         ledcolors[41-i] = vuColors[i];
                     } else {
-                        ledcolors[41-i] = colorOff;
+                        ledcolors[41-i] = CRGB::Black;
                     }
                     break;                
                 case 34: // Cruise mode status
                     if (value > 0) ledcolors[42] = CRGB::Blue;
-                    else ledcolors[42] = colorOff;
+                    else ledcolors[42] = CRGB::Black;
                     break;
                 case 35: // Master level (position of knob)
                     for (int i = 0; i <= 6; i++) if (value > 21*i) {
                         ledcolors[43+i] = CRGB::DarkBlue;
                     } else {
-                        ledcolors[43+i] = colorOff;
+                        ledcolors[43+i] = CRGB::Black;
                     }
                     break;
             }       
@@ -491,17 +485,17 @@ bool channelMessageCallback(ChannelMessage cm) {
 
 void trackEndLEDS() {
     if (trackEndA && timerEndA) {
-        if (leds[3] == colorOff) leds[3] = CRGB::Red;
-        else leds[3] = colorOff;
+        if (operator==(leds[3], CRGB::Black)) leds[3] = CRGB::Red;
+        else leds[3] = CRGB::Black;
     } else if (!trackEndA) {
-        leds[3] = colorOff;
+        leds[3] = CRGB::Black;
     }
     
     if (trackEndB && timerEndB) {
-        if (leds[31] == colorOff) leds[31] = CRGB::Red;
-        else leds[31] = colorOff;
+        if (operator==(leds[31], CRGB::Black)) leds[31] = CRGB::Red;
+        else leds[31] = CRGB::Black;
     } else if (!trackEndB) {  //ensure switching off after NoteOff event
-        leds[31] = colorOff;
+        leds[31] = CRGB::Black;
     }    
 }
 
@@ -644,34 +638,36 @@ void displays() {
 
 void setup() {
   
-    #ifdef AUDIO
+    #ifdef USB_MIDI16_AUDIO_SERIAL
     AudioMemory(8);
     #endif
 
     Control_Surface.setMIDIInputCallbacks(channelMessageCallback, sysExMessageCallback, nullptr, nullptr);
     Control_Surface.begin();
 
-    FastLED.addLeds<NEOPIXEL, ledpin>(leds.data, numleds);
+    //#if defined(ARDUINO_TEENSY40) || defined(ARDUINO_TEENSY41)
+    FastLED.addLeds<1, WS2812, ledpin, GRB>(leds.data, numleds);
+    // #else
+    // FastLED.addLeds<NEOPIXEL, ledpin>(leds.data, numleds)
+    // #endif
     FastLED.setCorrection(TypicalPixelString);
     FastLED.setBrightness(32);
 
     //Neccesary for I2C multiplexer to work correctly
     Wire.begin();
     channel(0);
-
     // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
-    if(!displayA.begin(SSD1306_SWITCHCAPVCC, 0x3C)) Serial.println(F("SSD1306 deck A allocation failed"));
+    if(!displayA.begin(SSD1306_SWITCHCAPVCC, 0x3C, false, true)) Serial.println(F("SSD1306 deck A allocation failed"));
     displayA.clearDisplay();
     displayA.drawBitmap(0, 0, logoTraktor, 128, 64, WHITE);
     displayA.display();
     
     channel(3);
-    if(!displayB.begin(SSD1306_SWITCHCAPVCC, 0x3C)) Serial.println(F("SSD1306 deck B allocation failed"));
+    if(!displayB.begin(SSD1306_SWITCHCAPVCC, 0x3C, false, true)) Serial.println(F("SSD1306 deck B allocation failed"));
     displayB.clearDisplay();
     displayB.drawBitmap(0, 0, logoTraktor, 128, 64, WHITE);
     displayB.display();
 
-    //delay(1000); // Pause for a second
     displayA.setTextColor(SSD1306_WHITE);    
     displayB.setTextColor(SSD1306_WHITE);
 
@@ -710,6 +706,8 @@ void loop() {
         displayB.clearDisplay();
         deckA.clear();
         deckB.clear();
+        trackEndA = false;
+        trackEndB = false;
     }
         
     FastLED.show();
