@@ -1,0 +1,59 @@
+{
+  "tasks": [
+    {
+      "label": "Build",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "command": "C:/Users/Mirek/Downloads/VisualTeensy_v1.5.0/make.exe",
+      "args": [
+        "all",
+        "-j",
+        "-Otarget",
+        "teensyconfig=${command:cpptools.activeConfigName}"
+      ]
+    },
+    {
+      "label": "Clean",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "command": "C:/Users/Mirek/Downloads/VisualTeensy_v1.5.0/make.exe",
+      "args": [
+        "clean",
+        "teensyconfig=${command:cpptools.activeConfigName}"
+      ]
+    },
+    {
+      "label": "Upload (teensy.exe)",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "command": "C:/Users/Mirek/Downloads/VisualTeensy_v1.5.0/make.exe all -j -Otarget teensyconfig=${command:cpptools.activeConfigName}; C:/Users/Mirek/Downloads/VisualTeensy_v1.5.0/make.exe upload teensyconfig=${command:cpptools.activeConfigName}",
+      "args": []
+    },
+    {
+      "label": "Upload (TyCommander)",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "command": "C:/Users/Mirek/Downloads/VisualTeensy_v1.5.0/make.exe all -j -Otarget teensyconfig=${command:cpptools.activeConfigName}; C:/Users/Mirek/Downloads/VisualTeensy_v1.5.0/make.exe uploadTy teensyconfig=${command:cpptools.activeConfigName}",
+      "args": []
+    }
+  ],
+  "version": "2.0.0",
+  "type": "shell",
+  "problemMatcher": "$gcc",
+  "presentation": {
+    "echo": true,
+    "clear": true,
+    "reveal": "always",
+    "focus": false,
+    "panel": "shared",
+    "showReuseMessage": false
+  }
+}

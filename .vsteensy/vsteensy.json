@@ -1,0 +1,45 @@
+{
+  "version": "2",
+  "target": "vsCode",
+  "buildSystem": "makefile",
+  "debugSupport": "none",
+  "configurations": [
+    {
+      "name": "default",
+      "guid": "709765bd-871f-4c00-a462-7c026bfc2fe0",
+      "setupType": "quick",
+      "coreBase": "C:\\Program Files (x86)\\Arduino\\hardware\\teensy\\avr",
+      "compilerBase": "C:\\Program Files (x86)\\Arduino\\hardware\\tools\\arm",
+      "makefileExtension": null,
+      "coreStrategy": "copy",
+      "stdLib": "newlib",
+      "sharedLibraries": [
+        "Adafruit_SSD1306",
+        "Adafruit_GFX_Library",
+        "Control-Surface-master",
+        "Adafruit_BusIO",
+        "SD"
+      ],
+      "projectLibraries": [
+        "Audio",
+        "Encoder",
+        "FastLED",
+        "SD",
+        "SdFat",
+        "SerialFlash",
+        "SPI",
+        "Wire",
+        "SdFat"
+      ],
+      "board": {
+        "name": "Teensy 4.0",
+        "options": {
+          "USB Type": "Serial + MIDIx16 + Audio",
+          "CPU Speed": "600 MHz",
+          "Optimize": "Faster",
+          "Keyboard Layout": "US English"
+        }
+      }
+    }
+  ]
+}

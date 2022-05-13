@@ -1,0 +1,1458 @@
+00000000 T _stext
+00000005 A _itcm_block_count
+00000020 000000bc T irq_gpio6789
+00000024 A _teensy_model_identifier
+000000dc t __do_global_dtors_aux
+00000100 t frame_dummy
+00000138 00000004 W CLEDController::getMaxRefreshRate() const
+0000013c 00000002 W CS::MIDI_Sink::stallDownstream(CS::MIDIStaller*, CS::MIDI_Source*)
+00000140 00000002 W CS::MIDI_Sink::unstallDownstream(CS::MIDIStaller*, CS::MIDI_Source*)
+00000144 00000002 W CS::MIDI_Sink::getFinalSink()
+00000148 00000002 W CS::MIDI_Source::stallUpstream(CS::MIDIStaller*, CS::MIDI_Sink*)
+0000014c 00000002 W CS::MIDI_Source::unstallUpstream(CS::MIDIStaller*, CS::MIDI_Sink*)
+00000150 00000002 W CS::MIDI_Source::getInitialSource()
+00000154 00000008 W CS::MIDIStaller::getName() const
+0000015c 00000002 W CS::MIDI_Interface::begin()
+00000160 00000006 W non-virtual thunk to CS::MIDI_Interface::begin()
+00000168 0000003a W CS::MIDI_Interface::sinkMIDIfromPipe(CS::ChannelMessage)
+000001a4 0000002e W CS::MIDI_Interface::sinkMIDIfromPipe(CS::SysExMessage)
+000001d4 00000024 W CS::MIDI_Interface::sinkMIDIfromPipe(CS::RealTimeMessage)
+000001f8 0000003e W CS::MIDI_Interface::sinkMIDIfromPipe(CS::SysCommonMessage)
+00000238 00000044 W AH::UpdatableCRTP<CS::MIDIInputElement<(CS::MIDIMessageType)176> >::~UpdatableCRTP()
+00000238 00000044 W AH::UpdatableCRTP<CS::MIDIInputElement<(CS::MIDIMessageType)176> >::~UpdatableCRTP()
+0000027c 00000044 W AH::UpdatableCRTP<AH::Updatable<AH::NormalUpdatable> >::~UpdatableCRTP()
+0000027c 00000044 W AH::UpdatableCRTP<AH::Updatable<AH::NormalUpdatable> >::~UpdatableCRTP()
+000002c0 00000002 W CS::MIDIInputElement<(CS::MIDIMessageType)176>::begin()
+000002c4 00000044 W AH::UpdatableCRTP<AH::Updatable<CS::MIDI_Interface> >::~UpdatableCRTP()
+000002c4 00000044 W AH::UpdatableCRTP<AH::Updatable<CS::MIDI_Interface> >::~UpdatableCRTP()
+00000308 00000044 W AH::UpdatableCRTP<AH::ExtendedIOElement>::~UpdatableCRTP()
+00000308 00000044 W AH::UpdatableCRTP<AH::ExtendedIOElement>::~UpdatableCRTP()
+0000034c 00000044 W AH::UpdatableCRTP<CS::MIDIInputElement<(CS::MIDIMessageType)144> >::~UpdatableCRTP()
+0000034c 00000044 W AH::UpdatableCRTP<CS::MIDIInputElement<(CS::MIDIMessageType)144> >::~UpdatableCRTP()
+00000390 00000002 W CS::Chord<(unsigned char)1>::~Chord()
+00000390 00000002 W CS::Chord<(unsigned char)1>::~Chord()
+00000394 00000002 W CS::Chord<(unsigned char)3>::~Chord()
+00000394 00000002 W CS::Chord<(unsigned char)3>::~Chord()
+00000398 00000002 W CS::Chord<(unsigned char)2>::~Chord()
+00000398 00000002 W CS::Chord<(unsigned char)2>::~Chord()
+0000039c 0000000c W FlexibleInlineBlockClocklessController<(unsigned char)1, 10, 250, 625, 375, (EOrder)66, 0, false, 50>::size()
+000003a8 00000006 W FlexibleInlineBlockClocklessController<(unsigned char)1, 10, 250, 625, 375, (EOrder)66, 0, false, 50>::getMaxRefreshRate() const
+000003b0 0000000a W CS::NoteCCKPValue<(CS::MIDIMessageType)176>::reset()
+000003bc 00000002 W CS::MIDIInputElement<(CS::MIDIMessageType)176>::update()
+000003c0 0000001c W CS::NoteCCKPValue<(CS::MIDIMessageType)176>::handleUpdate(CS::TwoByteMIDIMatcher::Result)
+000003dc 00000004 W CS::NoteCCKPValue<(CS::MIDIMessageType)176>::getValue() const
+000003e0 00000006 W non-virtual thunk to CS::NoteCCKPValue<(CS::MIDIMessageType)176>::getValue() const
+000003e8 00000002 W CustomNoteLED<(unsigned char)50>::begin()
+000003ec 00000002 W CS::MIDIInputElement<(CS::MIDIMessageType)144>::reset()
+000003f0 00000002 W CS::MIDIInputElement<(CS::MIDIMessageType)144>::update()
+000003f4 00000002 W AH::AnalogMultiplex<(unsigned char)4>::digitalWrite(unsigned short, unsigned char)
+000003f8 00000002 W AH::AnalogMultiplex<(unsigned char)4>::digitalWriteBuffered(unsigned short, unsigned char)
+000003fc 00000002 W AH::AnalogMultiplex<(unsigned char)4>::analogWrite(unsigned short, unsigned short)
+00000400 00000002 W AH::AnalogMultiplex<(unsigned char)4>::analogWriteBuffered(unsigned short, unsigned short)
+00000404 00000002 W AH::AnalogMultiplex<(unsigned char)4>::updateBufferedOutputs()
+00000408 00000002 W AH::AnalogMultiplex<(unsigned char)4>::updateBufferedInputs()
+0000040c 00000004 W CS::Chord<(unsigned char)1>::begin() const
+00000410 00000004 W CS::Chord<(unsigned char)1>::end() const
+00000414 00000004 W CS::Chord<(unsigned char)3>::begin() const
+00000418 00000004 W CS::Chord<(unsigned char)3>::end() const
+0000041c 00000004 W CS::Chord<(unsigned char)2>::begin() const
+00000420 00000004 W CS::Chord<(unsigned char)2>::end() const
+00000424 00000060 T sysExMessageCallback(CS::SysExMessage)
+00000484 0000004c T channelMessageCallback(CS::ChannelMessage)
+000004d0 00000020 W CS::Bank<(unsigned char)8>::select(unsigned char)
+000004f0 0000001c t __tcf_0
+0000050c 0000001e W TrackDataHandler::~TrackDataHandler()
+0000050c 0000001e W TrackDataHandler::~TrackDataHandler()
+0000052c 000001ba W FlexibleInlineBlockClocklessController<(unsigned char)1, 10, 250, 625, 375, (EOrder)66, 0, false, 50>::init()
+000006e8 00000004 W CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::sendNowImpl()
+000006ec 00000032 W CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::sendRealTimeImpl(CS::RealTimeMessage)
+00000720 00000072 W CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::sendSysCommonImpl(CS::SysCommonMessage)
+00000794 0000000e W CS::Chord<(unsigned char)1>::~Chord()
+000007a4 0000000e W CS::Chord<(unsigned char)3>::~Chord()
+000007b4 0000000e W CS::Chord<(unsigned char)2>::~Chord()
+000007c4 00000006 W CS::GenericMIDIRotaryEncoder<CS::Encoder, CS::RelativeCCSender>::begin()
+000007cc 00000006 W CS::Bankable::GenericMIDIRotaryEncoder<CS::Encoder, CS::Bankable::SingleAddress, CS::RelativeCCSender>::begin()
+000007d4 00000006 W CS::MIDIButton<CS::DigitalCCSender>::begin()
+000007dc 00000006 W CS::Bankable::MIDIButton<CS::Bankable::SingleAddress, CS::DigitalCCSender>::begin()
+000007e4 0000001e W CS::MIDIFilteredAnalog<CS::ContinuousCCSender>::begin()
+00000804 00000008 W AH::AnalogMultiplex<(unsigned char)4>::pinMode(unsigned short, unsigned char)
+0000080c 00000008 W AH::AnalogMultiplex<(unsigned char)4>::pinModeBuffered(unsigned short, unsigned char)
+00000814 0000002e W CS::GenericEncoderSelector<(unsigned char)8, CS::EmptySelectorCallback>::begin()
+00000844 00000036 W AH::AnalogMultiplex<(unsigned char)4>::begin()
+0000087c 00000028 W CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::~GenericUSBMIDI_Interface()
+0000087c 00000028 W CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::~GenericUSBMIDI_Interface()
+000008a4 00000006 W non-virtual thunk to CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::~GenericUSBMIDI_Interface()
+000008ac 00000006 W non-virtual thunk to CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::~GenericUSBMIDI_Interface()
+000008b4 00000006 W non-virtual thunk to CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::~GenericUSBMIDI_Interface()
+000008bc 00000030 W CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::~GenericUSBMIDI_Interface()
+000008ec 00000006 W non-virtual thunk to CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::~GenericUSBMIDI_Interface()
+000008f4 00000006 W non-virtual thunk to CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::~GenericUSBMIDI_Interface()
+000008fc 00000006 W non-virtual thunk to CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::~GenericUSBMIDI_Interface()
+00000904 00000028 W CS::USBMIDI_Interface::~USBMIDI_Interface()
+00000904 00000028 W CS::USBMIDI_Interface::~USBMIDI_Interface()
+0000092c 00000006 W non-virtual thunk to CS::USBMIDI_Interface::~USBMIDI_Interface()
+00000934 00000006 W non-virtual thunk to CS::USBMIDI_Interface::~USBMIDI_Interface()
+0000093c 00000006 W non-virtual thunk to CS::USBMIDI_Interface::~USBMIDI_Interface()
+00000944 00000030 W CS::USBMIDI_Interface::~USBMIDI_Interface()
+00000974 00000006 W non-virtual thunk to CS::USBMIDI_Interface::~USBMIDI_Interface()
+0000097c 00000006 W non-virtual thunk to CS::USBMIDI_Interface::~USBMIDI_Interface()
+00000984 00000006 W non-virtual thunk to CS::USBMIDI_Interface::~USBMIDI_Interface()
+0000098c 0000000c W AudioConnection::~AudioConnection()
+0000098c 0000000c W AudioConnection::~AudioConnection()
+00000998 00000040 W CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::sendChannelMessageImpl(CS::ChannelMessage)
+000009d8 00000020 t void CS::USBMIDI_Sender::sendSysExStartCont1<CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::Sender>(unsigned char const*, CS::Cable, CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::Sender&) [clone .isra.50]
+000009f8 00000034 W AH::ExtendedIOElement::analogWrite(unsigned short, unsigned short)
+00000a2c 00000034 W AH::ExtendedIOElement::digitalWrite(unsigned short, unsigned char)
+00000a60 00000040 W AH::ExtendedIOElement::pinMode(unsigned short, unsigned char)
+00000aa0 000000a8 W CS::MatchingMIDIInputElement<(CS::MIDIMessageType)176, CS::TwoByteMIDIMatcher>::updateWith(CS::ChannelMessage)
+00000b48 00000172 W CS::GenericEncoderSelector<(unsigned char)8, CS::EmptySelectorCallback>::update()
+00000cbc 0000004c W AH::UpdatableCRTP<AH::Updatable<CS::MIDI_Interface> >::~UpdatableCRTP()
+00000d08 00000044 W AH::AnalogMultiplex<(unsigned char)4>::~AnalogMultiplex()
+00000d08 00000044 W AH::AnalogMultiplex<(unsigned char)4>::~AnalogMultiplex()
+00000d4c 0000004c W AH::UpdatableCRTP<AH::ExtendedIOElement>::~UpdatableCRTP()
+00000d98 0000004c W AH::UpdatableCRTP<CS::MIDIInputElement<(CS::MIDIMessageType)144> >::~UpdatableCRTP()
+00000de4 00000044 W CustomNoteLED<(unsigned char)50>::~CustomNoteLED()
+00000de4 00000044 W CustomNoteLED<(unsigned char)50>::~CustomNoteLED()
+00000e28 0000004c W AH::UpdatableCRTP<CS::MIDIInputElement<(CS::MIDIMessageType)176> >::~UpdatableCRTP()
+00000e74 0000004c W CS::NoteCCKPValue<(CS::MIDIMessageType)176>::~NoteCCKPValue()
+00000e74 0000004c W CS::NoteCCKPValue<(CS::MIDIMessageType)176>::~NoteCCKPValue()
+00000ec0 0000004c W CustomNoteLED<(unsigned char)50>::~CustomNoteLED()
+00000f0c 0000004c W AH::AnalogMultiplex<(unsigned char)4>::~AnalogMultiplex()
+00000f58 00000054 W CS::NoteCCKPValue<(CS::MIDIMessageType)176>::~NoteCCKPValue()
+00000fac 00000044 W CS::MIDIButton<CS::DigitalCCSender>::~MIDIButton()
+00000fac 00000044 W CS::MIDIButton<CS::DigitalCCSender>::~MIDIButton()
+00000ff0 00000044 W CS::Bankable::MIDIButton<CS::Bankable::SingleAddress, CS::DigitalCCSender>::~MIDIButton()
+00000ff0 00000044 W CS::Bankable::MIDIButton<CS::Bankable::SingleAddress, CS::DigitalCCSender>::~MIDIButton()
+00001034 00000044 W CS::CCPotentiometer::~CCPotentiometer()
+00001034 00000044 W CS::CCPotentiometer::~CCPotentiometer()
+00001078 00000044 W CS::CCButton::~CCButton()
+00001078 00000044 W CS::CCButton::~CCButton()
+000010bc 00000044 W CS::Bankable::CCButton::~CCButton()
+000010bc 00000044 W CS::Bankable::CCButton::~CCButton()
+00001100 0000004c W AH::UpdatableCRTP<AH::Updatable<AH::NormalUpdatable> >::~UpdatableCRTP()
+0000114c 00000054 W CS::Bankable::GenericMIDIRotaryEncoder<CS::Encoder, CS::Bankable::SingleAddress, CS::RelativeCCSender>::~GenericMIDIRotaryEncoder()
+0000114c 00000054 W CS::Bankable::GenericMIDIRotaryEncoder<CS::Encoder, CS::Bankable::SingleAddress, CS::RelativeCCSender>::~GenericMIDIRotaryEncoder()
+000011a0 00000054 W CS::GenericMIDIRotaryEncoder<CS::Encoder, CS::RelativeCCSender>::~GenericMIDIRotaryEncoder()
+000011a0 00000054 W CS::GenericMIDIRotaryEncoder<CS::Encoder, CS::RelativeCCSender>::~GenericMIDIRotaryEncoder()
+000011f4 00000054 W CS::Bankable::CCRotaryEncoder::~CCRotaryEncoder()
+000011f4 00000054 W CS::Bankable::CCRotaryEncoder::~CCRotaryEncoder()
+00001248 0000004c W CS::MIDIButton<CS::DigitalCCSender>::~MIDIButton()
+00001294 00000054 W CS::CCRotaryEncoder::~CCRotaryEncoder()
+00001294 00000054 W CS::CCRotaryEncoder::~CCRotaryEncoder()
+000012e8 0000004c W CS::Bankable::MIDIButton<CS::Bankable::SingleAddress, CS::DigitalCCSender>::~MIDIButton()
+00001334 00000054 W CS::GenericEncoderSelector<(unsigned char)8, CS::EmptySelectorCallback>::~GenericEncoderSelector()
+00001334 00000054 W CS::GenericEncoderSelector<(unsigned char)8, CS::EmptySelectorCallback>::~GenericEncoderSelector()
+00001388 0000004c W CS::Bankable::CCButton::~CCButton()
+000013d4 0000004c W CS::CCPotentiometer::~CCPotentiometer()
+00001420 00000054 W CS::EncoderSelector<(unsigned char)8>::~EncoderSelector()
+00001420 00000054 W CS::EncoderSelector<(unsigned char)8>::~EncoderSelector()
+00001474 0000004c W CS::CCButton::~CCButton()
+000014c0 0000005c W CS::GenericMIDIRotaryEncoder<CS::Encoder, CS::RelativeCCSender>::~GenericMIDIRotaryEncoder()
+0000151c 0000005c W CS::Bankable::GenericMIDIRotaryEncoder<CS::Encoder, CS::Bankable::SingleAddress, CS::RelativeCCSender>::~GenericMIDIRotaryEncoder()
+00001578 0000005c W CS::GenericEncoderSelector<(unsigned char)8, CS::EmptySelectorCallback>::~GenericEncoderSelector()
+000015d4 0000005c W CS::CCRotaryEncoder::~CCRotaryEncoder()
+00001630 0000005c W CS::Bankable::CCRotaryEncoder::~CCRotaryEncoder()
+0000168c 0000005c W CS::EncoderSelector<(unsigned char)8>::~EncoderSelector()
+000016e8 00000054 W CS::CCPotentiometer::CCPotentiometer(unsigned short, CS::MIDIAddress)
+000016e8 00000054 W CS::CCPotentiometer::CCPotentiometer(unsigned short, CS::MIDIAddress)
+0000173c 000000b4 W CS::Bankable::CCRotaryEncoder::CCRotaryEncoder(CS::OutputBankConfig<(CS::BankType)0>, CS::Encoder&&, CS::MIDIAddress, short, unsigned char)
+0000173c 000000b4 W CS::Bankable::CCRotaryEncoder::CCRotaryEncoder(CS::OutputBankConfig<(CS::BankType)0>, CS::Encoder&&, CS::MIDIAddress, short, unsigned char)
+000017f0 000000b6 T cueType(int)
+000018a8 000005cc W CustomNoteLED<(unsigned char)50>::handleUpdate(CS::TwoByteRangeMIDIMatcher::Result)
+00001e74 00000654 W CS::MatchingMIDIInputElement<(CS::MIDIMessageType)144, CS::TwoByteRangeMIDIMatcher>::updateWith(CS::ChannelMessage)
+000024c8 000000b8 T trackEndLEDS()
+00002580 00000194 T selectorLEDS()
+00002714 0000003e W CS::MIDI_Sender<CS::Control_Surface_>::sendControlChange(CS::MIDIAddress, unsigned char)
+00002754 00000224 W CS::Bankable::GenericMIDIRotaryEncoder<CS::Encoder, CS::Bankable::SingleAddress, CS::RelativeCCSender>::update()
+00002978 0000007c W CS::MIDIFilteredAnalog<CS::ContinuousCCSender>::update()
+000029f4 00000180 W CS::Bankable::MIDIButton<CS::Bankable::SingleAddress, CS::DigitalCCSender>::update()
+00002b74 00000048 W CS::MIDIButton<CS::DigitalCCSender>::update()
+00002bbc 0000018c W CS::GenericMIDIRotaryEncoder<CS::Encoder, CS::RelativeCCSender>::update()
+00002d48 0000005c W CS::MIDIButton<CS::DigitalCCSender>::MIDIButton(unsigned short, CS::MIDIAddress, CS::DigitalCCSender const&)
+00002d48 0000005c W CS::MIDIButton<CS::DigitalCCSender>::MIDIButton(unsigned short, CS::MIDIAddress, CS::DigitalCCSender const&)
+00002da4 00000064 W CS::Bankable::MIDIButton<CS::Bankable::SingleAddress, CS::DigitalCCSender>::MIDIButton(CS::Bankable::SingleAddress, unsigned short, CS::DigitalCCSender const&)
+00002da4 00000064 W CS::Bankable::MIDIButton<CS::Bankable::SingleAddress, CS::DigitalCCSender>::MIDIButton(CS::Bankable::SingleAddress, unsigned short, CS::DigitalCCSender const&)
+00002e08 00000200 W CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::GenericUSBMIDI_Interface<>()
+00002e08 00000200 W CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::GenericUSBMIDI_Interface<>()
+00002e08 00000200 W CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::GenericUSBMIDI_Interface<>()
+00002e08 00000200 W CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::GenericUSBMIDI_Interface<>()
+00003008 00000040 W CS::MIDI_Sender<CS::MIDI_Interface>::sendControlChange(CS::MIDIAddress, unsigned char)
+00003048 0000006c W CS::GenericEncoderSelector<(unsigned char)8, CS::EmptySelectorCallback>::GenericEncoderSelector(CS::Selectable<(unsigned char)8>&, CS::EmptySelectorCallback const&, CS::EncoderSwitchPinList const&, signed char, CS::Wrap)
+00003048 0000006c W CS::GenericEncoderSelector<(unsigned char)8, CS::EmptySelectorCallback>::GenericEncoderSelector(CS::Selectable<(unsigned char)8>&, CS::EmptySelectorCallback const&, CS::EncoderSwitchPinList const&, signed char, CS::Wrap)
+000030b4 000012dc t __static_initialization_and_destruction_0(int, int) [clone .constprop.59]
+00004390 00000950 W FlexibleInlineBlockClocklessController<(unsigned char)1, 10, 250, 625, 375, (EOrder)66, 0, false, 50>::showRGBInternal(PixelController<(EOrder)66, 1, 1ul>&)
+00004ce0 00000028 W FlexibleInlineBlockClocklessController<(unsigned char)1, 10, 250, 625, 375, (EOrder)66, 0, false, 50>::showPixels(PixelController<(EOrder)66, 1, 1ul>&)
+00004d08 000000f8 W CPixelLEDController<(EOrder)66, 1, 1ul>::showColor(CRGB const&, int, CRGB)
+00004e00 00000110 W CPixelLEDController<(EOrder)66, 1, 1ul>::show(CRGB const*, int, CRGB)
+00004f10 0000012c W CLEDController::clearLeds(int)
+0000503c 00000068 W AH::AnalogMultiplex<(unsigned char)4>::prepareReading(unsigned char)
+000050a4 00000030 W AH::AnalogMultiplex<(unsigned char)4>::analogRead(unsigned short)
+000050d4 00000008 W AH::AnalogMultiplex<(unsigned char)4>::analogReadBuffered(unsigned short)
+000050dc 00000044 W AH::ExtendedIOElement::analogRead(unsigned short)
+00005120 00000024 W AH::AnalogMultiplex<(unsigned char)4>::digitalRead(unsigned short)
+00005144 00000008 W AH::AnalogMultiplex<(unsigned char)4>::digitalReadBuffered(unsigned short)
+0000514c 00000044 W AH::ExtendedIOElement::digitalRead(unsigned short)
+00005190 000000aa W void CS::MIDI_Interface::dispatchIncoming<CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend> >(CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>*, CS::MIDIReadEvent)
+0000523c 0000009c W CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::handleStall()
+000052d8 00000006 W non-virtual thunk to CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::handleStall()
+000052e0 000000de W void CS::MIDI_Interface::updateIncoming<CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend> >(CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>*)
+000053c0 00000008 W CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::update()
+000053c8 00000006 W non-virtual thunk to CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::update()
+000053d0 0000005a W void CS::USBMIDI_Sender::sendSysExEnd<CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::Sender>(unsigned char const*, unsigned short, CS::Cable, CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::Sender&)
+0000542c 0000012e W void CS::USBMIDI_Sender::sendSysEx<CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::Sender>(CS::SysExMessage, CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::Sender&&)
+0000555c 0000002a W CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>::sendSysExImpl(CS::SysExMessage)
+00005588 00000004 t _GLOBAL__sub_I_usb1
+0000558c 00000030 T channel(unsigned char)
+000055bc 000001a4 T setup
+00005760 000002b0 T displays()
+00005a10 00000104 T loop
+00005b14 0000005c T TrackDataHandler::TrackDataHandler(int, int)
+00005b14 0000005c T TrackDataHandler::TrackDataHandler(int, int)
+00005b70 000000b8 T TrackDataHandler::receive(CS::ChannelMessage)
+00005c28 000000d8 T TrackDataHandler::receive(CS::SysExMessage)
+00005d00 0000003c T TrackDataHandler::clear()
+00005d3c 00000024 T TrackDataHandler::newTitleAvailable()
+00005d60 00000034 T TrackDataHandler::newBPMAvailable()
+00005d94 00000054 T TrackDataHandler::getShortTimeString()
+00005de8 00000046 T TrackDataHandler::newTimeAvailable()
+00005e30 0000001a T TrackDataHandler::getBPM()
+00005e4c 00000040 T TrackDataHandler::getTitle()
+00005e8c 00000208 t _GLOBAL__sub_I__ZN16TrackDataHandlerC2Eii
+00006094 00000004 W Print::availableForWrite()
+00006098 00000002 W Print::flush()
+0000609c 000000e4 T Adafruit_GFX::writeLine(short, short, short, short, unsigned short)
+00006180 0000000e T Adafruit_GFX::writePixel(short, short, unsigned short)
+00006190 00000012 T Adafruit_GFX::writeFastVLine(short, short, short, unsigned short)
+000061a4 00000012 T Adafruit_GFX::writeFastHLine(short, short, short, unsigned short)
+000061b8 00000018 T Adafruit_GFX::writeFillRect(short, short, short, short, unsigned short)
+000061d0 00000002 T Adafruit_GFX::startWrite()
+000061d0 00000002 T Adafruit_GFX::endWrite()
+000061d4 0000001e T Adafruit_GFX::fillScreen(unsigned short)
+000061f4 00000002 T Adafruit_GFX::invertDisplay(bool)
+000061f8 00000022 T Adafruit_GFX::setRotation(unsigned char)
+0000621c 00000058 T Adafruit_GFX::drawFastVLine(short, short, short, unsigned short)
+00006274 00000054 T Adafruit_GFX::drawFastHLine(short, short, short, unsigned short)
+000062c8 00000064 T Adafruit_GFX::fillRect(short, short, short, short, unsigned short)
+0000632c 000000a0 T Adafruit_GFX::drawLine(short, short, short, short, unsigned short)
+000063cc 0000009c T Adafruit_GFX::drawRect(short, short, short, short, unsigned short)
+00006468 00000034 T Adafruit_GFX::Adafruit_GFX(short, short)
+00006468 00000034 T Adafruit_GFX::Adafruit_GFX(short, short)
+0000649c 000000e0 T Adafruit_GFX::drawBitmap(short, short, unsigned char*, short, short, unsigned short)
+0000657c 0000001a T Adafruit_GFX::drawBitmap(short, short, unsigned char const*, short, short, unsigned short)
+00006598 0000032c T Adafruit_GFX::drawChar(short, short, unsigned char, unsigned short, unsigned short, unsigned char, unsigned char)
+000068c4 00000134 T Adafruit_GFX::write(unsigned char)
+000069f8 000001c0 T Adafruit_GFX::charBounds(unsigned char, short*, short*, short*, short*, short*, short*)
+00006bb8 000000b6 T Adafruit_GFX::getTextBounds(char const*, short, short, short*, short*, unsigned short*, unsigned short*)
+00006c70 00000024 T Adafruit_GFX::getTextBounds(String const&, short, short, short*, short*, unsigned short*, unsigned short*)
+00006c94 0000001e W TwoWire::read()
+00006cb4 0000009a t Adafruit_SSD1306::drawFastHLineInternal(short, short, short, unsigned short) [clone .part.9] [clone .constprop.10]
+00006d50 000000e8 T Adafruit_SSD1306::drawPixel(short, short, unsigned short)
+00006e38 00000060 T Adafruit_SSD1306::Adafruit_SSD1306(unsigned char, unsigned char, TwoWire*, signed char, unsigned long, unsigned long)
+00006e38 00000060 T Adafruit_SSD1306::Adafruit_SSD1306(unsigned char, unsigned char, TwoWire*, signed char, unsigned long, unsigned long)
+00006e98 00000018 T Adafruit_SSD1306::~Adafruit_SSD1306()
+00006e98 00000018 T Adafruit_SSD1306::~Adafruit_SSD1306()
+00006eb0 0000009e T Adafruit_SSD1306::ssd1306_command1(unsigned char)
+00006f50 0000019c T Adafruit_SSD1306::invertDisplay(bool)
+000070ec 000000fc T Adafruit_SSD1306::ssd1306_commandList(unsigned char const*, unsigned char)
+000071e8 00000494 T Adafruit_SSD1306::begin(unsigned char, unsigned char, bool, bool)
+0000767c 0000001e T Adafruit_SSD1306::clearDisplay()
+0000769c 00000138 T Adafruit_SSD1306::drawFastVLineInternal(short, short, short, unsigned short)
+000077d4 00000068 T Adafruit_SSD1306::drawFastHLine(short, short, short, unsigned short)
+0000783c 00000066 T Adafruit_SSD1306::drawFastVLine(short, short, short, unsigned short)
+000078a4 000002b4 T Adafruit_SSD1306::display()
+00007b58 0000001c W EventResponder::triggerEvent(int, void*)
+00007b74 000000d4 T _spi_dma_rxISR0()
+00007c48 00000230 T SPIClass::begin()
+00007e78 0000000c W TwoWire::available()
+00007e84 00000018 W TwoWire::peek()
+00007e9c 00000002 W TwoWire::flush()
+00007ea0 00000030 T TwoWire::write(unsigned char)
+00007ed0 0000003a T TwoWire::write(unsigned char const*, unsigned int)
+00007f0c 00000118 T TwoWire::force_clock()
+00008024 0000003c T TwoWire::wait_idle()
+00008060 000000e0 T TwoWire::endTransmission(unsigned char)
+00008140 00000078 T TwoWire::setClock(unsigned long)
+000081b8 0000000c W DMAChannel::~DMAChannel()
+000081b8 0000000c W DMAChannel::~DMAChannel()
+000081c4 00000018 t _GLOBAL__sub_I__ZN17AudioOutputI2SOct13block_ch1_1stE
+000081dc 00000018 t _GLOBAL__sub_I__ZN13AudioInputI2S10block_leftE
+000081f4 00000018 t _GLOBAL__sub_I__ZN19AudioOutputPT8211_214block_left_1stE
+0000820c 00000018 t _GLOBAL__sub_I__ZN17AudioOutputPT821114block_left_1stE
+00008224 00000018 t _GLOBAL__sub_I__ZN16AudioInputSPDIF310block_leftE
+0000823c 00000018 t _GLOBAL__sub_I__ZN14AudioInputTDM214block_incomingE
+00008254 00000018 t _GLOBAL__sub_I__ZN16AudioInputAnalog3dmaE
+0000826c 00000018 t _GLOBAL__sub_I__ZN14AudioInputPDM210block_leftE
+00008284 00000018 t _GLOBAL__sub_I__ZN14AudioInputI2S210block_leftE
+0000829c 00000018 t _GLOBAL__sub_I__ZN17AudioInputI2SQuad9block_ch1E
+000082b4 00000018 t _GLOBAL__sub_I__ZN18AudioOutputI2SQuad13block_ch1_1stE
+000082cc 00000018 t _GLOBAL__sub_I__ZN15AudioOutputTDM211block_inputE
+000082e4 00000018 t _GLOBAL__sub_I__ZN15AudioOutputI2S214block_left_1stE
+000082fc 00000018 t _GLOBAL__sub_I__ZN17AudioOutputI2SHex13block_ch1_1stE
+00008314 00000018 t _GLOBAL__sub_I__ZN16AudioInputI2SOct9block_ch1E
+0000832c 00000018 t _GLOBAL__sub_I__ZN14AudioOutputTDM11block_inputE
+00008344 00000018 t _GLOBAL__sub_I__ZN13AudioInputTDM14block_incomingE
+0000835c 00000018 t _GLOBAL__sub_I__ZN16AudioInputI2SHex9block_ch1E
+00008374 00000018 t _GLOBAL__sub_I__ZN17AudioOutputSPDIF314block_left_1stE
+0000838c 00000018 t _GLOBAL__sub_I__ZN14AudioOutputMQS14block_left_1stE
+000083a4 00000018 t _GLOBAL__sub_I__ZN21AsyncAudioInputSPDIF310microsLastE
+000083bc 00000018 t _GLOBAL__sub_I__ZN13AudioInputPDM10block_leftE
+000083d4 00000158 T AudioOutputI2S::isr()
+0000852c 00000098 T AudioOutputI2S::update()
+000085c4 000000dc T AudioOutputI2S::config_i2s(bool)
+000086a0 000000e0 T AudioOutputI2S::begin()
+00008780 00000018 t _GLOBAL__sub_I__ZN14AudioOutputI2S14block_left_1stE
+00008798 00000018 t _GLOBAL__sub_I__ZN17AudioOutputSPDIF214block_left_1stE
+000087b0 00000018 t _GLOBAL__sub_I__ZN16AudioOutputSPDIF14block_left_1stE
+000087c8 0000002c t _GLOBAL__sub_I__ZN5SDLib20getNextPathComponentEPKcPjPc
+000087f4 00000030 T SdVolume::cacheMirrorBlockFlush(unsigned char)
+00008824 00000048 T SdVolume::cacheFlush(unsigned char)
+0000886c 00000048 T SdVolume::cacheRawBlock(unsigned long, unsigned char)
+000088b4 00000084 t SdVolume::fatPut(unsigned long, unsigned long) [clone .part.3]
+00008938 00000074 T SdVolume::fatGet(unsigned long, unsigned long*) const
+000089ac 000000f2 T SdVolume::allocContiguous(unsigned long, unsigned long*)
+00008aa0 00000078 t SdFile::sync(unsigned char) [clone .part.25] [clone .constprop.41]
+00008b18 0000002e T SdFile::addCluster()
+00008b48 00000060 T SdFile::seekSet(unsigned long)
+00008ba8 00000084 T SdFile::availableForWrite()
+00008c2c 000001f8 T SdFile::write(void const*, unsigned short)
+00008e24 00000018 T SdFile::write(unsigned char)
+00008e3c 00000074 T Sd2Card::chipSelectHigh()
+00008eb0 00000048 t Sd2Card::readEnd() [clone .part.7]
+00008ef8 00000130 T Sd2Card::chipSelectLow()
+00009028 000000b4 T Sd2Card::cardCommand(unsigned char, unsigned long)
+000090dc 00000054 T Sd2Card::waitStartBlock()
+00009130 000000d0 t Sd2Card::readData(unsigned long, unsigned short, unsigned short, unsigned char*) [clone .part.9]
+00009200 00000016 T Sd2Card::readBlock(unsigned long, unsigned char*)
+00009218 00000078 T Sd2Card::writeData(unsigned char, unsigned char const*)
+00009290 000000ac T Sd2Card::writeBlock(unsigned long, unsigned char const*, unsigned char)
+0000933c 00000030 T Sd2Card::isBusy()
+0000936c 00000014 t _GLOBAL__sub_I__ZN7Sd2Card11cardCommandEhm
+00009380 0000005c T CFastLED::addLeds(CLEDController*, CRGB*, int, int)
+000093dc 00000130 T CFastLED::show(unsigned char)
+0000950c 00000130 T CFastLED::showColor(CRGB const&, unsigned char)
+0000963c 00000028 T CFastLED::clearData()
+00009664 00000028 T CFastLED::clear(bool)
+0000968c 0000002c T CFastLED::setCorrection(CRGB const&)
+000096b8 00000018 t _GLOBAL__sub_I_pSmartMatrix
+000096d0 00000002 W CS::DisplayInterface::drawBackground()
+000096d4 00000012 T CS::Control_Surface_::sinkMIDIfromPipe(CS::SysCommonMessage)
+000096e8 00000014 T CS::Control_Surface_::sinkMIDIfromPipe(CS::RealTimeMessage)
+000096fc 00000064 T CS::Control_Surface_::sinkMIDIfromPipe(CS::SysExMessage)
+00009760 00000044 W CS::Control_Surface_::~Control_Surface_()
+00009760 00000044 W CS::Control_Surface_::~Control_Surface_()
+000097a4 00000006 W non-virtual thunk to CS::Control_Surface_::~Control_Surface_()
+000097ac 000000a0 t CS::Control_Surface_::getInstance() [clone .part.11]
+0000984c 000001bc T CS::Control_Surface_::sinkMIDIfromPipe(CS::ChannelMessage)
+00009a08 0000004c W CS::Control_Surface_::~Control_Surface_()
+00009a54 00000006 W non-virtual thunk to CS::Control_Surface_::~Control_Surface_()
+00009a5c 0000004e T CS::Control_Surface_::connectDefaultMIDI_Interface()
+00009aac 0000000c T CS::Control_Surface_::sendChannelMessageImpl(CS::ChannelMessage)
+00009ab8 000000b0 T CS::Control_Surface_::updateInputs()
+00009b68 00000038 T CS::Control_Surface_::beginDisplays()
+00009ba0 0000012c T CS::Control_Surface_::begin()
+00009ccc 0000007c T CS::Control_Surface_::updateDisplays()
+00009d48 00000060 T CS::Control_Surface_::loop()
+00009da8 00000024 t _GLOBAL__sub_I__ZN2CS16Control_Surface_11getInstanceEv
+00009dcc 00000052 T CS::MIDIAddress::operator+(CS::RelativeMIDIAddress) const
+00009e20 0000004c T CS::MIDIAddress::matchAddressInRange(CS::MIDIAddress, CS::MIDIAddress, unsigned char)
+00009e6c 0000000c W CS::MIDI_Pipe::getFinalSink()
+00009e78 0000000c W CS::MIDI_Pipe::getInitialSource()
+00009e84 00000006 W non-virtual thunk to CS::MIDI_Pipe::getInitialSource()
+00009e8c 0000008a T CS::MIDI_Pipe::stallDownstream(CS::MIDIStaller*, CS::MIDI_Source*)
+00009f18 0000008c T CS::MIDI_Pipe::unstallDownstream(CS::MIDIStaller*, CS::MIDI_Source*)
+00009fa4 00000052 T CS::MIDI_Pipe::unstallUpstream(CS::MIDIStaller*, CS::MIDI_Sink*)
+00009ff8 00000008 T non-virtual thunk to CS::MIDI_Pipe::unstallUpstream(CS::MIDIStaller*, CS::MIDI_Sink*)
+0000a000 0000004c T CS::MIDI_Pipe::stallUpstream(CS::MIDIStaller*, CS::MIDI_Sink*)
+0000a04c 00000008 T non-virtual thunk to CS::MIDI_Pipe::stallUpstream(CS::MIDIStaller*, CS::MIDI_Sink*)
+0000a054 000000c8 W CS::MIDI_Pipe::mapForwardMIDI(CS::RealTimeMessage)
+0000a11c 0000008c W CS::MIDI_Pipe::mapForwardMIDI(CS::SysCommonMessage)
+0000a1a8 0000008c W CS::MIDI_Pipe::mapForwardMIDI(CS::ChannelMessage)
+0000a234 00000068 W CS::MIDI_Pipe::sinkMIDIfromPipe(CS::SysCommonMessage)
+0000a29c 00000068 W CS::MIDI_Pipe::sinkMIDIfromPipe(CS::ChannelMessage)
+0000a304 00000090 W CS::MIDI_Pipe::sinkMIDIfromPipe(CS::RealTimeMessage)
+0000a394 000000ec W CS::MIDI_Pipe::mapForwardMIDI(CS::SysExMessage)
+0000a480 000000c4 W CS::MIDI_Pipe::sinkMIDIfromPipe(CS::SysExMessage)
+0000a544 00000020 T CS::MIDI_Sink::connectSourcePipe(CS::MIDI_Pipe*)
+0000a564 00000022 T CS::MIDI_Source::connectSinkPipe(CS::MIDI_Pipe*)
+0000a588 00000016 T CS::MIDI_Source::stall(CS::MIDIStaller*)
+0000a5a0 00000016 T CS::MIDI_Source::unstall(CS::MIDIStaller*)
+0000a5b8 00000012 T CS::MIDI_Source::getStaller() const
+0000a5cc 000000d0 T CS::MIDI_Pipe::disconnect()
+0000a69c 0000001c T CS::MIDI_Sink::disconnectSourcePipes()
+0000a6b8 00000014 T CS::MIDI_Sink::~MIDI_Sink()
+0000a6b8 00000014 T CS::MIDI_Sink::~MIDI_Sink()
+0000a6cc 0000001e T CS::MIDI_Source::disconnectSinkPipes()
+0000a6ec 00000014 T CS::MIDI_Source::~MIDI_Source()
+0000a6ec 00000014 T CS::MIDI_Source::~MIDI_Source()
+0000a700 0000001c T CS::MIDI_Source::~MIDI_Source()
+0000a71c 0000003c T CS::MIDI_Pipe::~MIDI_Pipe()
+0000a71c 0000003c T CS::MIDI_Pipe::~MIDI_Pipe()
+0000a758 00000008 T non-virtual thunk to CS::MIDI_Pipe::~MIDI_Pipe()
+0000a760 00000014 T CS::MIDI_Pipe::~MIDI_Pipe()
+0000a774 00000008 T non-virtual thunk to CS::MIDI_Pipe::~MIDI_Pipe()
+0000a77c 00000054 T CS::MIDI_Pipe::handleStallers() const
+0000a7d0 000002e4 W void CS::MIDI_Pipe::acceptMIDIfromSource<CS::ChannelMessage>(CS::ChannelMessage)
+0000aab4 000002fc T CS::MIDI_Source::sourceMIDItoPipe(CS::ChannelMessage)
+0000adb0 000003a0 W void CS::MIDI_Pipe::acceptMIDIfromSource<CS::SysExMessage>(CS::SysExMessage)
+0000b150 0000052c T CS::MIDI_Source::sourceMIDItoPipe(CS::SysExMessage)
+0000b67c 000002e4 W void CS::MIDI_Pipe::acceptMIDIfromSource<CS::SysCommonMessage>(CS::SysCommonMessage)
+0000b960 000002fc T CS::MIDI_Source::sourceMIDItoPipe(CS::SysCommonMessage)
+0000bc5c 00000400 W void CS::MIDI_Pipe::acceptMIDIfromSource<CS::RealTimeMessage>(CS::RealTimeMessage)
+0000c05c 00000400 T CS::MIDI_Source::sourceMIDItoPipe(CS::RealTimeMessage)
+0000c45c 00000010 t _GLOBAL__sub_I__ZN2CS9MIDI_Sink17connectSourcePipeEPNS_9MIDI_PipeE
+0000c46c 00000006 W CS::MIDI_Callbacks::onChannelMessage(CS::MIDI_Interface&, CS::ChannelMessage)
+0000c474 0000000c W CS::MIDI_Callbacks::onSysExMessage(CS::MIDI_Interface&, CS::SysExMessage)
+0000c480 00000006 W CS::MIDI_Callbacks::onSysCommonMessage(CS::MIDI_Interface&, CS::SysCommonMessage)
+0000c488 00000006 W CS::MIDI_Callbacks::onRealTimeMessage(CS::MIDI_Interface&, CS::RealTimeMessage)
+0000c490 0000009c T CS::MIDI_Interface::~MIDI_Interface()
+0000c490 0000009c T CS::MIDI_Interface::~MIDI_Interface()
+0000c52c 00000020 T CS::MIDI_Interface::getDefault()
+0000c54c 00000030 T CS::MIDI_Interface::onChannelMessage(CS::ChannelMessage)
+0000c57c 0000003c T CS::MIDI_Interface::onSysExMessage(CS::SysExMessage)
+0000c5b8 00000030 T CS::MIDI_Interface::onSysCommonMessage(CS::SysCommonMessage)
+0000c5e8 00000034 T CS::MIDI_Interface::onRealTimeMessage(CS::RealTimeMessage)
+0000c61c 0000000e T CS::SysExBuffer::start()
+0000c62c 00000008 T CS::SysExBuffer::end()
+0000c634 0000000e T CS::SysExBuffer::add(unsigned char)
+0000c644 0000001c T CS::SysExBuffer::add(unsigned char const*, unsigned char)
+0000c660 00000012 T CS::SysExBuffer::hasSpaceLeft(unsigned char) const
+0000c674 00000006 T CS::SysExBuffer::isReceiving() const
+0000c67c 00000002 T CS::SysExBuffer::getBuffer() const
+0000c680 00000006 T CS::SysExBuffer::getLength() const
+0000c688 00000086 T CS::USBMIDI_Parser::handleSysExStartCont(AH::Array<unsigned char, 4u>, CS::Cable)
+0000c710 0000007c T CS::MIDIReadEvent CS::USBMIDI_Parser::handleSysExEnd<(unsigned char)1>(AH::Array<unsigned char, 4u>, CS::Cable)
+0000c78c 0000015c T CS::USBMIDI_Parser::feed(AH::Array<unsigned char, 4u>)
+0000c8e8 00000058 T CS::USBMIDI_Parser::resume()
+0000c940 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#25}::_FUN()
+0000c9c8 00000040 t CS::Encoder::end() [clone .part.81]
+0000ca08 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#2}::_FUN()
+0000ca90 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#3}::_FUN()
+0000cb18 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#4}::_FUN()
+0000cba0 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#5}::_FUN()
+0000cc28 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#6}::_FUN()
+0000ccb0 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#7}::_FUN()
+0000cd38 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#8}::_FUN()
+0000cdc0 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#9}::_FUN()
+0000ce48 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#1}::_FUN()
+0000ced0 0000008c t CS::EncoderISRs::getISR(unsigned char)::{lambda()#40}::_FUN()
+0000cf5c 0000008c t CS::EncoderISRs::getISR(unsigned char)::{lambda()#38}::_FUN()
+0000cfe8 0000008c t CS::EncoderISRs::getISR(unsigned char)::{lambda()#39}::_FUN()
+0000d074 0000008c t CS::EncoderISRs::getISR(unsigned char)::{lambda()#34}::_FUN()
+0000d100 0000008c t CS::EncoderISRs::getISR(unsigned char)::{lambda()#35}::_FUN()
+0000d18c 0000008c t CS::EncoderISRs::getISR(unsigned char)::{lambda()#36}::_FUN()
+0000d218 0000008c t CS::EncoderISRs::getISR(unsigned char)::{lambda()#37}::_FUN()
+0000d2a4 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#26}::_FUN()
+0000d32c 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#27}::_FUN()
+0000d3b4 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#28}::_FUN()
+0000d43c 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#29}::_FUN()
+0000d4c4 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#30}::_FUN()
+0000d54c 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#31}::_FUN()
+0000d5d4 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#32}::_FUN()
+0000d65c 0000008c t CS::EncoderISRs::getISR(unsigned char)::{lambda()#33}::_FUN()
+0000d6e8 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#10}::_FUN()
+0000d770 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#11}::_FUN()
+0000d7f8 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#12}::_FUN()
+0000d880 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#13}::_FUN()
+0000d908 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#14}::_FUN()
+0000d990 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#15}::_FUN()
+0000da18 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#16}::_FUN()
+0000daa0 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#17}::_FUN()
+0000db28 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#18}::_FUN()
+0000dbb0 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#19}::_FUN()
+0000dc38 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#20}::_FUN()
+0000dcc0 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#21}::_FUN()
+0000dd48 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#22}::_FUN()
+0000ddd0 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#23}::_FUN()
+0000de58 00000088 t CS::EncoderISRs::getISR(unsigned char)::{lambda()#24}::_FUN()
+0000dee0 00000030 T CS::Encoder::Encoder(unsigned char, unsigned char)
+0000dee0 00000030 T CS::Encoder::Encoder(unsigned char, unsigned char)
+0000df10 000000a4 T CS::Encoder::operator=(CS::Encoder&&)
+0000dfb4 00000010 T CS::Encoder::Encoder(CS::Encoder&&)
+0000dfb4 00000010 T CS::Encoder::Encoder(CS::Encoder&&)
+0000dfc4 00000010 T CS::Encoder::~Encoder()
+0000dfc4 00000010 T CS::Encoder::~Encoder()
+0000dfd4 0000003c T CS::Encoder::attachInterruptCtx(int)
+0000e010 00000084 T CS::Encoder::begin()
+0000e094 00000046 T AH::fatalErrorExit()
+0000e0dc 0000001a T AH::Button::Button(unsigned short)
+0000e0dc 0000001a T AH::Button::Button(unsigned short)
+0000e0f8 00000008 T AH::Button::begin()
+0000e100 00000078 T AH::Button::update()
+0000e178 0000003a T AH::ExtIO::getIOElementOfPinOrNull(unsigned short)
+0000e1b4 00000060 T AH::ExtIO::pinMode(unsigned short, unsigned char)
+0000e214 00000060 T AH::ExtIO::digitalWrite(unsigned short, unsigned char)
+0000e274 0000005c T AH::ExtIO::digitalRead(unsigned short)
+0000e2d0 00000060 T AH::ExtIO::analogRead(unsigned short)
+0000e330 00000054 T AH::ExtendedIOElement::ExtendedIOElement(unsigned short)
+0000e330 00000054 T AH::ExtendedIOElement::ExtendedIOElement(unsigned short)
+0000e384 0000001c T AH::ExtendedIOElement::beginAll()
+0000e3a0 0000001c T AH::ExtendedIOElement::updateAllBufferedOutputs()
+0000e3bc 0000001c T AH::ExtendedIOElement::updateAllBufferedInputs()
+0000e3d8 00000014 T AH::ExtendedIOElement::pin(unsigned short) const
+0000e3ec 00000004 T AH::ExtendedIOElement::getEnd() const
+0000e3f0 00000004 T AH::ExtendedIOElement::getStart() const
+0000e3f4 00000008 T AH::ExtendedIOElement::getAll()
+0000e3fc T memcpy_tointerleaveLR
+0000e404 t .loopLR
+0000e43a T memcpy_tointerleaveL
+0000e448 t .loopL
+0000e47a T memcpy_tointerleaveR
+0000e488 t .loopR
+0000e4ba T memcpy_tointerleaveQuad
+0000e4c4 t .loopQuad
+0000e4f4 00000134 T memcpy
+0000e628 0000006c t rx_queue_transfer
+0000e694 000000b4 t rx_event
+0000e748 00000098 t usb_serial_flush_callback
+0000e7e0 00000194 t usb_serial_write.part.1
+0000e974 00000002 T usb_serial_reset
+0000e978 00000108 T usb_serial_configure
+0000ea80 000000ec T usb_serial_read
+0000eb6c 00000044 T usb_serial_peekchar
+0000ebb0 0000000c T usb_serial_available
+0000ebbc 00000074 T usb_serial_flush_input
+0000ec30 00000020 T usb_serial_getchar
+0000ec50 0000002c T usb_serial_putchar
+0000ec7c 00000018 T usb_serial_write
+0000ec94 00000050 T usb_serial_write_buffer_free
+0000ece4 000000a4 T usb_serial_flush_output
+0000ed88 000002c4 T set_arm_clock
+0000f04c 00000090 t schedule_transfer
+0000f0dc 00000036 t run_callbacks
+0000f114 000000a8 t endpoint0_receive.constprop.1
+0000f1bc 000000a0 t endpoint0_transmit.constprop.2
+0000f25c 0000077c T usb_isr
+0000f9d8 00000034 T usb_start_sof_interrupts
+0000fa0c 0000002c T usb_stop_sof_interrupts
+0000fa38 00000064 T usb_config_rx
+0000fa9c 00000068 T usb_config_tx
+0000fb04 00000060 T usb_config_rx_iso
+0000fb64 00000068 T usb_config_tx_iso
+0000fbcc 0000002e T usb_prepare_transfer
+0000fbfc 00000028 T usb_transmit
+0000fc24 00000024 T usb_receive
+0000fc48 00000004 T usb_transfer_status
+0000fc4c 000000cc T delay
+0000fd18 00000064 T micros
+0000fd7c 00000068 T analogRead
+0000fde4 00000064 T analogReadRes
+0000fe48 00000002 t dummy_isr
+0000fe4c 00000164 T attachInterrupt
+0000ffb0 0000001c T detachInterrupt
+0000ffcc 00000190 T unused_interrupt_vector
+0001015c 00000030 T _sbrk
+0001018c 00000004 W _read
+00010190 00000006 W _close
+00010198 0000000a W _fstat
+000101a4 00000004 W _isatty
+000101a8 00000006 W _lseek
+000101b0 00000004 W __cxa_pure_virtual
+000101b4 00000004 W abort
+000101b8 00000030 T rtc_get
+000101e8 00000004 T Panic_Temp_isr
+000101ec 00000060 T tempmonGetTemp
+0001024c 0000004c t digitalWrite.part.0
+00010298 0000001c t digitalRead.part.1
+000102b4 0000000a T digitalWrite
+000102c0 0000000c T digitalRead
+000102cc 00000080 T pinMode
+0001034c 000002b8 T pwm_init
+00010604 0000006c t rx_queue_transfer
+00010670 00000064 t rx_event
+000106d4 00000120 t usb_midi_write_packed.part.0
+000107f4 000000d4 T usb_midi_configure
+000108c8 00000010 T usb_midi_write_packed
+000108d8 0000009c T usb_midi_flush_output
+00010974 00000090 T usb_midi_read_message
+00010a04 00000058 T usb_init_serialnumber
+00010a5c 000000f0 W yield
+00010b4c 00000080 T EventResponder::triggerEventNotImmediate()
+00010bcc 00000044 T EventResponder::runFromInterrupt()
+00010c10 00000004 T pendablesrvreq_isr
+00010c14 00000020 T systick_isr
+00010c34 000000a0 T DMAChannel::begin(bool)
+00010cd4 00000034 T DMAChannel::release()
+00010d08 00000004 W usb_serial_class::clear()
+00010d0c 00000004 W usb_serial_class::peek()
+00010d10 00000004 W usb_serial_class::read()
+00010d14 00000004 W usb_serial_class::available()
+00010d18 00000004 W usb_serial_class::flush()
+00010d1c 00000004 W usb_serial_class::availableForWrite()
+00010d20 00000008 W usb_serial_class::write(unsigned char const*, unsigned int)
+00010d28 00000006 W usb_serial_class::write(unsigned char)
+00010d30 0000000e T String::~String()
+00010d30 0000000e T String::~String()
+00010d40 0000002a T String::reserve(unsigned int)
+00010d6c 00000042 T String::copy(char const*, unsigned int)
+00010db0 00000026 T String::String(char const*)
+00010db0 00000026 T String::String(char const*)
+00010dd8 0000001e T String::String(String const&)
+00010dd8 0000001e T String::String(String const&)
+00010df8 0000001a t String::operator=(char const*) [clone .part.2]
+00010e14 00000028 T String::move(String&)
+00010e3c 0000000e T String::operator=(String const&)
+00010e4c 00000010 T String::operator=(String&&)
+00010e5c 00000014 T String::operator=(char const*)
+00010e70 00000070 T String::append(char const*, unsigned int)
+00010ee0 0000001c T String::append(char const*)
+00010efc 0000001e T String::append(char)
+00010f1c 00000026 T String::append(int)
+00010f44 0000002c T String::compareTo(String const&) const
+00010f70 0000001a T String::equals(String const&) const
+00010f8c 00000032 T String::startsWith(String const&, unsigned int) const
+00010fc0 00000012 T String::startsWith(String const&) const
+00010fd4 00000034 T String::getBytes(unsigned char*, unsigned int, unsigned int) const
+00011008 00000052 T String::lastIndexOf(String const&, unsigned int) const
+0001105c 00000120 T String::replace(String const&, String const&)
+0001117c 00000034 T String::remove(unsigned int, unsigned int)
+000111b0 0000005a T String::trim()
+0001120c 00000010 T main
+0001121c 00000068 T software_isr()
+00011284 000000a8 T AudioStream::allocate()
+0001132c 00000054 T AudioStream::release(audio_block_struct*)
+00011380 00000034 T AudioStream::transmit(audio_block_struct*, unsigned char)
+000113b4 00000018 T AudioStream::receiveReadOnly(unsigned int)
+000113cc 00000068 T AudioConnection::connect()
+00011434 0000007a T AudioConnection::disconnect()
+000114b0 00000040 T AudioStream::update_setup()
+000114f0 00000078 t copy_to_buffers(unsigned long const*, short*, short*, unsigned int)
+00011568 00000064 t sync_event(transfer_struct*)
+000115cc 00000098 T AudioInputUSB::update()
+00011664 00000040 T AudioInputUSB::begin()
+000116a4 00000174 T usb_audio_receive_callback
+00011818 00000058 t rx_event(transfer_struct*)
+00011870 000000fc T usb_audio_transmit_callback
+0001196c 00000068 t tx_event(transfer_struct*)
+000119d4 000000bc T usb_audio_configure
+00011a90 0000006c T usb_audio_get_feature
+00011afc 0000003c T usb_audio_set_feature
+00011b38 0000002c T Print::write(unsigned char const*, unsigned int)
+00011b64 0000004a T Print::print(String const&)
+00011bb0 00000020 T Print::println()
+00011bd0 0000000e W _write
+00011be0 0000007e T Print::printNumber(unsigned long, unsigned char, unsigned char)
+00011c60 00000174 T Print::printFloat(double, unsigned char)
+00011dd4 00000002 W serialEvent()
+00011dd8 00000004 T operator new(unsigned int)
+00011ddc 00000004 T operator delete(void*)
+00011de0 00000004 T operator delete(void*, unsigned int)
+00011de4 0000004e T ultoa
+00011e34 00000022 T ltoa
+00011e58 0000000a T __aeabi_atexit
+00011e64 00000030 T std::__throw_logic_error(char const*)
+00011e94 00000030 T std::__throw_length_error(char const*)
+00011ec4 00000028 T std::logic_error::logic_error(char const*)
+00011ec4 00000028 T std::logic_error::logic_error(char const*)
+00011eec 00000014 T std::length_error::length_error(char const*)
+00011eec 00000014 T std::length_error::length_error(char const*)
+00011f00 00000012 T std::__cow_string::__cow_string(char const*, unsigned int)
+00011f00 00000012 T std::__cow_string::__cow_string(char const*, unsigned int)
+00011f14 00000058 W std::string::_Rep::_S_create(unsigned int, unsigned int, std::allocator<char> const&)
+00011f6c 00000050 t char* std::string::_S_construct<char*>(char*, char*, std::allocator<char> const&, std::forward_iterator_tag) [clone .part.22]
+00011f6c 00000050 t char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag) [clone .part.26]
+00011fbc 00000004 W std::string::_Rep::_M_destroy(std::allocator<char> const&)
+00011fc0 00000024 W char* std::string::_S_construct<char const*>(char const*, char const*, std::allocator<char> const&, std::forward_iterator_tag)
+00011fe4 0000001a W std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, unsigned int, std::allocator<char> const&)
+00011fe4 0000001a W std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, unsigned int, std::allocator<char> const&)
+00012000 0000002a W std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&)
+00012000 0000002a W std::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(char const*, std::allocator<char> const&)
+0001202c 00000008 t (anonymous namespace)::generic_error_category::name() const
+00012034 00000008 t (anonymous namespace)::system_error_category::name() const
+0001203c 00000006 T std::_V2::error_category::default_error_condition(int) const
+00012044 00000016 T std::_V2::error_category::equivalent(std::error_code const&, int) const
+0001205c 00000002 t (anonymous namespace)::system_error_category::~system_error_category()
+0001205c 00000002 t (anonymous namespace)::system_error_category::~system_error_category()
+00012060 00000002 t (anonymous namespace)::generic_error_category::~generic_error_category()
+00012060 00000002 t (anonymous namespace)::generic_error_category::~generic_error_category()
+00012064 0000000c t (anonymous namespace)::system_error_category::~system_error_category()
+00012070 0000000c t (anonymous namespace)::generic_error_category::~generic_error_category()
+0001207c 0000003a T std::_V2::error_category::_M_message[abi:cxx11](int) const
+000120b8 0000005c t void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) [clone .isra.30]
+000120b8 0000005c t void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char const*>(char const*, char const*, std::forward_iterator_tag) [clone .isra.24]
+00012114 00000036 t (anonymous namespace)::system_error_category::message[abi:cxx11](int) const
+00012114 00000036 t (anonymous namespace)::generic_error_category::message[abi:cxx11](int) const
+0001214c 0000003c T std::_V2::error_category::equivalent(int, std::error_condition const&) const
+00012188 00000030 t _GLOBAL__sub_I__ZNSt3_V214error_categoryD2Ev
+000121b8 0000008c T __cxa_begin_catch
+00012244 0000008c T __cxa_end_catch
+000122d0 00000014 T __cxxabiv1::__si_class_type_info::~__si_class_type_info()
+000122d0 00000014 T __cxxabiv1::__si_class_type_info::~__si_class_type_info()
+000122e4 0000001c T __cxxabiv1::__si_class_type_info::~__si_class_type_info()
+00012300 0000008e T __cxxabiv1::__si_class_type_info::__do_dyncast(int, __cxxabiv1::__class_type_info::__sub_kind, __cxxabiv1::__class_type_info const*, void const*, __cxxabiv1::__class_type_info const*, void const*, __cxxabiv1::__class_type_info::__dyncast_result&) const
+00012390 0000003a T __cxxabiv1::__si_class_type_info::__do_find_public_src(int, void const*, __cxxabiv1::__class_type_info const*, void const*) const
+000123cc 0000002a T __cxxabiv1::__si_class_type_info::__do_upcast(__cxxabiv1::__class_type_info const*, void const*, __cxxabiv1::__class_type_info::__upcast_result&) const
+000123f8 00000044 t __gxx_exception_cleanup(_Unwind_Reason_Code, _Unwind_Control_Block*)
+0001243c 0000007c T __cxa_throw
+000124b8 00000070 T __cxa_rethrow
+00012528 000000c0 t read_encoded_value_with_base(unsigned char, unsigned int, unsigned char const*, unsigned int*)
+000125e8 0000004c t base_of_encoded_value(unsigned char, _Unwind_Context*)
+00012634 00000098 t parse_lsda_header(_Unwind_Context*, unsigned char const*, lsda_header_info*)
+000126cc 000004b2 T __gxx_personality_v0
+00012b80 00000008 T __cxa_get_globals_fast
+00012b88 00000008 T __cxa_get_globals
+00012b90 00000002 T std::exception::~exception()
+00012b90 00000002 T std::exception::~exception()
+00012b94 00000002 T std::bad_exception::~bad_exception()
+00012b94 00000002 T std::bad_exception::~bad_exception()
+00012b98 00000008 T std::bad_exception::what() const
+00012ba0 0000000c T std::bad_exception::~bad_exception()
+00012bac 00000026 T __cxxabiv1::__terminate(void (*)())
+00012bd4 00000014 T std::terminate()
+00012be8 00000008 T __cxxabiv1::__unexpected(void (*)())
+00012bf0 00000014 T std::unexpected()
+00012c04 00000010 T std::get_terminate()
+00012c14 00000010 T std::get_unexpected()
+00012c24 00000002 T std::type_info::~type_info()
+00012c24 00000002 T std::type_info::~type_info()
+00012c28 00000004 T std::type_info::__is_pointer_p() const
+00012c28 00000004 T std::type_info::__is_function_p() const
+00012c2c 0000002c T std::type_info::operator==(std::type_info const&) const
+00012c58 00000074 t (anonymous namespace)::pool::free(void*) [clone .constprop.4]
+00012ccc 00000064 t (anonymous namespace)::pool::allocate(unsigned int) [clone .constprop.5]
+00012d30 00000030 T __cxa_allocate_exception
+00012d60 00000020 T __cxa_free_exception
+00012d80 00000028 t _GLOBAL__sub_I___cxa_allocate_exception
+00012da8 T __cxa_end_cleanup
+00012db4 000000b0 T __cxa_type_match
+00012e64 00000064 T __cxa_begin_cleanup
+00012ec8 00000070 T __gnu_end_cleanup
+00012f38 00000036 T __cxxabiv1::__class_type_info::__do_upcast(__cxxabiv1::__class_type_info const*, void**) const
+00012f70 0000000c T __cxxabiv1::__class_type_info::__do_find_public_src(int, void const*, __cxxabiv1::__class_type_info const*, void const*) const
+00012f7c 00000014 T __cxxabiv1::__class_type_info::~__class_type_info()
+00012f7c 00000014 T __cxxabiv1::__class_type_info::~__class_type_info()
+00012f90 0000001c T __cxxabiv1::__class_type_info::~__class_type_info()
+00012fac 00000018 T __cxxabiv1::__class_type_info::__do_upcast(__cxxabiv1::__class_type_info const*, void const*, __cxxabiv1::__class_type_info::__upcast_result&) const
+00012fc4 00000040 T __cxxabiv1::__class_type_info::__do_dyncast(int, __cxxabiv1::__class_type_info::__sub_kind, __cxxabiv1::__class_type_info const*, void const*, __cxxabiv1::__class_type_info const*, void const*, __cxxabiv1::__class_type_info::__dyncast_result&) const
+00013004 0000002a T __cxxabiv1::__class_type_info::__do_catch(std::type_info const*, void**, unsigned int) const
+00013030 00000004 T std::logic_error::what() const
+00013030 00000004 T std::runtime_error::what() const
+00013034 00000040 T std::logic_error::~logic_error()
+00013034 00000040 T std::logic_error::~logic_error()
+00013074 00000012 T std::logic_error::~logic_error()
+00013088 00000014 T std::length_error::~length_error()
+00013088 00000014 T std::length_error::~length_error()
+0001309c 0000001c T std::length_error::~length_error()
+000130b8 00000084 t _GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEj
+0001313c 000000c4 t _GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKSsj
+00013200 000000c4 t _GLOBAL__sub_I__ZNSt12ctype_bynameIcEC2ERKSsj
+000132c4 00000084 t _GLOBAL__sub_I__ZNSt12ctype_bynameIwEC2ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEEj
+00013348 0000004c W std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_create(unsigned int&, unsigned int)
+00013394 0000003a t __cxxabiv1::__is_gxx_exception_class(char*)
+000133d0 0000001e T __cxa_call_terminate
+000133f0 000000e8 T __cxa_call_unexpected
+000134d8 00000114 T __gnu_cxx::__verbose_terminate_handler()
+000135ec 00000096 t d_make_comp
+00013684 000000b6 t d_cv_qualifiers
+0001373c 00000036 t d_ref_qualifier
+00013774 000000a0 t d_count_templates_scopes
+00013814 00000064 t d_append_buffer
+00013878 00000052 t d_number.isra.0
+000138cc 00000038 t d_number_component
+00013904 00000036 t d_compact_number
+0001393c 00000044 t d_template_param
+00013980 000000b8 t d_source_name
+00013a38 00000032 t d_abi_tags
+00013a6c 0000018c t d_substitution
+00013bf8 00000054 t d_call_offset
+00013c4c 00000044 t d_lookup_template_argument.isra.6
+00013c90 0000008c t d_find_pack
+00013d1c 0000007a t d_growable_string_callback_adapter
+00013d98 00000470 t d_exprlist
+00014208 000003c8 t d_expression_1
+000145d0 000000d2 t d_template_args
+000146a4 00000374 t d_name
+00014a18 0000077a t d_type
+00015194 00000100 t d_operator_name
+00015294 00000082 t d_parmlist
+00015318 00000270 t d_unqualified_name
+00015588 0000003c t d_bare_function_type
+000155c4 0000003e t d_function_type
+00015604 000005b0 t d_encoding
+00015bb4 000000e0 t d_expr_primary
+00015c94 000029e0 t d_print_comp_inner
+00018674 00000020 t d_print_comp
+00018694 00000506 t d_print_mod
+00018b9c 0000026c t d_print_mod_list
+00018e08 000001b8 t d_print_array_type.isra.10
+00018fc0 000001e8 t d_print_function_type.isra.11
+000191a8 0000007c t d_print_expr_op
+00019224 000000c6 t d_print_subexpr
+000192ec 00000324 t d_demangle_callback.constprop.16
+00019610 000000bc T __cxa_demangle
+000196cc 00000022 T __gcclibcxx_demangle_callback
+000196f0 0000001a T __cxa_current_exception_type
+0001970c T __aeabi_uldivmod
+0001973c 000002e2 T __udivmoddi4
+00019a20 00000012 t selfrel_offset31
+00019a34 00000060 t search_EIT_table
+00019a94 00000028 t __gnu_unwind_get_pr_addr
+00019abc 000000a0 t get_eit_entry
+00019b5c 00000058 t restore_non_core_regs
+00019bb4 0000000c t _Unwind_decode_typeinfo_ptr.isra.0
+00019bc0 00000004 t __gnu_unwind_24bit.isra.1
+00019bc4 00000002 t _Unwind_DebugHook
+00019bc8 0000003e t unwind_phase2
+00019c08 000000d4 t unwind_phase2_forced
+00019cdc 00000004 T _Unwind_GetCFA
+00019ce0 0000005e T __gnu_Unwind_RaiseException
+00019d40 00000012 T __gnu_Unwind_ForcedUnwind
+00019d54 00000044 T __gnu_Unwind_Resume
+00019d98 0000000e T __gnu_Unwind_Resume_or_Rethrow
+00019da8 00000002 T _Unwind_Complete
+00019dac 0000000c T _Unwind_DeleteException
+00019db8 00000032 T _Unwind_VRS_Get
+00019dec 00000018 t _Unwind_GetGR
+00019e04 00000032 T _Unwind_VRS_Set
+00019e38 0000001a t _Unwind_SetGR
+00019e54 00000070 T __gnu_Unwind_Backtrace
+00019ec4 000002dc t __gnu_unwind_pr_common
+0001a1a0 00000004 T __aeabi_unwind_cpp_pr0
+0001a1a4 00000004 W __aeabi_unwind_cpp_pr1
+0001a1a8 00000004 W __aeabi_unwind_cpp_pr2
+0001a1ac 0000024e T _Unwind_VRS_Pop
+0001a3fc 00000018 T __restore_core_regs
+0001a3fc 00000018 T restore_core_regs
+0001a414 T __gnu_Unwind_Restore_VFP
+0001a41c T __gnu_Unwind_Save_VFP
+0001a424 T __gnu_Unwind_Restore_VFP_D
+0001a42c T __gnu_Unwind_Save_VFP_D
+0001a434 T __gnu_Unwind_Restore_VFP_D_16_to_31
+0001a43c T __gnu_Unwind_Save_VFP_D_16_to_31
+0001a444 T __gnu_Unwind_Restore_WMMXD
+0001a488 T __gnu_Unwind_Save_WMMXD
+0001a4cc T __gnu_Unwind_Restore_WMMXC
+0001a4e0 T __gnu_Unwind_Save_WMMXC
+0001a4f4 00000022 T ___Unwind_RaiseException
+0001a4f4 00000022 T _Unwind_RaiseException
+0001a518 00000022 T ___Unwind_Resume
+0001a518 00000022 T _Unwind_Resume
+0001a53c 00000022 T ___Unwind_Resume_or_Rethrow
+0001a53c 00000022 T _Unwind_Resume_or_Rethrow
+0001a560 00000022 T ___Unwind_ForcedUnwind
+0001a560 00000022 T _Unwind_ForcedUnwind
+0001a584 00000022 T ___Unwind_Backtrace
+0001a584 00000022 T _Unwind_Backtrace
+0001a5a8 00000038 t next_unwind_byte
+0001a5e0 0000001a t _Unwind_GetGR.constprop.0
+0001a5fc 00000002 t unwind_UCB_from_context
+0001a600 000002a2 T __gnu_unwind_execute
+0001a8a4 00000028 T __gnu_unwind_frame
+0001a8cc 0000000a T _Unwind_GetRegionStart
+0001a8d8 00000012 T _Unwind_GetLanguageSpecificData
+0001a8ec 00000006 T _Unwind_GetTextRelBase
+0001a8f4 00000006 T _Unwind_GetDataRelBase
+0001a8fc 00000002 W __aeabi_idiv0
+0001a8fc 00000002 W __aeabi_ldiv0
+0001a900 0000005e T _calloc_r
+0001a960 0000000c T __cxa_atexit
+0001a96c 0000000c T __errno
+0001a978 00000028 T fputc
+0001a9a0 0000004e T _fputs_r
+0001a9f0 00000010 T fputs
+0001aa00 00000028 T _fstat_r
+0001aa28 00000304 T __sfvwrite_r
+0001ad2c 00000064 T _fwrite_r
+0001ad90 00000020 T fwrite
+0001adb0 00000050 T __libc_init_array
+0001ae00 00000012 T isspace
+0001ae14 00000018 t __get_current_locale
+0001ae2c 00000014 T __locale_ctype_ptr
+0001ae40 0000005e T __swhatbuf_r
+0001aea0 00000088 T __smakebuf_r
+0001af28 00000010 T malloc
+0001af38 00000010 T free
+0001af48 00000570 T _malloc_r
+0001b4b8 0000002a T __ascii_mbtowc
+0001b4f0 T memchr
+0001b590 00000062 T memcmp
+0001b5f4 000000c6 T memmove
+0001b6bc 0000009a T memset
+0001b758 00000002 T __malloc_lock
+0001b75c 00000002 T __malloc_unlock
+0001b760 00000042 T _putc_r
+0001b7a4 00000010 T realloc
+0001b7b4 000003de T _realloc_r
+0001bb94 00000024 T _sbrk_r
+0001bbb8 0000004c T sprintf
+0001bc04 00000022 T __sread
+0001bc28 0000003c T __swrite
+0001bc64 00000020 T __sseek
+0001bc84 00000008 T __sclose
+0001bc8c 000000ce T strchr
+0001bd68 000002dc T strcmp
+0001c03c 000000ba T strcpy
+0001c0f8 000003cc T _strerror_r
+0001c4c4 00000018 T strerror
+0001c500 000000dc T strlen
+0001c5dc 000000a0 T strncmp
+0001c67c 00000066 T strncpy
+0001c6e4 000000b8 t critical_factorization
+0001c79c 000001fe t two_way_long_needle
+0001c99c 0000021e T strstr
+0001cbc0 00001570 T _svfprintf_r
+0001e130 00000004 T _user_strerror
+0001e134 000000ac T __swbuf_r
+0001e1e0 0000001a T __ascii_wctomb
+0001e1fc 0000002c T _write_r
+0001e228 000000c8 T __swsetup_r
+0001e2f0 000000a4 T __register_exitproc
+0001e394 00000024 T _close_r
+0001e3b8 00000128 t quorem
+0001e4e0 00000c84 T _dtoa_r
+0001f164 00000148 T __sflush_r
+0001f2ac 0000002c T _fflush_r
+0001f2d8 0000000c T _cleanup_r
+0001f2e4 000000f0 t __sinit.part.1
+0001f3d4 0000000a T __sinit
+0001f3e0 00000002 T __sfp_lock_acquire
+0001f3e4 00000002 T __sfp_lock_release
+0001f3e8 0000009c T _malloc_trim_r
+0001f484 000001d0 T _free_r
+0001f654 00000052 T _fwalk_reent
+0001f6a8 00000024 T _isatty_r
+0001f6cc 0000001c T _localeconv_r
+0001f6e8 0000002c T _lseek_r
+0001f714 0000004c T _Balloc
+0001f760 00000012 T _Bfree
+0001f774 00000080 T __multadd
+0001f7f4 00000040 T __hi0bits
+0001f834 0000005a T __lo0bits
+0001f890 00000012 T __i2b
+0001f8a4 00000130 T __multiply
+0001f9d4 000000a0 T __pow5mult
+0001fa74 000000ae T __lshift
+0001fb24 00000042 T __mcmp
+0001fb68 00000114 T __mdiff
+0001fc7c 000000ba T __d2b
+0001fd38 0000002c T _read_r
+0001fd64 00000100 T __ssprint_r
+0001fe64 00000084 T _fclose_r
+0001fee8 00000008 t ___ZN11AudioStream17initialize_memoryEP18audio_block_structj_veneer
+0001fef0 00000008 t ___init_veneer
+0001fef8 00000008 t ___reboot_Teensyduino__veneer
+0001ff00 00000008 t ___Z14set_audioClockilmb_veneer
+0001ff08 00000008 t ___ZN7TwoWire5beginEv_veneer
+0001ff10 T _fini
+00020088 R __exidx_start
+00020150 T _etext
+000202c8 R __exidx_end
+00028400 A _flashimagelen
+20000000 D _sdata
+20000000 00000480 D endpoint_queue_head
+20000480 00000028 D __mprec_bigtens
+200004a8 000000c8 D __mprec_tens
+200005dc 000000c4 d standard_subs
+200006a0 00000294 d cplus_demangle_builtin_types
+20000934 000003e0 d cplus_demangle_operators
+20000d14 000000a0 d CSWTCH.59
+20000db4 00000500 d font
+200012b4 00000001 d CS::CABLE_1
+200012b8 00000050 D SPIClass::spiclass_lpspi4_hardware
+20001308 00000008 D typeinfo for __cxxabiv1::__forced_unwind
+20001310 0000000c D typeinfo for __cxxabiv1::__class_type_info
+2000131c 00000008 D typeinfo for __cxxabiv1::__foreign_exception
+20001324 0000000c D typeinfo for __cxxabiv1::__si_class_type_info
+20001330 0000000c d typeinfo for (anonymous namespace)::system_error_category
+2000133c 0000000c d typeinfo for (anonymous namespace)::generic_error_category
+20001348 00000008 D typeinfo for std::_V2::error_category
+20001350 0000000c D typeinfo for std::logic_error
+2000135c 0000000c D typeinfo for std::length_error
+20001368 0000000c D typeinfo for std::bad_exception
+20001374 00000008 D typeinfo for std::exception
+2000137c 00000008 D typeinfo for std::type_info
+20001384 00000020 D typeinfo name for __cxxabiv1::__forced_unwind
+200013a4 00000022 D typeinfo name for __cxxabiv1::__class_type_info
+200013c8 00000024 D typeinfo name for __cxxabiv1::__foreign_exception
+200013ec 00000025 D typeinfo name for __cxxabiv1::__si_class_type_info
+20001414 00000029 d typeinfo name for (anonymous namespace)::system_error_category
+20001440 0000002a d typeinfo name for (anonymous namespace)::generic_error_category
+2000146c 00000019 D typeinfo name for std::_V2::error_category
+20001488 00000010 D typeinfo name for std::logic_error
+20001498 00000011 D typeinfo name for std::length_error
+200014ac 00000012 D typeinfo name for std::bad_exception
+200014c0 0000000d D typeinfo name for std::exception
+200014d0 0000000d D typeinfo name for std::type_info
+200014e0 0000000c V vtable for AudioStream
+200014ec 00000058 D vtable for Adafruit_GFX
+20001544 0000000c D vtable for AudioInputUSB
+20001550 00000024 V vtable for CustomNoteLED<(unsigned char)50>
+20001574 0000000c D vtable for AudioOutputI2S
+20001580 00000058 D vtable for Adafruit_SSD1306
+200015d8 00000028 V vtable for usb_serial_class
+20001600 00000018 D vtable for SdFile
+20001618 00000024 D vtable for TwoWire
+2000163c 00000024 V vtable for __FIBCC<WS2812, (unsigned char)10, 1, (EOrder)66>
+20001660 0000002c D vtable for __cxxabiv1::__class_type_info
+2000168c 0000002c D vtable for __cxxabiv1::__si_class_type_info
+200016b8 00000028 d vtable for (anonymous namespace)::system_error_category
+200016e0 00000028 d vtable for (anonymous namespace)::generic_error_category
+20001708 00000010 V vtable for AH::UpdatableCRTP<CS::MIDIInputElement<(CS::MIDIMessageType)144> >
+20001718 00000010 V vtable for AH::UpdatableCRTP<CS::MIDIInputElement<(CS::MIDIMessageType)176> >
+20001728 00000010 V vtable for AH::UpdatableCRTP<AH::ExtendedIOElement>
+20001738 00000010 V vtable for AH::UpdatableCRTP<AH::Updatable<CS::MIDI_Interface> >
+20001748 00000010 V vtable for AH::UpdatableCRTP<AH::Updatable<AH::NormalUpdatable> >
+20001758 00000044 V vtable for AH::AnalogMultiplex<(unsigned char)4>
+2000179c 00000044 V vtable for AH::ExtendedIOElement
+200017e0 00000018 V vtable for CS::MIDIButton<CS::DigitalCCSender>
+200017f8 0000001c D vtable for CS::MIDI_Source
+20001814 00000034 V vtable for CS::NoteCCKPValue<(CS::MIDIMessageType)176>
+20001848 00000094 D vtable for CS::MIDI_Interface
+200018dc 00000018 V vtable for CS::CCPotentiometer
+200018f4 00000018 V vtable for CS::CCRotaryEncoder
+2000190c 00000018 V vtable for CS::EncoderSelector<(unsigned char)8>
+20001924 00000048 D vtable for CS::Control_Surface_
+2000196c 00000098 V vtable for CS::USBMIDI_Interface
+20001a04 00000048 V vtable for CS::TrueMIDI_SinkSource
+20001a4c 00000018 V vtable for CS::GenericEncoderSelector<(unsigned char)8, CS::EmptySelectorCallback>
+20001a64 00000018 V vtable for CS::GenericMIDIRotaryEncoder<CS::Encoder, CS::RelativeCCSender>
+20001a7c 00000098 V vtable for CS::GenericUSBMIDI_Interface<CS::USBDeviceMIDIBackend>
+20001b14 0000000c V vtable for CS::Bank<(unsigned char)8>
+20001b20 00000018 V vtable for CS::Chord<(unsigned char)1>
+20001b38 00000018 V vtable for CS::Chord<(unsigned char)2>
+20001b50 00000018 V vtable for CS::Chord<(unsigned char)3>
+20001b68 00000018 V vtable for CS::Bankable::MIDIButton<CS::Bankable::SingleAddress, CS::DigitalCCSender>
+20001b80 00000018 V vtable for CS::Bankable::CCRotaryEncoder
+20001b98 00000018 V vtable for CS::Bankable::GenericMIDIRotaryEncoder<CS::Encoder, CS::Bankable::SingleAddress, CS::RelativeCCSender>
+20001bb0 00000018 V vtable for CS::Bankable::CCButton
+20001bc8 00000018 V vtable for CS::CCButton
+20001be0 00000064 D vtable for CS::MIDI_Pipe
+20001c44 0000002c D vtable for CS::MIDI_Sink
+20001c70 00000014 D vtable for std::logic_error
+20001c84 00000014 D vtable for std::length_error
+20001c98 00000014 D vtable for std::bad_exception
+20001cac 00000010 V SPIClass::beginTransaction(SPISettings)::clk_sel
+20001cbc 00000101 D _ctype_
+20001dc0 00000004 D _global_impure_ptr
+20001dc4 00000010 d blanks.7257
+20001dd4 00000280 D digital_pin_to_info_PGM
+20002054 0000000c d p05.6087
+20002060 0000001c D pin_to_channel
+2000342c 0000006c D usb_descriptor_list
+20003498 00000010 d zeroes.7258
+200034a8 00000001 D String::zerotermination
+200034b0 00000428 d impure_data
+200038d8 D __dso_handle
+200038dc 00000004 D F_BUS_ACTUAL
+200038e0 00000004 D F_CPU_ACTUAL
+200038e4 00000050 D SPI
+20003934 00000010 D Serial
+20003944 00000140 D Wire
+20003a84 00000004 D __cxxabiv1::__terminate_handler
+20003a88 00000004 D __cxxabiv1::__unexpected_handler
+20003a8c 00000004 d (anonymous namespace)::system_category_instance
+20003a90 00000004 d (anonymous namespace)::generic_category_instance
+20003a94 0000000c D AudioInputUSB::features
+20003aa0 00000004 D AH::Button::debounceTime
+20003aa4 00000004 D SdVolume::cacheBlockNumber_
+20003aa8 00000004 d usb_audio_transmit_callback::count
+20003aac 00000004 D __brkval
+20003ab0 0000016c D __global_locale
+20003c1c 00000408 D __malloc_av_
+20004024 00000004 D __malloc_sbrk_base
+20004028 00000004 D __malloc_trim_threshold
+2000402c 00000004 D _impure_ptr
+20004030 00000012 d device_descriptor
+20004044 00000080 D isr_table_gpio1
+200040c4 00000080 D isr_table_gpio2
+20004144 00000080 D isr_table_gpio3
+200041c4 00000080 D isr_table_gpio4
+20004244 00000020 D usb_string_product_name
+20004264 00000016 V usb_string_serial_number
+20004264 00000016 D usb_string_serial_number_default
+2000427a 00000002 D AH::ExtendedIOElement::offset
+2000427c 00000001 D active
+2000427d 00000001 D activityNoteToggle
+2000427e 00000001 D yield_active_check_flags
+20004400 000002c0 D _VectorsRam
+200046c0 D _edata
+200046c0 B _sbss
+200046c0 00000100 b rx_transfer
+200047c0 000000c0 b rx_transfer
+20004880 00000020 B rx_transfer
+200048a0 00000020 B sync_transfer
+200048c0 00000080 b tx_transfer
+20004940 00000080 b tx_transfer
+200049c0 00000020 B tx_transfer
+200049e0 000000b4 B usb_audio_transmit_buffer
+20004a98 00000078 B deckA
+20004b10 00000078 B deckB
+20004b88 00000008 b endpoint0_setupdata
+20004b90 b completed.8605
+20004b94 b object.8610
+20004bac 00000010 B FastLED
+20004bbc 00000004 V guard variable for std::moneypunct<char, false>::id
+20004bc0 00000004 V guard variable for std::moneypunct<char, true>::id
+20004bc4 00000004 V guard variable for std::moneypunct<wchar_t, false>::id
+20004bc8 00000004 V guard variable for std::moneypunct<wchar_t, true>::id
+20004bcc 00000004 V guard variable for std::__timepunct<char>::id
+20004bd0 00000004 V guard variable for std::__timepunct<wchar_t>::id
+20004bd4 00000004 V guard variable for std::__cxx11::moneypunct<char, false>::id
+20004bd8 00000004 V guard variable for std::__cxx11::moneypunct<char, true>::id
+20004bdc 00000004 V guard variable for std::__cxx11::moneypunct<wchar_t, false>::id
+20004be0 00000004 V guard variable for std::__cxx11::moneypunct<wchar_t, true>::id
+20004be4 00000004 V guard variable for std::__cxx11::collate<char>::id
+20004be8 00000004 V guard variable for std::__cxx11::collate<wchar_t>::id
+20004bec 00000004 V guard variable for std::__cxx11::messages<char>::id
+20004bf0 00000004 V guard variable for std::__cxx11::messages<wchar_t>::id
+20004bf4 00000004 V guard variable for std::__cxx11::numpunct<char>::id
+20004bf8 00000004 V guard variable for std::__cxx11::numpunct<wchar_t>::id
+20004bfc 00000004 V guard variable for std::__cxx11::time_get<char, std::istreambuf_iterator<char, std::char_traits<char> > >::id
+20004c00 00000004 V guard variable for std::__cxx11::time_get<wchar_t, std::istreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::id
+20004c04 00000004 V guard variable for std::__cxx11::money_get<char, std::istreambuf_iterator<char, std::char_traits<char> > >::id
+20004c08 00000004 V guard variable for std::__cxx11::money_get<wchar_t, std::istreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::id
+20004c0c 00000004 V guard variable for std::__cxx11::money_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::id
+20004c10 00000004 V guard variable for std::__cxx11::money_put<wchar_t, std::ostreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::id
+20004c14 00000004 V guard variable for std::collate<char>::id
+20004c18 00000004 V guard variable for std::collate<wchar_t>::id
+20004c1c 00000004 V guard variable for std::num_get<char, std::istreambuf_iterator<char, std::char_traits<char> > >::id
+20004c20 00000004 V guard variable for std::num_get<wchar_t, std::istreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::id
+20004c24 00000004 V guard variable for std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::id
+20004c28 00000004 V guard variable for std::num_put<wchar_t, std::ostreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::id
+20004c2c 00000004 V guard variable for std::messages<char>::id
+20004c30 00000004 V guard variable for std::messages<wchar_t>::id
+20004c34 00000004 V guard variable for std::numpunct<char>::id
+20004c38 00000004 V guard variable for std::numpunct<wchar_t>::id
+20004c3c 00000004 V guard variable for std::time_get<char, std::istreambuf_iterator<char, std::char_traits<char> > >::id
+20004c40 00000004 V guard variable for std::time_get<wchar_t, std::istreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::id
+20004c44 00000004 V guard variable for std::time_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::id
+20004c48 00000004 V guard variable for std::time_put<wchar_t, std::ostreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::id
+20004c4c 00000004 V guard variable for std::money_get<char, std::istreambuf_iterator<char, std::char_traits<char> > >::id
+20004c50 00000004 V guard variable for std::money_get<wchar_t, std::istreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::id
+20004c54 00000004 V guard variable for std::money_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::id
+20004c58 00000004 V guard variable for std::money_put<wchar_t, std::ostreambuf_iterator<wchar_t, std::char_traits<wchar_t> > >::id
+20004c5c 00000004 b guard variable for CS::Control_Surface_::getInstance()::instance
+20004c60 00000004 V guard variable for CLEDController& CFastLED::addLeds<(unsigned char)1, WS2812, (unsigned char)10, (EOrder)66>(CRGB*, int)::c
+20004c64 0000000c b eh_globals
+20004c70 00000004 b lastshow
+20004c74 00000008 b settings
+20004c7c 00000004 B AudioStream::memory_pool
+20004c80 00000004 B AudioStream::first_update
+20004c84 00000070 B AudioStream::memory_pool_available_mask
+20004cf4 00000010 b (anonymous namespace)::emergency_pool
+20004d04 00000008 B AudioInputI2S::dma
+20004d0c 00000008 B AudioInputPDM::dma
+20004d14 00000008 B AudioInputTDM::dma
+20004d1c 00000004 B AudioInputUSB::ready_left
+20004d20 00000004 B AudioInputUSB::ready_right
+20004d24 00000004 B AudioInputUSB::incoming_left
+20004d28 00000004 B AudioInputUSB::incoming_right
+20004d2c 00000008 B AudioInputI2S2::dma
+20004d34 00000008 B AudioInputPDM2::dma
+20004d3c 00000008 B AudioInputTDM2::dma
+20004d44 00000004 B AudioOutputI2S::block_left_1st
+20004d48 00000004 B AudioOutputI2S::block_left_2nd
+20004d4c 00000004 B AudioOutputI2S::block_right_1st
+20004d50 00000004 B AudioOutputI2S::block_right_2nd
+20004d54 00000008 B AudioOutputI2S::dma
+20004d5c 00000008 B AudioOutputMQS::dma
+20004d64 00000008 B AudioOutputTDM::dma
+20004d6c 00000004 B AudioOutputUSB::left_1st
+20004d70 00000004 B AudioOutputUSB::left_2nd
+20004d74 00000004 B AudioOutputUSB::right_1st
+20004d78 00000004 B AudioOutputUSB::right_2nd
+20004d7c 00000004 B CLEDController::m_pHead
+20004d80 00000004 B CLEDController::m_pTail
+20004d84 00000004 B EventResponder::firstYield
+20004d88 00000004 B EventResponder::lastInterrupt
+20004d8c 00000004 B EventResponder::firstInterrupt
+20004d90 00000004 B EventResponder::lastYield
+20004d94 0000001c B HardwareSerial::s_serials_with_serial_events
+20004db0 00000008 B AudioOutputI2S2::dma
+20004db8 00000008 B AudioOutputTDM2::dma
+20004dc0 00000008 B AudioInputAnalog::dma
+20004dc8 00000008 B AudioInputI2SHex::dma
+20004dd0 00000008 B AudioInputI2SOct::dma
+20004dd8 00000008 B AudioInputSPDIF3::dma
+20004de0 00000008 B AudioOutputSPDIF::dma
+20004de8 00000008 B AudioInputI2SQuad::dma
+20004df0 00000008 B AudioOutputI2SHex::dma
+20004df8 00000008 B AudioOutputI2SOct::dma
+20004e00 00000008 B AudioOutputPT8211::dma
+20004e08 00000008 B AudioOutputSPDIF2::dma
+20004e10 00000008 B AudioOutputSPDIF3::dma
+20004e18 00000008 B AudioOutputI2SQuad::dma
+20004e20 00000008 B AudioOutputPT8211_2::dma
+20004e28 00000008 B AsyncAudioInputSPDIF3::dma
+20004e30 00000008 V AH::UpdatableCRTP<CS::MIDIOutputOnly>::updatables
+20004e38 00000008 V AH::UpdatableCRTP<CS::MIDIInputElement<(CS::MIDIMessageType)144> >::updatables
+20004e40 00000008 V AH::UpdatableCRTP<CS::MIDIInputElement<(CS::MIDIMessageType)160> >::updatables
+20004e48 00000008 V AH::UpdatableCRTP<CS::MIDIInputElement<(CS::MIDIMessageType)176> >::updatables
+20004e50 00000008 V AH::UpdatableCRTP<CS::MIDIInputElement<(CS::MIDIMessageType)192> >::updatables
+20004e58 00000008 V AH::UpdatableCRTP<CS::MIDIInputElement<(CS::MIDIMessageType)208> >::updatables
+20004e60 00000008 V AH::UpdatableCRTP<CS::MIDIInputElement<(CS::MIDIMessageType)224> >::updatables
+20004e68 00000008 V AH::UpdatableCRTP<CS::MIDIInputElement<(CS::MIDIMessageType)240> >::updatables
+20004e70 00000008 V AH::UpdatableCRTP<AH::ExtendedIOElement>::updatables
+20004e78 00000008 V AH::UpdatableCRTP<AH::Updatable<CS::MIDI_Interface> >::updatables
+20004e80 00000008 V AH::UpdatableCRTP<AH::Updatable<CS::Display> >::updatables
+20004e88 00000008 V AH::UpdatableCRTP<AH::Updatable<AH::NormalUpdatable> >::updatables
+20004e90 00000008 B CS::DisplayElement::elements
+20004e98 00000004 B CS::MIDI_Interface::DefaultMIDI_Interface
+20004e9c 00000004 B CS::Control_Surface
+20004ea0 00000008 b CS::Bass::Double
+20004ea8 00000008 b CS::Bass::Double
+20004eb0 00000008 b CS::Bass::Single
+20004eb8 00000008 b CS::Bass::Single
+20004ec0 00000008 b CS::Bass::Triple
+20004ec8 00000008 b CS::Bass::Triple
+20004ed0 00000008 b CS::Chords::Diminished
+20004ed8 00000008 b CS::Chords::Diminished
+20004ee0 00000008 b CS::Chords::MajorSeventh
+20004ee8 00000008 b CS::Chords::MajorSeventh
+20004ef0 00000008 b CS::Chords::MajorFirstInv
+20004ef8 00000008 b CS::Chords::MajorFirstInv
+20004f00 00000008 b CS::Chords::MinorFirstInv
+20004f08 00000008 b CS::Chords::MinorFirstInv
+20004f10 00000008 b CS::Chords::MajorSecondInv
+20004f18 00000008 b CS::Chords::MajorSecondInv
+20004f20 00000008 b CS::Chords::MinorSecondInv
+20004f28 00000008 b CS::Chords::MinorSecondInv
+20004f30 00000008 b CS::Chords::DominantSeventh
+20004f38 00000008 b CS::Chords::DominantSeventh
+20004f40 00000008 b CS::Chords::Major
+20004f48 00000008 b CS::Chords::Major
+20004f50 00000008 b CS::Chords::Minor
+20004f58 00000008 b CS::Chords::Minor
+20004f60 00000008 b CS::Chords::Augmented
+20004f68 00000008 b CS::Chords::Augmented
+20004f70 000000a0 B CS::Encoder::interruptArgs
+20005010 00000004 b CS::eternal_stall
+20005014 00000060 B SDLib::SD
+20005074 00000004 B SdFile::dateTime_
+20005078 00000200 B SdVolume::cacheBuffer_
+20005278 00000004 B SdVolume::cacheMirrorBlock_
+2000527c 00000004 B SdVolume::sdCard_
+20005280 00000010 V std::string::_Rep::_S_empty_rep_storage
+20005290 00000078 b CS::Control_Surface_::getInstance()::instance
+20005308 00000048 V CLEDController& CFastLED::addLeds<(unsigned char)1, WS2812, (unsigned char)10, (EOrder)66>(CRGB*, int)::c
+20005350 00000004 b CFastLED::countFPS(int)::br
+20005354 00000004 b CFastLED::countFPS(int)::lastframe
+20005358 00000028 B __malloc_current_mallinfo
+20005380 00000004 B __malloc_max_sbrked_mem
+20005384 00000004 B __malloc_max_total_mem
+20005388 00000004 B __malloc_top_pad
+2000538c 00000008 b activity
+20005394 00000018 B activityTracker
+200053ac 00000010 B bankA
+200053bc 00000010 B bankB
+200053cc 00000080 B bankNames
+2000544c 00000024 B button1A
+20005470 00000024 B button1B
+20005494 00000024 B button2A
+200054b8 00000024 B button2B
+200054dc 0000001c B buttonCruise
+200054f8 0000001c B buttonCueA
+20005514 0000001c B buttonCueB
+20005530 0000001c B buttonCueEnableA
+2000554c 0000001c B buttonCueEnableB
+20005568 00000024 B buttonEncA
+2000558c 00000024 B buttonEncB
+200055b0 0000001c B buttonLoadA
+200055cc 0000001c B buttonLoadB
+200055e8 0000001c B buttonModifier1
+20005604 0000001c B buttonModifier2
+20005620 0000001c B buttonPlayA
+2000563c 0000001c B buttonPlayB
+20005658 00000024 B deckASelectorLEDS
+2000567c 00000024 B deckBSelectorLEDS
+200056a0 00000003 B dimBlue
+200056a4 00000003 B dimGreen
+200056a8 00000068 B displayA
+20005710 00000068 B displayB
+20005778 00000040 B encoderA
+200057b8 00000040 B encoderB
+200057f8 0000003c B encoderBrowser
+20005834 00000008 b endpoint0_buffer
+2000583c 00000004 b endpoint0_notify_mask
+20005840 00000004 b endpointN_notify_mask
+20005844 00000004 B feedback_accumulator
+20005848 00000020 B i2s1
+20005868 00000096 B leds
+20005900 000008b4 B midi
+200061b4 00000014 B midiled
+200061c8 00000020 B mux
+200061e8 00000020 B mux2
+20006208 00000014 B patchCord1
+2000621c 00000014 B patchCord2
+20006230 0000001c B potFilterA
+2000624c 0000001c B potFilterB
+20006268 0000001c B potGainA
+20006284 0000001c B potGainB
+200062a0 0000001c B potHighA
+200062bc 0000001c B potHighB
+200062d8 0000001c B potLowA
+200062f4 0000001c B potLowB
+20006310 0000001c B potMidA
+2000632c 0000001c B potMidB
+20006348 0000001c B potVolumeA
+20006364 0000001c B potVolumeB
+20006380 0000001c B potVolumeMaster
+2000639c 0000001c B potVolumeMonitor
+200063b8 0000001c B potXfader
+200063d4 00000004 B prevBankASelection
+200063d8 00000004 B prevBankBSelection
+200063dc 00000008 b reply_buffer
+200063e4 00000004 b rx_available
+200063e8 00000004 b rx_available
+200063ec 00000010 b rx_count
+200063fc 0000000c b rx_count
+20006408 00000010 b rx_index
+20006418 0000000c b rx_index
+20006424 00000009 b rx_list
+20006430 00000007 b rx_list
+20006438 00000004 b s_hotCount
+2000643c 00000004 b s_hotTemp
+20006440 00000004 b s_hot_ROOM
+20006444 00000004 b s_roomC_hotC
+20006448 00000004 B scale_cpu_cycles_to_microseconds
+2000644c 00000040 B selectorA
+2000648c 00000040 B selectorB
+200064cc 00000004 B systick_cycle_count
+200064d0 00000004 B systick_millis_count
+200064d4 00000008 b timerEndA
+200064dc 00000008 b timerEndB
+200064e4 00000018 B usb1
+200064fc 00000004 B usb_audio_overrun_count
+20006500 00000004 B usb_audio_underrun_count
+20006504 00000004 B usb_timer0_callback
+20006508 00000004 B usb_timer1_callback
+2000650c 00000018 B vuColors
+20006524 00000002 B AudioStream::memory_used
+20006526 00000002 B AudioStream::memory_used_max
+20006528 00000002 B AudioStream::cpu_cycles_total
+2000652a 00000002 B AudioStream::cpu_cycles_total_max
+2000652c 00000002 B AudioStream::memory_pool_first_mask
+2000652e 00000002 B AudioInputUSB::incoming_count
+20006530 00000002 B AudioOutputI2S::block_left_offset
+20006532 00000002 B AudioOutputI2S::block_right_offset
+20006534 00000002 B AudioOutputUSB::offset_1st
+20006536 00000002 B dma_channel_allocated_mask
+20006538 00000002 b rx_packet_size
+2000653a 00000002 b rx_packet_size
+2000653c 00000002 b tx_available
+2000653e 00000002 b tx_available
+20006540 00000002 b tx_packet_size
+20006542 00000002 b tx_packet_size
+20006544 00000001 b chip_select_asserted
+20006545 00000001 B AudioStream::update_scheduled
+20006546 00000001 B AudioInputUSB::receive_flag
+20006547 00000001 B AudioInputUSB::update_responsibility
+20006548 00000001 B AudioOutputI2S::update_responsibility
+20006549 00000001 B EventResponder::runningFromYield
+2000654a 00000001 B HardwareSerial::s_count_serials_with_serial_events
+2000654b 00000001 B CS::RelativeCCSender::mode
+2000654c 00000001 B SdVolume::cacheDirty_
+2000654d 00000001 b yield::running
+2000654e 00000001 V PixelController<(EOrder)66, 1, 1ul>::init_binary_dithering()::R
+2000654f 00000001 b __gnu_cxx::__verbose_terminate_handler()::terminating
+20006550 00000001 b calibrating
+20006551 00000001 b rx_head
+20006552 00000001 b rx_head
+20006553 00000001 b rx_tail
+20006554 00000001 b rx_tail
+20006555 00000001 b sof_usage
+20006556 00000001 B trackEndA
+20006557 00000001 B trackEndB
+20006558 00000001 b transmit_previous_timeout
+20006559 00000001 b transmit_previous_timeout
+2000655a 00000001 b tx_head
+2000655b 00000001 b tx_head
+2000655c 00000001 b tx_noautoflush
+2000655d 00000001 b tx_noautoflush
+2000655e 00000001 B usb_audio_receive_setting
+2000655f 00000001 B usb_audio_sync_nbytes
+20006560 00000001 B usb_audio_sync_rshift
+20006561 00000001 B usb_audio_transmit_setting
+20006562 00000001 B usb_cdc_line_rtsdtr
+20006563 00000001 B usb_configuration
+20006564 00000001 B usb_high_speed
+20006565 00000001 b usb_reboot_timer
+20006580 00000020 B endpoint0_transfer_data
+200065a0 00000020 B endpoint0_transfer_ack
+200065c0 00000004 B usb_cdc_line_rtsdtr_millis
+200065c4 00000008 B usb_cdc_line_coding
+200065cc 00000004 B systick_safe_read
+200065d0 00000004 B errno
+20006600 B _ebss
+20058000 T _estack
+20200000 00000820 b setup::data
+20200820 00000200 b i2s_tx_buffer
+20200a20 00001000 b rx_buffer
+20201a20 00002000 b txbuffer
+20203a20 00000c00 b rx_buffer
+20204620 00000800 b txbuffer
+20204e20 00000335 B usb_descriptor_buffer
+20205160 00000004 B usb_audio_sync_feedback
+20205180 000000b4 b rx_buffer
+20205240 000000b4 b tx_buffer
+20205300 B _heap_start
+20280000 T _heap_end
+60000000 00000200 T FlexSPI_NOR_Config
+60001000 00000020 T ImageVectorTable
+60001020 0000000c T BootData
+60001400 00000016 t memory_copy
+60001418 00000010 t memory_clear
+60001428 00000228 T ResetHandler
+60001650 000000d4 T TwoWire::begin()
+60001724 0000005c T set_audioClock(int, long, unsigned long, bool)
+60001780 000000ec T usb_init
+6000186c 00000054 T _reboot_Teensyduino_
+600018c0 00000058 T analog_init
+60001918 00000002 T startup_default_early_hook
+60001918 00000002 W startup_early_hook
+6000191c 00000002 T startup_default_middle_hook
+6000191c 00000002 W startup_middle_hook
+60001920 00000002 T startup_default_late_hook
+60001920 00000002 W startup_late_hook
+60001924 000000e4 T configure_cache
+60001a08 00000064 T usb_pll_start
+60001a6c 0000011c T tempmon_init
+60001b88 00000070 T AudioStream::initialize_memory(audio_block_struct*, unsigned int)
+60001bf8 T _init
+60001c08 00000008 t __memset_veneer
+60001c10 00000008 t ____libc_init_array_veneer
+60001c18 00000008 t __main_veneer
+60001c20 00000008 t __pwm_init_veneer
+60001c28 00000008 t __set_arm_clock_veneer
+60001c30 00000008 t __delay_veneer
+60001c38 00000008 t __usb_init_serialnumber_veneer
+60001c40 t __frame_dummy_init_array_entry
+60001c40 T __init_array_start
+60001c40 T __preinit_array_end
+60001c40 T __preinit_array_start
+60001cdc T __init_array_end
+60001cdc 00000400 t logoTraktor
+600020dc 000002c0 t splash1_data
+6000239c 000001e0 t splash2_data
+6000257c 00000004 t Adafruit_SSD1306::begin(unsigned char, unsigned char, bool, bool)::init1
+60002580 00000004 t Adafruit_SSD1306::begin(unsigned char, unsigned char, bool, bool)::init2
+60002584 00000004 t Adafruit_SSD1306::begin(unsigned char, unsigned char, bool, bool)::init3
+60002588 00000006 t Adafruit_SSD1306::begin(unsigned char, unsigned char, bool, bool)::init5
+60002590 00000008 t Adafruit_SSD1306::drawFastVLineInternal(short, short, short, unsigned short)::premask
+60002598 00000008 t Adafruit_SSD1306::drawFastVLineInternal(short, short, short, unsigned short)::postmask
+600025a0 00000005 t Adafruit_SSD1306::display()::dlist1
+600025a8 00000002 t Adafruit_SSD1306::startscrollright(unsigned char, unsigned char)::scrollList1a
+600025ac 00000003 t Adafruit_SSD1306::startscrollright(unsigned char, unsigned char)::scrollList1b
+600025b0 00000002 t Adafruit_SSD1306::startscrollleft(unsigned char, unsigned char)::scrollList2a
+600025b4 00000003 t Adafruit_SSD1306::startscrollleft(unsigned char, unsigned char)::scrollList2b
+600025b8 00000002 t Adafruit_SSD1306::startscrolldiagright(unsigned char, unsigned char)::scrollList3a
+600025bc 00000002 t Adafruit_SSD1306::startscrolldiagright(unsigned char, unsigned char)::scrollList3b
+600025c0 00000002 t Adafruit_SSD1306::startscrolldiagright(unsigned char, unsigned char)::scrollList3c
+600025c4 00000002 t Adafruit_SSD1306::startscrolldiagleft(unsigned char, unsigned char)::scrollList4a
+600025c8 00000002 t Adafruit_SSD1306::startscrolldiagleft(unsigned char, unsigned char)::scrollList4b
+600025cc 00000002 t Adafruit_SSD1306::startscrolldiagleft(unsigned char, unsigned char)::scrollList4c
+600025d0 0000004c T TwoWire::i2c4_hardware
+6000261c 0000004c T TwoWire::i2c3_hardware
+60002668 0000004c T TwoWire::i2c1_hardware
+600026b4 0000002a T usb_string_product_name_default
+600026e0 00000018 V usb_string_manufacturer_name
+600026e0 00000018 T usb_string_manufacturer_name_default
+600026f8 00000004 T string0
+600026fc 00000335 T usb_config_descriptor_12
+60002a34 00000335 T usb_config_descriptor_480
+60002d6c 0000000a t qualifier_descriptor
+60002d76 00000001 T _serialEvent_default
+60002d78 A _stextload
+60023040 A _sdataload
+60027800 00000c00 T hab_csf
+60028400 t __text_csf_end
+aaaaabff A _flexram_bank_config
