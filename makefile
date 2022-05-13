@@ -23,7 +23,7 @@ LIBS_SHARED      := Adafruit_GFX_Library Adafruit_BusIO
 LIBS_LOCAL_BASE  := lib
 LIBS_LOCAL       := Adafruit_SSD1306 SD Encoder FastLED SdFat SerialFlash SPI Wire Audio Control-Surface
 
-CORE_BASE        := C:\PROGRA~2\Arduino\hardware\teensy\avr\cores\teensy4
+CORE_BASE        := cores/teensy4
 GCC_BASE         := C:\PROGRA~2\Arduino\hardware\tools\arm\bin
 UPL_PJRC_B       := C:\PROGRA~2\Arduino\hardware\tools
 UPL_TYCMD_B      := C:\PROGRA~1\TyTools
