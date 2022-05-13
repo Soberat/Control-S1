@@ -645,11 +645,11 @@ void setup() {
     Control_Surface.setMIDIInputCallbacks(channelMessageCallback, sysExMessageCallback, nullptr, nullptr);
     Control_Surface.begin();
 
-    //#if defined(ARDUINO_TEENSY40) || defined(ARDUINO_TEENSY41)
+    #if defined(ARDUINO_TEENSY40) || defined(ARDUINO_TEENSY41)
     FastLED.addLeds<1, WS2812, ledpin, GRB>(leds.data, numleds);
-    // #else
-    // FastLED.addLeds<NEOPIXEL, ledpin>(leds.data, numleds)
-    // #endif
+    #else
+    FastLED.addLeds<NEOPIXEL, ledpin>(leds.data, numleds)
+    #endif
     FastLED.setCorrection(TypicalPixelString);
     FastLED.setBrightness(32);
 
